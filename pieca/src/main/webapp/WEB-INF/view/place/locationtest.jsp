@@ -468,10 +468,10 @@ function removeAllChildNods(el) {
               let table = '<caption>'+$("select[name=si2]").val()+' '+$("select[name=gu2]").val()+'</caption><tr><td>충전소명</td><td>충전기타입</td><td>주소</td><td>이용가능시간</td><td>운영기관연락처</td></tr>';
               var redun_num = 0;
               $.each(data, function(i){
-                 if(i==0 || data[i].statNm!=data[i-1].statNm){
-                    placeslist[i-redun_num] = data[i].statNm;
+                 if(i==0 || data[i].statNm!=data[i-1].statNm){	//json데이터[i]의 장소명이 바로 전 장소명과 같지 않아야한다.
+                    placeslist[i-redun_num] = data[i].statNm; 
                  }else{
-                    redun_num += 1;
+                    redun_num += 1;		//json데이터[i]의 장소명이 바로 전 장소명과 같으면 placeslist 배열에 저장되는 인덱스를 redun_num cnt값으로 shift해준다
                  }
                  console.log(placeslist)
                   let chgerType = data[i].chgerType.replace(/(01|02|03|04|05|06|07|89)/g, function(ex){

@@ -13,6 +13,7 @@
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
 .map_wrap {position:relative;width:100%;height:500px;}
 #menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+#menu_wrap2 {position:absolute;top:0;right:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
 .bg_white {background:#fff;}
 #menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
 #menu_wrap .option{text-align: center;}
@@ -93,6 +94,13 @@
         <ul id="placesList"></ul>
         <div id="pagination"></div>
     </div>
+        <div id="menu_wrap2" class="bg_white">
+        <div class="option">
+        </div>
+        <hr>
+        <ul id="placesList"></ul>
+        <div id="pagination"></div>
+    </div>
 </div>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02d94db8e10d97b2ae5cfd31f23e9c4c&libraries=services"></script>
 <script>
@@ -116,7 +124,7 @@ const ps = new kakao.maps.services.Places();
 var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 var maxCallCnt = 0;
 var runCnt = 0;
-const searchInMethod = (data2 ,status, pagination) => {
+/* const searchInMethod = (data2 ,status, pagination) => {
    runCnt++;
    if (status === kakao.maps.services.Status.OK) {  
         for(var j=0; j<data2.length; j++){
@@ -146,16 +154,48 @@ const searchInMethod = (data2 ,status, pagination) => {
     return;
 
 }
+} */
+
+function searchInMethod (data2 ,status, pagination) {
+runCnt++;
+if (status === kakao.maps.services.Status.OK) {  
+		if($("select[name=si2]").val().substr(0,2)==data2[0].address_name.substr(0,2)){
+	        searchArr.push(data2[0])
+		}else{
+			console.log(data2[0].address_name.substr(0,2)+' 이거랑 '+$("select[name=si2]").val().substr(0,2)+'는 다른지역')
+		}
+        console.log(runCnt)
+    if(maxCallCnt === runCnt) { // searchInMethod가 다 돌고 나서
+       console.log("searchArr 제대로 나와야함. : ", searchArr);
+       displayPlaces(searchArr,curPage); // 화면에 리스트 출력
+       displayPagination(searchArr); // 페이징 처리 
+       runCnt = 0;
+     //maxPage = Math.floor(searchArr.length/15)+1
+   	maxPage = Math.floor((searchArr.length+14)/15)
+    }
+   ercnt++
+} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+ercnt++
+ alert('에 대한 검색 결과가 존재하지 않습니다.'+ercnt);
+ return;
+
+} else if (status === kakao.maps.services.Status.ERROR) {
+ercnt++
+ alert('검색 결과 중 오류가 발생했습니다.'+ercnt);
+ return;
+
+}
 }
 
+
 // 키워드로 장소를 검색합니다
-//searchPlaces();
 searchArr = [];
+//searchArr2 = [];
 // 키워드 검색을 요청하는 함수입니다
 console.log("search places 1111111111111111");
 function searchPlaces(data) {
-          ercnt=0;
-          maxCallCnt = data.length;
+	ercnt=0;
+    maxCallCnt = data.length;
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
     for (i=0; i<data.length; i++ ) {
        // searchInMethod
@@ -205,13 +245,23 @@ function displayPlaces(places,curPage) { //places == searchArr
             kakao.maps.event.addListener(marker, 'mouseover', function() {
                 displayInfowindow(marker, title);
             });
-
+			
             kakao.maps.event.addListener(marker, 'mouseout', function() {
                 infowindow.close();
             });
 
             itemEl.onmouseover =  function () {
                 displayInfowindow(marker, title);
+            };
+            itemEl.onclick =  function () {//좌측 리스트 onclick 이벤트
+                //console.log(title)
+                const filteredArray = searchArr.filter(obj => obj.place_name == title);
+                const filteredArray2 = data1.filter(obj2 => obj2.statNm == title);
+            	console.log(data1)
+                console.log(searchArr)
+            	console.log(filteredArray)
+            	console.log(filteredArray2)
+            	
             };
 
             itemEl.onmouseout =  function () {
@@ -355,14 +405,14 @@ function removeAllChildNods(el) {
             type : "POST",
             data : params,
          success : function(data) {
-            data1=data
+            //lodash 메서드를 임포트 후 uniqBy를 사용하여 data에서 특정 부분에 유일성을 줬음
               data = _.uniqBy(data,'statNm')
               data = _.uniqBy(data,'addr')
+            data1=data
               let table = '<caption>'+$("select[name=si2]").val()+' '+$("select[name=gu2]").val()+'</caption><tr><td>충전소명</td><td>충전기타입</td><td>주소</td><td>이용가능시간</td><td>운영기관연락처</td></tr>';
               $.each(data, function(i){
                  placeslist[i] = data[i].statNm;
-                 //console.log(placeslist)
-                  let chgerType = data[i].chgerType.replace(/(01|02|03|04|05|06|07|89)/g, function(ex){
+      /*             let chgerType = data[i].chgerType.replace(/(01|02|03|04|05|06|07|89)/g, function(ex){
                       switch(ex){
                        case "01" : return "DC차데모";
                        case "02" : return "AC완속";
@@ -373,14 +423,13 @@ function removeAllChildNods(el) {
                        case "07" : return "AC3상";
                        case "89" : return "H2";
                       }
-                })
+                }) */
                 
-                 table += '<tr><td>'+data[i].statNm+'</td><td>'+chgerType+'</td><td>'+data[i].addr+'</td><td>'+data[i].useTime+'</td><td>'+data[i].busiCall+'</td></tr>';
+                 //table += '<tr><td>'+data[i].statNm+'</td><td>'+chgerType+'</td><td>'+data[i].addr+'</td><td>'+data[i].useTime+'</td><td>'+data[i].busiCall+'</td></tr>';
               });
-              const set = new Set(placeslist);
-              placeslist = [...set];
+              //const set = new Set(placeslist); //placeslist배열을 set에 저장후
+              //placeslist = [...set];//set을 다시 배열로
               //$("#placetable").append(table)
-              //console.log(placeslist)// 이게 전기차 검색시의 모든 결과 목록 뽑은건데
               searchPlaces(data)
            },
            error : function(e) {
