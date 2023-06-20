@@ -26,8 +26,6 @@
    <tr><td>이름</td><td><form:input path="username" class="w3-input"/>
         <font color="red"><form:errors path="username" /></font></td></tr>
    <tr><td>전화번호</td><td><form:input path="phoneno" class="w3-input"/></td></tr>
-   <tr><td>우편번호</td><td><form:input path="postcode" class="w3-input"/></td></tr>
-   <tr><td>주소</td><td><form:input path="address" class="w3-input"/></td></tr>
    <tr><td>이메일</td><td><form:input path="email" class="w3-input"/>
         <font color="red"><form:errors path="email" /></font></td></tr>
    <tr><td>생년월일</td><td><form:input path="birthday" class="w3-input"/>

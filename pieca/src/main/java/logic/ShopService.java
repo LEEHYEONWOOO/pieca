@@ -144,4 +144,7 @@ public class ShopService {
 		return userDao.phoneList(phoneno);
 	}
 	//================================================================
+	public User selectUserId(String userid) {
+		return userDao.selectId(userid);
+	}
 }

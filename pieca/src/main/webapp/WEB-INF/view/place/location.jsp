@@ -43,10 +43,6 @@
 #placesList .item .marker_13 {background-position: 0 -562px;}
 #placesList .item .marker_14 {background-position: 0 -608px;}
 #placesList .item .marker_15 {background-position: 0 -654px;}
-#placesList .item .marker_16 {background-position: 0 -654px;} <!-- 15에 대한 기준? -->
-#placesList .item .marker_17 {background-position: 0 -654px;} <!-- 15에 대한 기준? -->
-
-#placesList .item .marker_17 {background-position: 0 -654px;}
 #pagination {margin:10px auto;text-align: center;}
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
@@ -98,8 +94,8 @@
         <div class="option">
         </div>
         <hr>
-        <ul id="placesList"></ul>
-        <div id="pagination"></div>
+        <ul id="placesList2"></ul>
+        
     </div>
 </div>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02d94db8e10d97b2ae5cfd31f23e9c4c&libraries=services"></script>
@@ -155,12 +151,12 @@ var runCnt = 0;
 
 }
 } */
-
+dataIndexArr=[]
 function searchInMethod (data2 ,status, pagination) {
 runCnt++;
 if (status === kakao.maps.services.Status.OK) {  
-		if($("select[name=si2]").val().substr(0,2)==data2[0].address_name.substr(0,2)){
-	        searchArr.push(data2[0])
+		if($("select[name=si2]").val().substr(0,2)==data2[0].address_name.substr(0,2) ){
+	        	searchArr.push(data2[0])
 		}else{
 			console.log(data2[0].address_name.substr(0,2)+' 이거랑 '+$("select[name=si2]").val().substr(0,2)+'는 다른지역')
 		}
@@ -176,12 +172,12 @@ if (status === kakao.maps.services.Status.OK) {
    ercnt++
 } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 ercnt++
- alert('에 대한 검색 결과가 존재하지 않습니다.'+ercnt);
+ //alert('에 대한 검색 결과가 존재하지 않습니다.'+ercnt);
  return;
 
 } else if (status === kakao.maps.services.Status.ERROR) {
 ercnt++
- alert('검색 결과 중 오류가 발생했습니다.'+ercnt);
+ //alert('검색 결과 중 오류가 발생했습니다.'+ercnt);
  return;
 
 }
@@ -199,6 +195,7 @@ function searchPlaces(data) {
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
     for (i=0; i<data.length; i++ ) {
        // searchInMethod
+       dataIndexArr.push(data[i])
        ps.keywordSearch(data[i].statNm, searchInMethod)
    } // for
    console.log("search places Done 222222");
@@ -254,13 +251,69 @@ function displayPlaces(places,curPage) { //places == searchArr
                 displayInfowindow(marker, title);
             };
             itemEl.onclick =  function () {//좌측 리스트 onclick 이벤트
-                //console.log(title)
-                const filteredArray = searchArr.filter(obj => obj.place_name == title);
-                const filteredArray2 = data1.filter(obj2 => obj2.statNm == title);
-            	console.log(data1)
-                console.log(searchArr)
-            	console.log(filteredArray)
-            	console.log(filteredArray2)
+                const filteredArray = searchArr.filter(obj => obj.place_name == title);//title이 searchArr에서 가져온거라 ==로 비교 가능
+                const dataIndex = searchArr.indexOf(filteredArray[0]);     
+                $("#placesList2 *").remove();
+            	console.log(filteredArray[0]) //클릭한 장소의 kakao 데이터
+            	console.log(dataIndexArr.length+' 이거랑 '+searchArr.length)
+            	console.log(dataIndexArr[dataIndex])//클릭한 장소의 공공데이터
+            	console.log(title)
+            	let plcaeinfo = '<tr><td>충전소명 : '+dataIndexArr[dataIndex].statNm+'</td></tr>'
+            	
+            	
+            	
+            	let chgerStat = '';
+            	if(dataIndexArr[dataIndex].stat==='1') {
+            		chgerStat = '통신이상'
+            		console.log('1');
+            	}else if(dataIndexArr[dataIndex].stat==='2') {
+            		chgerStat = '충전대기완속'
+            			console.log('2');
+            	}else if(dataIndexArr[dataIndex].stat==='3'){
+            		chgerStat = '충전중'
+            			console.log('3');
+            	}else if(dataIndexArr[dataIndex].stat==='4'){
+            		chgerStat = '운영중지'
+            	}else if(dataIndexArr[dataIndex].stat==='5'){
+            		chgerStat = '점검중'
+            	}else if(dataIndexArr[dataIndex].stat==='9'){
+            		chgerStat = '상태미확인'
+            	}
+            	plcaeinfo += '<tr><td>충전기 상태 : '+chgerStat+'</td></tr>'
+            	
+            	
+            	
+            	plcaeinfo += '<tr><td>realreal : '+dataIndexArr[dataIndex].stat+'</td></tr>'
+            	plcaeinfo += '<tr><td>이용가능시간 : '+dataIndexArr[dataIndex].useTime+'</td></tr>'
+            	plcaeinfo += '<tr><td>운영기관 : '+dataIndexArr[dataIndex].busiNm+'&nbsp/&nbsp('+dataIndexArr[dataIndex].busiCall+')</td></tr>'
+            	plcaeinfo += '<tr><td>최근 상태조회 시간 : '+dataIndexArr[dataIndex].statUpdDt.substr(2,2)+'년'
+    			+dataIndexArr[dataIndex].statUpdDt.substr(4,2)+'월'
+    			+dataIndexArr[dataIndex].statUpdDt.substr(6,2)+'일&nbsp'
+    			+dataIndexArr[dataIndex].statUpdDt.substr(8,2)+':'+dataIndexArr[dataIndex].statUpdDt.substr(10,2)+'</td></tr>'
+            	/* const date1 = new Date(dataIndexArr[dataIndex].lastTsdt);
+            	const year = date1.getFullYear();
+            	const month = date1.getMonth() + 1;
+            	const day = date1.getDate();
+            	const hour = date1.getHours();
+            	const minute = date1.getMinutes();
+            	const lastChargeTime = date1+year+'년 '+month+'월 '+day+'일 '+hour+'시'+minute+'분'; */
+            	//plcaeinfo += '<tr><td>마지막 충전시간 : '+lastChargeTime+'</td></tr>'
+            	plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+dataIndexArr[dataIndex].lastTsdt.substr(2,2)+'년'
+            			+dataIndexArr[dataIndex].lastTsdt.substr(4,2)+'월'
+            			+dataIndexArr[dataIndex].lastTsdt.substr(6,2)+'일&nbsp'
+            			+dataIndexArr[dataIndex].lastTsdt.substr(8,2)+':'+dataIndexArr[dataIndex].lastTsdt.substr(10,2)+'</td></tr>'
+            	
+            	if(dataIndexArr[dataIndex].parkingFree=='N'){
+            		plcaeinfo += '<tr><td>주차료 : 무료</td></tr>'
+            	}else if(dataIndexArr[dataIndex].parkingFree=='Y'){
+            		plcaeinfo += '<tr><td>주차료 : 유료</td></tr>'
+            	}else{
+            		plcaeinfo += '<tr><td>주차료 : 현장확인 필요</td></tr>'
+            	}
+            	if(dataIndexArr[dataIndex].limitYn=='Y'){
+    	        	plcaeinfo += '<tr><td>이용제한 : '+dataIndexArr[dataIndex].limitDetail+'</td></tr>'
+            	}
+            	$("#placesList2").append(plcaeinfo)
             	
             };
 

@@ -13,8 +13,7 @@
   position: fixed;
   z-index: 1;
   top: 120px;  /* y */
-  left: 200px; /* x */
-  background: #eee;
+  left: 300px; /* x */
   overflow-x: hidden;
   padding: 8px 0;
 }
@@ -32,7 +31,7 @@
 }
 
 .main_1 {
-  margin-left: 750px; /* .sidenav의 width를 고려해서 지정해야함 */
+  margin-left: 850px; /* .sidenav의 width를 고려해서 지정해야함 */
   font-size: 28px; /* Increased text to enable scrolling */
   padding: 0px 10px;
   width: 750px;
@@ -64,49 +63,55 @@
 </div>
 
 <div class="main_1">
-	<div id="basic_info_wrapper" style="border:1px solid #FFFFFF; border-radius: 5px; margin-bottom:50px; margin-top:120px; box-shadow: 0px 2px 4px 0px #1B1B1B;height:250px; ">
+	<div id="basic_info_wrapper" style="transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin-bottom:50px; margin-top:120px; box-shadow: 0px 2px 4px 0px #1B1B1B;height:250px; ">
 		<div id="basic_info_left_inner" style="float:left; width:23%; height:230px; margin: 50px 0px 0px 50px; ">
-			<div id="basic_info_left_title">
-				<h3>${user.username}님</h3>
+			<div id="basic_info_left_title" style="font-size:24px; display: inline;">
+				<span><b>${user.username}님</b>&nbsp;&nbsp;</span>
 			</div>
+			<a class="fa-regular fa-pen-to-square" id="show_update"></a>
 			<div id="basic_info_left_desc" style="font-size:15px;">
 				<p>위 항목은 개인 정보로써 다른 사람에게 공유되지 않는 개인정보 입니다.</p>
 			</div>
 		</div>
-		
 		<div id="basic_info_right" style="float:left; width:55%; height:230px; margin: 10px 0px 0px 100px;">
-			<div id="basic_info_right_id" style=" width:200px; display:inline-block;">
-				<p style="font-size:15px; margin-bottom: -12px;">ID</p>
-				<span style="font-size:25px;">${user.userid}</span>
+			
+			<div id="basic_info_right_id" style=" width:200px;">
+				<p style="font-size:15px; margin-bottom: 0px;">ID</p>
+				<input type="text" id="userid" value="${user.userid}"
+				 style="outline:none; background-color: #FFFFFF; color: #000000; font-size:20px; border:0px solid #747474; border-radius: 6px; width:340px; height:40px;">
 			</div>
-			<div id="basic_info_right_birth" style="display:inline-block;">
-				<p style="font-size:15px; margin-bottom: -10px;">생년월일</p>
-				<span style="font-size:25px;"><fmt:formatDate value="${user.birthday}" pattern="yyyy" /></span>
-				<span style="font-size:25px;"><fmt:formatDate value="${user.birthday}" pattern="MM" /></span>
-				<span style="font-size:25px;"><fmt:formatDate value="${user.birthday}" pattern="dd" /></span>
-			</div>
-			<div id="basic_info_right_phone" style="width:450px; margin-top:10px;">
-				<p style="font-size:15px; margin-bottom: -10px;">전화번호</p>
-				<span style="font-size:25px;">${user.phoneno}</span>				
-			</div>
+			
 			<div id="basic_info_right_email" style="margin-top:10px;">
-			<p style="font-size:15px; margin-bottom: -10px;">이메일 주소</p>
-				<span style="font-size:25px;">${user.email}</span>
+			<p style="font-size:15px; margin-bottom: -20px;">이메일</p>
+				<span style="font-size:20px;">${user.email}</span>
+			</div>
+			
+			<div id="basic_info_right_phone" style="width:200px; margin-top:10px; display: inline-block;">
+				<p style="font-size:15px; margin-bottom: -16px;">전화번호</p>
+				<span style="font-size:20px;">${user.phoneno}</span>				
+			</div>
+			
+			<div id="basic_info_right_birth" style="display: inline-block;">
+				<p style="font-size:15px; margin-bottom: -16px;">생년월일</p>
+				<span style="font-size:20px;"><fmt:formatDate value="${user.birthday}" pattern="yyyy-MM-dd" /></span>
 			</div>
 		</div>
 	</div>
 	
-	<div id="basic_pass_wrapper" style="border:1px solid #FFFFFF; border-radius: 5px; margin-bottom:50px; margin-top:120px; box-shadow: 0px 2px 4px 0px #1B1B1B;height:230px; ">
-		<div id="basic_info_left_inner" style="float:left; width:23%; height:230px; margin: 45px 0px 0px 50px; ">
-			<div id="basic_info_left_title">
-				<h3>비밀번호 변경</h3>
+	
+	
+	<div id="basic_pass_wrapper" style="border:1px solid #FFFFFF; border-radius: 5px; margin-bottom:50px; margin-top:120px; box-shadow: 0px 2px 4px 0px #1B1B1B;height:320px; ">
+	 
+		<div id="basic_info_left_inner" style="float:left; width:23%; height:230px; margin: 90px 0px 0px 50px; ">
+			<div id="basic_info_left_title" style="font-size:24px;">
+				<span><b>비밀번호 변경</b></span>
 			</div>
 			<div id="basic_info_left_desc" style="font-size:15px;">
 				<p>주기적으로 비밀번호를 변경하여 타인의 무단 사용을 방지하세요.</p>
 			</div>
 		</div>
 		
-		<div id="basic_info_right" style="float:left; width:55%; height:350px; margin: 20px 0px 0px 40px;">
+		<div id="basic_info_right" style="float:left; width:55%; height:350px; margin: 10px 0px 0px 100px;">
 		
   				<div id="change_pass_right_current" style="margin-top:10px;">
   				<form action="password" id="form" method="post" name="f" onsubmit="return inchk(this)">
@@ -114,23 +119,22 @@
   					<input type="hidden" id="decesion">
   					
     				<p style="font-size:15px; margin-bottom: 0px;">현재 비밀번호</p>
-    				<input type="password" id="password" name="password" oninput="pwCheck(password.value)" style="width:400px;">
+    				<input type="password" id="password" name="password" oninput="pwCheck(password.value)" style="border:1px solid #747474; border-radius: 6px; width:340px; height:40px;">
     				<span id="check1" class="fa-regular fa-circle-check" style="color: green;"></span>
 				</div>
 				
 				<div id="change_pass_right_current" style="margin-top:10px;">
-    				<p style="font-size:15px; margin-bottom: 0px;">새 비밀번호</p>
-    				<input type="password" id="chgpass" name="chgpass" style="width:400px;">
-    				<span id="check2" class="fa-regular fa-circle-check" style="color: green;"></span>
+    				<span style="font-size:15px; margin-bottom: 0px;">새 비밀번호</span>
+    				<div id="pwValid" style="display:inline; font-size: 13px;"></div>
 				</div>
+    				<input type="password" id="chgpass" name="chgpass" oninput="passValid()" style="border:1px solid #747474; border-radius: 6px; width:340px; height:40px;">
 				
-				<div id="change_pass_right_current" style="margin-top:10px; display:inline-block;">    
-    				<p style="font-size:15px; margin-bottom: 0px;">새 비밀번호 확인</p>
-    				<input type="password" id="chgpass2" name="chgpass2" style="width:260px;">
-    				<!--  <span id="check3" class="fa-regular fa-circle-check" style="color: green;"></span>-->
+				<div id="change_pass_right_current2" style="float:left; margin-top: 10px;">    
+    				<p style="width:230px; font-size:15px; margin-bottom: 0px;">새 비밀번호 확인</p>
+    				<input type="password" id="chgpass2" name="chgpass2" oninput="passValid()" style="border:1px solid #747474; border-radius: 6px; width:270px; height:40px;">
     			</div>
-    			<div id="change_pass_right_submit" style=" width:30px; margin-top:10px;  display:inline-block;">
-    				<input type="submit" id="submit" value="변경하기">
+    			<div id="change_pass_right_button" style="float:left; margin: 42px 0px 0px 10px">
+    				<input type="submit" id="submit" value="변경" style="border:1px solid #D5D5D5; border-radius: 6px; font-size:16px; width:60px; height:40px; color:#FFFFFF;">    
     			</div>
 				</form>
 		</div>
@@ -147,8 +151,6 @@
 			</div>
 		</div>
 		
-		<div class='v-line' style="float:left; margin:25px 0px 0px 35px; border-left: thin solid #747474; height: 250px;"></div>
-		
 		<div id="basic_info_right" style="float:left; width:60%; height:350px; margin: 35px 0px 0px 30px;">
 		
   				<div id="change_pass_right_current" style="margin-top:10px; text-align:center;">
@@ -163,19 +165,28 @@
 
 </div> <!-- main -->
 <script type="text/javascript">
-function goBack() {
-	window.history.back();
-}
 
 $(document).ready(function () {
+	$("#userid").attr("disabled","disabled");
+	
+	$("#chgpass").attr("disabled","disabled");
+	$("#chgpass").css("background-color","#D5D5D5");
+	$("#chgpass2").css("background-color","#D5D5D5");
+	$("#chgpass2").attr("disabled","disabled");
 	$("#submit").attr("disabled","disabled");
-	$("#submit").css("background-color","#747474");
+	$("#submit").css("background-color","#D5D5D5");
 	$("#check1").hide();
-	$("#check2").hide();
-	$("#check3").hide();
+	$("#update_info_wrapper").hide();
   });
-  
-  
+
+$(document).ready(function(){
+	  $("#show_update").click(function(){
+		  $("#basic_info_wrapper").css("height","350px");
+		  $("#userid").css("border","1px solid #747474");
+		  $("#userid").removeAttr("disabled");
+	  });
+	});
+	
 function pwCheck(password){
 	console.log(password)
 	$.ajax({
@@ -188,37 +199,70 @@ function pwCheck(password){
 			if (result == true) {
 				$("#check1").show();
 				$('#decesion').val("ready");
+				$("#chgpass").removeAttr("disabled");
+				$("#chgpass").css("background-color","#FFFFFF");
 			} else {
 				$("#check1").hide();
 				$('#decesion').val("not");
+				$("#chgpass").attr("disabled","disabled");
+				$("#chgpass").css("background-color","#D5D5D5");
 			}
 		}
 	});	
 }
 
-$(function inchk(f) {
-	$("input").keyup(function() {
-		var chgpass = $("#chgpass").val();
-		var chgpass2 = $("#chgpass2").val();
-		var decesion = $("#decesion").val();
-		if (chgpass != "" || chgpass2 != "") {
-			if ((chgpass == chgpass2) && (decesion == "ready")){
-				console.log(decesion)
-				$("#submit").removeAttr("disabled");
-				$("#submit").css("background-color","#04AA6D");
-				$("#check2").show();
-				$("#check3").show();
-			} else {
-				$("#submit").attr("disabled","disabled");
-				$("#submit").css("background-color","#747474");
-				$("#check2").hide();
-				$("#check3").hide();
-				return false;
-			}
-		}
-		return true;
-	})
-})
+function passValid(){
+	var password = $("#password").val();
+	var chgpass = $("#chgpass").val();
+	var chgpass2 = $("#chgpass2").val();
+	var passDec = $("#passDec").val();
+	var reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~?!@#$%^&*_-]).{8,20}$/
+	//reg.test(password) == true => 정규식 일치
+	
+	
+	if ((chgpass.length >= 8) && (chgpass.length <= 20) 
+			&& !(/(\w)\1\1/.test(chgpass))
+			&& !(chgpass.search(" ") != -1)
+			&& (reg.test(chgpass))){ // 길이 만족할때
+		$("#pwValid").text("사용 가능합니다 :)");
+		$("#pwValid").css("color","green");
+		$("#passDec").val("true");
+		$("#chgpass2").removeAttr("disabled");
+		$("#chgpass2").css("background-color","#FFFFFF");
+	} else if (/(\w)\1\1/.test(chgpass)) {
+		$("#pwValid").text("3번이상 반복되는 문자는 사용 불가능 합니다.");
+		$("#pwValid").css("color","red");
+		$("#passDec").val("false");
+		$("#chgpass2").attr("disabled","disabled");
+		$("#chgpass2").css("background-color","#D5D5D5");
+	} else if (chgpass.search(" ") != -1) {
+		$("#pwValid").text("공백은 사용 불가능 합니다.");
+		$("#pwValid").css("color","red");
+		$("#passDec").val("false");
+		$("#chgpass2").attr("disabled","disabled");
+		$("#chgpass2").css("background-color","#D5D5D5");
+	} else if (!reg.test(chgpass)) {
+		$("#pwValid").text("대소문자, 숫자, 특수문자 포함 8~20자리");
+		$("#pwValid").css("color","red");
+		$("#passDec").val("false");
+		$("#chgpass2").attr("disabled","disabled");
+		$("#chgpass2").css("background-color","#D5D5D5");
+	}
+	
+	if (chgpass != "" || chgpass2 != "") {
+		if ((chgpass == chgpass2)) {
+			$("#pwCheck").text("비밀번호가 일치합니다 :)");
+			$("#pwCheck").css("color","green");
+			$("#submit").removeAttr("disabled");
+			$("#submit").css("background-color","#00B6EF");
+		} else if (chgpass != chgpass2) {
+			$("#pwCheck").text("비밀번호가 일치하지 않습니다.");
+			$("#pwCheck").css("color","red");
+			$("#submit").attr("disabled","disabled");
+			$("#submit").css("background-color","#BDBDBD");
+		}	
+	}
+}
 </script>
 
 </body>

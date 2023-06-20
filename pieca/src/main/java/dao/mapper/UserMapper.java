@@ -45,4 +45,7 @@ public interface UserMapper {
 
 	@Select("select * from usersecurity where phoneno = #{value}")
 	List<User> phoneList(String phoneno);
+	
+	@Select("select * from usersecurity where userid = #{userid}")
+	User selectId(String userid);
 }

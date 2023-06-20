@@ -25,6 +25,9 @@
 body {
 	margin: 0;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 
 nav ul {
 	top: 0px;
@@ -137,7 +140,7 @@ a {
 		<ul>
 			<li class="home">
 				<a href="${path}/main/home">
-					<img src="${path}/img/pngwing.com.png" style="width:70px; height:70px;">
+					<img src="${path}/img/PIECA_logo.png" style="width:70px; height:70px;">
 				</a>
 			</li>
 			<li class="map">
@@ -158,8 +161,7 @@ a {
 				</div>
 				<div class="user-content">
 					<c:if test="${empty sessionScope.loginUser}">
-						<a href="javascript:win_open()">Login</a>
-						
+						<a href="${path}/user/login">Login</a>
 					</c:if>
 					
 					<c:if test="${!empty sessionScope.loginUser}">
@@ -196,15 +198,8 @@ a {
   <!-- End page content -->
 
 <script>
-
-
 var loc = document.location.href.split("pieca/");
 console.log(loc[0])
-function win_open() {
-	   var op = "width=500, height=350, left=50,top=150";
-	   open(loc[0]+"pieca/user/login" ,"",op);
-}
-
 
 if (loc[1] == "main/home") {
 $(window).on('load',function() {
