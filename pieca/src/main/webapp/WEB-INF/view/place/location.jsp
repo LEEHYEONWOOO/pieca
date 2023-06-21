@@ -90,11 +90,17 @@
         <ul id="placesList"></ul>
         <div id="pagination"></div>
     </div>
-        <div id="menu_wrap2" class="bg_white">
+    <div id="menu_wrap2" class="bg_white">
         <div class="option">
         </div>
         <hr>
-        <ul id="placesList2"></ul>
+		<div>
+        <table id="placesList2"></table>
+		</div>
+		
+        <div>
+        <table id="placesList3"></table>
+        </div>
         
     </div>
 </div>
@@ -120,77 +126,48 @@ const ps = new kakao.maps.services.Places();
 var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 var maxCallCnt = 0;
 var runCnt = 0;
-/* const searchInMethod = (data2 ,status, pagination) => {
-   runCnt++;
-   if (status === kakao.maps.services.Status.OK) {  
-        for(var j=0; j<data2.length; j++){
-        }
-           searchArr.push(data2[0])
-           console.log(data2[0].place_name)
-           console.log(runCnt)
-           
-       if(maxCallCnt === runCnt) {
-          console.log("searchArr 제대로 나와야함. : ", searchArr);
-          displayPlaces(searchArr,curPage); //
-          displayPagination(searchArr);
-          runCnt = 0;
-        //maxPage = Math.floor(searchArr.length/15)+1
-      	maxPage = Math.floor((searchArr.length+14)/15)
-          console.log('maxPage = '+maxPage)
-       }
-      ercnt++
-} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-   ercnt++
-    alert('에 대한 검색 결과가 존재하지 않습니다.'+ercnt);
-    return;
-
-} else if (status === kakao.maps.services.Status.ERROR) {
-   ercnt++
-    alert('검색 결과 중 오류가 발생했습니다.'+ercnt);
-    return;
-
-}
-} */
 dataIndexArr=[]
 function searchInMethod (data2 ,status, pagination) {
-runCnt++;
-if (status === kakao.maps.services.Status.OK) {  
+	runCnt++; //placeSearch 메서드의 콜백인데 for문안에서 앞메서드가 돌아서..비동기식이면 배열에 값이 누락됨 그래서 Cnt값으로
+				//몇번 돌았는지 체크해줘야함
+	if (status === kakao.maps.services.Status.OK) {  
 		if($("select[name=si2]").val().substr(0,2)==data2[0].address_name.substr(0,2) ){
-	        	searchArr.push(data2[0])
+	        	searchArr.push(data2[0]) //키워드로 검색하고 첫번째 데이터를 가져와서 이중체크를 위해 지역 확인
 		}else{
 			console.log(data2[0].address_name.substr(0,2)+' 이거랑 '+$("select[name=si2]").val().substr(0,2)+'는 다른지역')
+			dataIndexArr.slice(runCnt-1,1);
+			console.log('searchArr.length2:'+searchArr.length)
+			console.log('dataIndexArr.length:'+dataIndexArr.length)
+			//console.log(runCnt+'이거 잘라냄')
 		}
-        console.log(runCnt)
-    if(maxCallCnt === runCnt) { // searchInMethod가 다 돌고 나서
-       console.log("searchArr 제대로 나와야함. : ", searchArr);
-       displayPlaces(searchArr,curPage); // 화면에 리스트 출력
-       displayPagination(searchArr); // 페이징 처리 
-       runCnt = 0;
-     //maxPage = Math.floor(searchArr.length/15)+1
-   	maxPage = Math.floor((searchArr.length+14)/15)
-    }
-   ercnt++
-} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-ercnt++
- //alert('에 대한 검색 결과가 존재하지 않습니다.'+ercnt);
- return;
-
-} else if (status === kakao.maps.services.Status.ERROR) {
-ercnt++
- //alert('검색 결과 중 오류가 발생했습니다.'+ercnt);
- return;
-
-}
+		if(maxCallCnt === runCnt) { // searchInMethod가 다 돌고 나서
+			console.log("searchArr 제대로 나와야함. : ", searchArr);
+			displayPlaces(searchArr,curPage); // 화면에 리스트 출력
+			displayPagination(searchArr); // 페이징 처리 호출 
+			runCnt = 0;//Cnt 초기화
+			maxPage = Math.floor((searchArr.length+14)/15)//최대 페이지num 입력 페이징시 활용
+    	}
+	} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+ 		return;
+ 		dataIndexArr.slice(runCnt-1,1);
+ 		console.log('검색결과없음')
+ 		console.log('searchArr.length2:'+searchArr.length)
+		console.log('dataIndexArr.length:'+dataIndexArr.length)
+		//검색결과없음
+	} else if (status === kakao.maps.services.Status.ERROR) {
+		dataIndexArr.slice(runCnt-1,1);
+ 		console.log('에러가 있음')
+	//에러발생했는데...어쩔
+	return;
+	}
 }
 
 
 // 키워드로 장소를 검색합니다
 searchArr = [];
-//searchArr2 = [];
 // 키워드 검색을 요청하는 함수입니다
-console.log("search places 1111111111111111");
 function searchPlaces(data) {
-	ercnt=0;
+	console.log("search places 1111111111111111");
     maxCallCnt = data.length;
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
     for (i=0; i<data.length; i++ ) {
@@ -205,11 +182,10 @@ function searchPlaces(data) {
 
       
     
-curPage = 1;
+curPage = 1; //페이징처리하기위한 현재페이지 1로 초기화
 // 검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places,curPage) { //places == searchArr
-    //const maxPage = Math.floor(places.length)+1;
-    //console.log('curPage/maxPage '+curPage+' / '+maxPage)
+	console.log('displayPlaces call')
 	var listEl = document.getElementById('placesList'), 
     menuEl = document.getElementById('menu_wrap'),
     fragment = document.createDocumentFragment(), 
@@ -219,13 +195,11 @@ function displayPlaces(places,curPage) { //places == searchArr
 	maxPage = Math.floor((searchArr.length+14)/15) 
     // 검색 결과 목록에 추가된 항목들을 제거합니다
     removeAllChildNods(listEl);
-
     // 지도에 표시되고 있는 마커를 제거합니다
     removeMarker();
-    maxCur=15*curPage;
-    if(curPage==maxPage){maxCur = places.length}
+    maxCur=15*curPage; //페이징 처리시 1페이지면 15가 max, 2페이지면 30이 max
+    if(curPage==maxPage){maxCur = places.length} //페이징 처리시 현재페이지가 maxpage면 data의 length가 max
     for ( var i=15*(curPage-1);i<maxCur;  i++ ) {
-	//for ( var i=0; i<places.length; i++ ) {
         // 마커를 생성하고 지도에 표시합니다
         var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
             marker = addMarker(placePosition, i-15*(curPage-1)), 
@@ -250,18 +224,19 @@ function displayPlaces(places,curPage) { //places == searchArr
             itemEl.onmouseover =  function () {
                 displayInfowindow(marker, title);
             };
-            itemEl.onclick =  function () {//좌측 리스트 onclick 이벤트
+            marker.onclick = itemEl.onclick =  function () {//좌측 리스트 onclick 이벤트
                 const filteredArray = searchArr.filter(obj => obj.place_name == title);//title이 searchArr에서 가져온거라 ==로 비교 가능
                 const dataIndex = searchArr.indexOf(filteredArray[0]);     
                 $("#placesList2 *").remove();
-            	console.log(filteredArray[0]) //클릭한 장소의 kakao 데이터
-            	console.log(dataIndexArr.length+' 이거랑 '+searchArr.length)
-            	console.log(dataIndexArr[dataIndex])//클릭한 장소의 공공데이터
+                $("#placesList3 *").remove();
             	console.log(title)
+            	console.log('dataIndexArr.length: '+dataIndexArr.length)
+            	console.log('searchArr.length: '+searchArr.length)//filteredArr
+            	
             	let plcaeinfo = '<tr><td>충전소명 : '+dataIndexArr[dataIndex].statNm+'</td></tr>'
             	
             	
-            	
+            	/////////onclick 시 행안부API 정보
             	let chgerStat = '';
             	if(dataIndexArr[dataIndex].stat==='1') {
             		chgerStat = '통신이상'
@@ -280,9 +255,6 @@ function displayPlaces(places,curPage) { //places == searchArr
             		chgerStat = '상태미확인'
             	}
             	plcaeinfo += '<tr><td>충전기 상태 : '+chgerStat+'</td></tr>'
-            	
-            	
-            	
             	plcaeinfo += '<tr><td>realreal : '+dataIndexArr[dataIndex].stat+'</td></tr>'
             	plcaeinfo += '<tr><td>이용가능시간 : '+dataIndexArr[dataIndex].useTime+'</td></tr>'
             	plcaeinfo += '<tr><td>운영기관 : '+dataIndexArr[dataIndex].busiNm+'&nbsp/&nbsp('+dataIndexArr[dataIndex].busiCall+')</td></tr>'
@@ -290,14 +262,6 @@ function displayPlaces(places,curPage) { //places == searchArr
     			+dataIndexArr[dataIndex].statUpdDt.substr(4,2)+'월'
     			+dataIndexArr[dataIndex].statUpdDt.substr(6,2)+'일&nbsp'
     			+dataIndexArr[dataIndex].statUpdDt.substr(8,2)+':'+dataIndexArr[dataIndex].statUpdDt.substr(10,2)+'</td></tr>'
-            	/* const date1 = new Date(dataIndexArr[dataIndex].lastTsdt);
-            	const year = date1.getFullYear();
-            	const month = date1.getMonth() + 1;
-            	const day = date1.getDate();
-            	const hour = date1.getHours();
-            	const minute = date1.getMinutes();
-            	const lastChargeTime = date1+year+'년 '+month+'월 '+day+'일 '+hour+'시'+minute+'분'; */
-            	//plcaeinfo += '<tr><td>마지막 충전시간 : '+lastChargeTime+'</td></tr>'
             	plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+dataIndexArr[dataIndex].lastTsdt.substr(2,2)+'년'
             			+dataIndexArr[dataIndex].lastTsdt.substr(4,2)+'월'
             			+dataIndexArr[dataIndex].lastTsdt.substr(6,2)+'일&nbsp'
@@ -314,7 +278,19 @@ function displayPlaces(places,curPage) { //places == searchArr
     	        	plcaeinfo += '<tr><td>이용제한 : '+dataIndexArr[dataIndex].limitDetail+'</td></tr>'
             	}
             	$("#placesList2").append(plcaeinfo)
-            	
+            	//////////onclick 시 카카오맵 api 정보
+            	console.log(filteredArray)
+            	let plcaeinfo2 = '<tr><td>카카오맵 api</tr></td>'
+            	plcaeinfo2 += '<tr><td>장소명 : '+filteredArray[0].place_name+'</td></tr>'
+            	plcaeinfo2 += '<tr><td>장소분류 : '+filteredArray[0].category_name+'</td></tr>'
+            	plcaeinfo2 += '<tr><td>주소 : '+filteredArray[0].address_name+'</td></tr>'
+            	if(filteredArray[0].phone!=null && filteredArray[0].phone!=''){
+            		plcaeinfo2 += '<tr><td>phone : '+filteredArray[0].phone+'</td></tr>'
+            	}
+            	if(filteredArray[0].road_address_name!=null && filteredArray[0].road_address_name!=''){
+	            	plcaeinfo2 += '<tr><td>지번 : '+filteredArray[0].road_address_name+'</td></tr>'
+            	}
+            	$("#placesList3").append(plcaeinfo2)
             };
 
             itemEl.onmouseout =  function () {
@@ -323,6 +299,7 @@ function displayPlaces(places,curPage) { //places == searchArr
         })(marker, places[i].place_name);
 
         fragment.appendChild(itemEl);
+        console.log('displayPlaces Done')
     }
 
     // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
@@ -389,7 +366,7 @@ function removeMarker() {
 
 // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
 function displayPagination(searchArr) {
-    console.log('displayPagination(pagination) 호출함')
+    console.log('displayPagination(pagination) 호출')
 	var paginationEl = document.getElementById('pagination'),
         fragment = document.createDocumentFragment(),
         i;
@@ -413,21 +390,18 @@ function displayPagination(searchArr) {
                     curPage=i;
                     console.log(curPage+"현재페이지num")
                     displayPlaces(searchArr,i)
-                    
                 }
             })(i);
-        
-
         fragment.appendChild(el);
     }
     paginationEl.appendChild(fragment);
+    console.log('displayPagination(pagination) Done')
 }
 
 // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
 // 인포윈도우에 장소명을 표시합니다
 function displayInfowindow(marker, title) {
     var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-
     infowindow.setContent(content); //infowindow 에 표시할 내용
     infowindow.open(map, marker);
 }
@@ -445,7 +419,8 @@ function removeAllChildNods(el) {
 })
  
  function ecclocationApi() {
-    searchArr = [];
+	 dataIndexArr = [];
+	 searchArr = [];
 	 console.log('ecclocationApi 호출')
 	 params = "zscode=" + document.getElementById('zscode').value;
     $("#placetable *").remove();
@@ -489,6 +464,7 @@ function removeAllChildNods(el) {
               alert("충전소 찾다가 에러발생 : "+e.status)
            }
         })
+        console.log('ecclocationApi Done')
      }
  
  function cityCode() {
