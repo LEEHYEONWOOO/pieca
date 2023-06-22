@@ -126,12 +126,15 @@ function placesSearchCB(data, status, pagination) {
 
 // 검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places) {
-	console.log('displayPlaces 호출함')
     var listEl = document.getElementById('placesList'), 
     menuEl = document.getElementById('menu_wrap'),
     fragment = document.createDocumentFragment(), 
     bounds = new kakao.maps.LatLngBounds(), 
     listStr = '';
+    testarr = [1,2,3,4,5]
+    console.log(testarr)
+    testarr.slice(1,2)
+    console.log(testarr)
     
     // 검색 결과 목록에 추가된 항목들을 제거합니다
     removeAllChildNods(listEl);
@@ -238,8 +241,6 @@ function removeMarker() {
 
 // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
 function displayPagination(pagination) {
-    console.log('displayPagination 호출')
-    console.log(pagination)
 	var paginationEl = document.getElementById('pagination'),
         fragment = document.createDocumentFragment(),
         i; 

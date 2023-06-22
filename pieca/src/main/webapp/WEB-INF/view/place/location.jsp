@@ -126,55 +126,83 @@ const ps = new kakao.maps.services.Places();
 var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 var maxCallCnt = 0;
 var runCnt = 0;
-dataIndexArr=[]
+//dataIndexArr=[]
+kakaoPlaceData = []
 function searchInMethod (data2 ,status, pagination) {
+	console.log(runCnt+'=========================')
+	console.log(keywordArr[runCnt].addr+'에 있는 =>'+keywordArr[runCnt].statNm+'로 검색하자')
 	runCnt++; //placeSearch 메서드의 콜백인데 for문안에서 앞메서드가 돌아서..비동기식이면 배열에 값이 누락됨 그래서 Cnt값으로
 				//몇번 돌았는지 체크해줘야함
-	if (status === kakao.maps.services.Status.OK) {  
-		if($("select[name=si2]").val().substr(0,2)==data2[0].address_name.substr(0,2) ){
-	        	searchArr.push(data2[0]) //키워드로 검색하고 첫번째 데이터를 가져와서 이중체크를 위해 지역 확인
-		}else{
-			console.log(data2[0].address_name.substr(0,2)+' 이거랑 '+$("select[name=si2]").val().substr(0,2)+'는 다른지역')
-			dataIndexArr.slice(runCnt-1,1);
-			console.log('searchArr.length2:'+searchArr.length)
-			console.log('dataIndexArr.length:'+dataIndexArr.length)
-			//console.log(runCnt+'이거 잘라냄')
-		}
-		if(maxCallCnt === runCnt) { // searchInMethod가 다 돌고 나서
-			console.log("searchArr 제대로 나와야함. : ", searchArr);
-			displayPlaces(searchArr,curPage); // 화면에 리스트 출력
-			displayPagination(searchArr); // 페이징 처리 호출 
-			runCnt = 0;//Cnt 초기화
-			maxPage = Math.floor((searchArr.length+14)/15)//최대 페이지num 입력 페이징시 활용
-    	}
+	console.log('keywordSearch의 콜백 데이터')
+	console.log(data2)
+	if (status === kakao.maps.services.Status.OK) {//키워드 검색결과 정상일때,
+	    kakaoPlaceData = data2.filter (obj => obj.category_name === '교통,수송 > 자동차 > 전기자동차 충전소');
+	    if(kakaoPlaceData.length==0){
+	    	console.log('충전소 태그 없네 까비')
+	    	kakaoPlaceData = [data2[0]];	
+	    }
+	   // console.log(keywordArr[runCnt-1].statNm+'=>이거로 검색');
+	    //console.log(keywordArr[runCnt-1].addr+'=>이거는 주소');
+		console.log('밑에가 주소로 filter')
+		console.log(kakaoPlaceData);
+	    searchArr.push(kakaoPlaceData[0]) //카카오
+		
+		
 	} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
  		return;
- 		dataIndexArr.slice(runCnt-1,1);
+ 		dataIndexArr.splice(runCnt-1,1);
  		console.log('검색결과없음')
  		console.log('searchArr.length2:'+searchArr.length)
 		console.log('dataIndexArr.length:'+dataIndexArr.length)
 		//검색결과없음
 	} else if (status === kakao.maps.services.Status.ERROR) {
-		dataIndexArr.slice(runCnt-1,1);
+		dataIndexArr.splice(runCnt-1,1);
  		console.log('에러가 있음')
 	//에러발생했는데...어쩔
 	return;
 	}
+		if(maxCallCnt === runCnt) { // searchInMethod가 다 돌고 나서
+			console.log("searchArr 제대로 나와야함. : ", searchArr);
+			displayPlaces(searchArr,curPage); // 화면에 리스트 출력
+			displayPagination(searchArr); // 페이징 처리 호출 
+			console.log(runCnt+'runCnt')
+			runCnt = 0;//Cnt 초기화
+			maxPage = Math.floor((searchArr.length+14)/15)//최대 페이지num 입력 페이징시 활용
+    	} 
 }
 
 
 // 키워드로 장소를 검색합니다
 searchArr = [];
+keywordArr = [];
 // 키워드 검색을 요청하는 함수입니다
 function searchPlaces(data) {
 	console.log("search places 1111111111111111");
     maxCallCnt = data.length;
+    const si22 = $("select[name=si2]").val().substr(0,2)
+    if($("select[name=si2]").val().substr(0,2)=='충청'){
+		si22 = $("select[name=si2]").val().substr(0,1)+$("select[name=si2]").val().substr(2,1);
+	} 
+	if($("select[name=si2]").val().substr(0,2)=='전라'){
+		si22 = $("select[name=si2]").val().substr(0,1)+$("select[name=si2]").val().substr(2,1);
+	}
+	if($("select[name=si2]").val().substr(0,2)=='경상'){
+		si22 = $("select[name=si2]").val().substr(0,1)+$("select[name=si2]").val().substr(2,1);
+	}
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
     for (i=0; i<data.length; i++ ) {
        // searchInMethod
-       dataIndexArr.push(data[i])
-       ps.keywordSearch(data[i].statNm, searchInMethod)
+		if(si22==data[i].addr.slice(0,2) ){
+       		dataIndexArr.push(data[i])//전기차 자료 검증(지역이 동일하면 넣었음)
+       		keywordArr.push(data[i]);//통으로 비교해볼 데이터 저장
+       		ps.keywordSearch(data[i].addr, searchInMethod)
+		}else{
+			console.log('검색한 정보는 : '+data[i].addr.slice(0,2)+'지역입니다. 잘못된 데이터에요.')
+		}
+       	//ps.keywordSearch(data[i].statNm, searchInMethod)
    } // for
+   console.log('keywordArr = keywordSearch에 넣은순,'+keywordArr.length+'만큼 돕니다.')
+   console.log(keywordArr)
    console.log("search places Done 222222");
 } // searchPlaces
 
@@ -191,7 +219,6 @@ function displayPlaces(places,curPage) { //places == searchArr
     fragment = document.createDocumentFragment(), 
     bounds = new kakao.maps.LatLngBounds(), 
     listStr = '';
-	//maxPage = Math.floor(searchArr.length/15)+1
 	maxPage = Math.floor((searchArr.length+14)/15) 
     // 검색 결과 목록에 추가된 항목들을 제거합니다
     removeAllChildNods(listEl);
@@ -226,60 +253,62 @@ function displayPlaces(places,curPage) { //places == searchArr
             };
             marker.onclick = itemEl.onclick =  function () {//좌측 리스트 onclick 이벤트
                 const filteredArray = searchArr.filter(obj => obj.place_name == title);//title이 searchArr에서 가져온거라 ==로 비교 가능
-                const dataIndex = searchArr.indexOf(filteredArray[0]);     
+                const dataIndex = searchArr.indexOf(filteredArray[0]);
+                const fiteredArray2 = dataIndexArr.filter (obj => obj.addr.slice(6) == filteredArray[0].road_address_name.slice(3));
                 $("#placesList2 *").remove();
                 $("#placesList3 *").remove();
             	console.log(title)
             	console.log('dataIndexArr.length: '+dataIndexArr.length)
             	console.log('searchArr.length: '+searchArr.length)//filteredArr
+            	console.log('이걸로검색해보자 : '+filteredArray[0].road_address_name.slice(3))
             	
-            	let plcaeinfo = '<tr><td>충전소명 : '+dataIndexArr[dataIndex].statNm+'</td></tr>'
-            	
+            	//console.log(dataIndexArr)
+            	//console.log(searchArr)
+            	console.log(fiteredArray2)
             	
             	/////////onclick 시 행안부API 정보
+            	let plcaeinfo = '<tr><td>충전소명 : '+fiteredArray2[0].statNm+'</td></tr>'
+            	console.log(fiteredArray2[0])
+            	//plcaeinfo += '<tr><td>주소값비교 필터2 : '+fiteredArray2[0].addr.slice(6)+'</td></tr>'
             	let chgerStat = '';
-            	if(dataIndexArr[dataIndex].stat==='1') {
+            	if(fiteredArray2[0].stat==='1') {
             		chgerStat = '통신이상'
-            		console.log('1');
-            	}else if(dataIndexArr[dataIndex].stat==='2') {
+            	}else if(fiteredArray2[0].stat==='2') {
             		chgerStat = '충전대기완속'
-            			console.log('2');
-            	}else if(dataIndexArr[dataIndex].stat==='3'){
+            	}else if(fiteredArray2[0].stat==='3'){
             		chgerStat = '충전중'
-            			console.log('3');
-            	}else if(dataIndexArr[dataIndex].stat==='4'){
+            	}else if(fiteredArray2[0].stat==='4'){
             		chgerStat = '운영중지'
-            	}else if(dataIndexArr[dataIndex].stat==='5'){
+            	}else if(fiteredArray2[0].stat==='5'){
             		chgerStat = '점검중'
-            	}else if(dataIndexArr[dataIndex].stat==='9'){
+            	}else if(fiteredArray2[0].stat==='9'){
             		chgerStat = '상태미확인'
             	}
             	plcaeinfo += '<tr><td>충전기 상태 : '+chgerStat+'</td></tr>'
-            	plcaeinfo += '<tr><td>realreal : '+dataIndexArr[dataIndex].stat+'</td></tr>'
-            	plcaeinfo += '<tr><td>이용가능시간 : '+dataIndexArr[dataIndex].useTime+'</td></tr>'
-            	plcaeinfo += '<tr><td>운영기관 : '+dataIndexArr[dataIndex].busiNm+'&nbsp/&nbsp('+dataIndexArr[dataIndex].busiCall+')</td></tr>'
-            	plcaeinfo += '<tr><td>최근 상태조회 시간 : '+dataIndexArr[dataIndex].statUpdDt.substr(2,2)+'년'
-    			+dataIndexArr[dataIndex].statUpdDt.substr(4,2)+'월'
-    			+dataIndexArr[dataIndex].statUpdDt.substr(6,2)+'일&nbsp'
-    			+dataIndexArr[dataIndex].statUpdDt.substr(8,2)+':'+dataIndexArr[dataIndex].statUpdDt.substr(10,2)+'</td></tr>'
-            	plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+dataIndexArr[dataIndex].lastTsdt.substr(2,2)+'년'
-            			+dataIndexArr[dataIndex].lastTsdt.substr(4,2)+'월'
-            			+dataIndexArr[dataIndex].lastTsdt.substr(6,2)+'일&nbsp'
-            			+dataIndexArr[dataIndex].lastTsdt.substr(8,2)+':'+dataIndexArr[dataIndex].lastTsdt.substr(10,2)+'</td></tr>'
+            	plcaeinfo += '<tr><td>realreal : '+fiteredArray2[0].stat+'</td></tr>'
+            	plcaeinfo += '<tr><td>이용가능시간 : '+fiteredArray2[0].useTime+'</td></tr>'
+            	plcaeinfo += '<tr><td>운영기관 : '+fiteredArray2[0].busiNm+'&nbsp/&nbsp('+fiteredArray2[0].busiCall+')</td></tr>'
+            	plcaeinfo += '<tr><td>최근 상태조회 시간 : '+fiteredArray2[0].statUpdDt.substr(2,2)+'년'
+    			+fiteredArray2[0].statUpdDt.substr(4,2)+'월'
+    			+fiteredArray2[0].statUpdDt.substr(6,2)+'일&nbsp'
+    			+fiteredArray2[0].statUpdDt.substr(8,2)+':'+fiteredArray2[0].statUpdDt.substr(10,2)+'</td></tr>'
+            	plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+fiteredArray2[0].lastTsdt.substr(2,2)+'년'
+            			+fiteredArray2[0].lastTsdt.substr(4,2)+'월'
+            			+fiteredArray2[0].lastTsdt.substr(6,2)+'일&nbsp'
+            			+fiteredArray2[0].lastTsdt.substr(8,2)+':'+fiteredArray2[0].lastTsdt.substr(10,2)+'</td></tr>'
             	
-            	if(dataIndexArr[dataIndex].parkingFree=='N'){
+            	if(fiteredArray2[0].parkingFree=='N'){
             		plcaeinfo += '<tr><td>주차료 : 무료</td></tr>'
-            	}else if(dataIndexArr[dataIndex].parkingFree=='Y'){
+            	}else if(fiteredArray2[0].parkingFree=='Y'){
             		plcaeinfo += '<tr><td>주차료 : 유료</td></tr>'
             	}else{
             		plcaeinfo += '<tr><td>주차료 : 현장확인 필요</td></tr>'
             	}
-            	if(dataIndexArr[dataIndex].limitYn=='Y'){
-    	        	plcaeinfo += '<tr><td>이용제한 : '+dataIndexArr[dataIndex].limitDetail+'</td></tr>'
+            	if(fiteredArray2[0].limitYn=='Y'){
+    	        	plcaeinfo += '<tr><td>이용제한 : '+fiteredArray2[0].limitDetail+'</td></tr>'
             	}
             	$("#placesList2").append(plcaeinfo)
             	//////////onclick 시 카카오맵 api 정보
-            	console.log(filteredArray)
             	let plcaeinfo2 = '<tr><td>카카오맵 api</tr></td>'
             	plcaeinfo2 += '<tr><td>장소명 : '+filteredArray[0].place_name+'</td></tr>'
             	plcaeinfo2 += '<tr><td>장소분류 : '+filteredArray[0].category_name+'</td></tr>'

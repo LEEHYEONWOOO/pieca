@@ -260,6 +260,9 @@ public class ApiController {
    @RequestMapping("placecode")   //select box 두번째 출력을 위한 api
    public JSONArray test5(String si2, String gu2, HttpServletRequest request) throws Exception{
       System.out.println("placecode 호출됨");
+      if(si2.equals("강원도")) {
+    	  si2 = "강원특별자치도";
+      }
       String placeCode=si2+" "+gu2;
       System.out.println("s2 : "+si2 + "gu2 : "+gu2);
       System.out.println("placeCode : " + placeCode);
@@ -272,7 +275,7 @@ public class ApiController {
         
         
         URL url = new URL(urlBuilder.toString());
-        System.out.println(url);
+        System.out.println("placecode\n"+url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
