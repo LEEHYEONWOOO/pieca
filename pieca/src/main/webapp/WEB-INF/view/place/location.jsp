@@ -130,22 +130,42 @@ var runCnt = 0;
 kakaoPlaceData = []
 function searchInMethod (data2 ,status, pagination) {
 	console.log(runCnt+'=========================')
-	console.log(keywordArr[runCnt].addr+'에 있는 =>'+keywordArr[runCnt].statNm+'로 검색하자')
+	console.log(dataIndexArr?.[runCnt]?.addr+'에 있는 =>'+dataIndexArr?.[runCnt]?.statNm+'로 검색하자')
 	runCnt++; //placeSearch 메서드의 콜백인데 for문안에서 앞메서드가 돌아서..비동기식이면 배열에 값이 누락됨 그래서 Cnt값으로
 				//몇번 돌았는지 체크해줘야함
 	console.log('keywordSearch의 콜백 데이터')
 	console.log(data2)
 	if (status === kakao.maps.services.Status.OK) {//키워드 검색결과 정상일때,
-	    kakaoPlaceData = data2.filter (obj => obj.category_name === '교통,수송 > 자동차 > 전기자동차 충전소');
-	    if(kakaoPlaceData.length==0){
-	    	console.log('충전소 태그 없네 까비')
-	    	kakaoPlaceData = [data2[0]];	
-	    }
-	   // console.log(keywordArr[runCnt-1].statNm+'=>이거로 검색');
-	    //console.log(keywordArr[runCnt-1].addr+'=>이거는 주소');
-		console.log('밑에가 주소로 filter')
-		console.log(kakaoPlaceData);
-	    searchArr.push(kakaoPlaceData[0]) //카카오
+	    // origin
+	//	kakaoPlaceData = data2.filter (obj => obj.category_name === '교통,수송 > 자동차 > 전기자동차 충전소');
+		
+		// convert object
+		// data2 = [인천 서구 자동차삼겹살 {음식점}, 인천 서구 자동차삼겹살 {유리ㅏ판매}, 인천 서구 자동차삼겹살 {자동차}]
+		for(const dataObj of data2){
+			if(dataObj?.categey_name === '교통,수송 > 자동차 > 전기자동차 충전소' || _.isEmpty(dataObj?.categey_name)) {
+				console.log("_.isEmpty(dataObj?.categey_name : ", _.isEmpty(dataObj?.categey_name));
+				//kakaoPlaceData.push(dataObj);
+				searchArr.push(dataObj);
+				break;
+			} 
+			// else -> searchArr.push(고기집.)
+		}
+		
+		if(searchArr.length === 0) {
+			searchArr.push(data2[0]);
+		}
+		
+		/* 임시로 닫아놈. 나중에 안되면 풀으셈@###@######@@*/
+	//    if(kakaoPlaceData.length==0){
+	//    	console.log('충전소 태그 없네 까비')
+	//    	kakaoPlaceData = [data2[0]];	
+	//    }
+	
+	   // console.log(dataIndexArr[runCnt-1].statNm+'=>이거로 검색');
+	    //console.log(dataIndexArr[runCnt-1].addr+'=>이거는 주소');
+		//console.log('밑에가 주소로 filter')
+		//console.log(kakaoPlaceData);
+	    //searchArr.push(kakaoPlaceData[0]) //카카오
 		
 		
 	} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
@@ -158,7 +178,7 @@ function searchInMethod (data2 ,status, pagination) {
 	} else if (status === kakao.maps.services.Status.ERROR) {
 		dataIndexArr.splice(runCnt-1,1);
  		console.log('에러가 있음')
-	//에러발생했는데...어쩔
+	//에러발생했음
 	return;
 	}
 		if(maxCallCnt === runCnt) { // searchInMethod가 다 돌고 나서
@@ -174,7 +194,7 @@ function searchInMethod (data2 ,status, pagination) {
 
 // 키워드로 장소를 검색합니다
 searchArr = [];
-keywordArr = [];
+//dataIndexArr = [];
 // 키워드 검색을 요청하는 함수입니다
 function searchPlaces(data) {
 	console.log("search places 1111111111111111");
@@ -194,20 +214,21 @@ function searchPlaces(data) {
        // searchInMethod
 		if(si22==data[i].addr.slice(0,2) ){
        		dataIndexArr.push(data[i])//전기차 자료 검증(지역이 동일하면 넣었음)
-       		keywordArr.push(data[i]);//통으로 비교해볼 데이터 저장
-       		ps.keywordSearch(data[i].addr, searchInMethod)
+       		// param1 - > 이디아 
+       		// param1 - > 스타벅스 
+       		// param1 - > 전기차 
+       		// param1 - > 피시방 
+       		// ps.keywordSearch(data[i].addr, searchInMethod)
+       		// searchInMethod (data2 ,status, pagination)
+       		ps.keywordSearch(data[i].addr, (a, b, c) => searchInMethod(a, b, c))
 		}else{
 			console.log('검색한 정보는 : '+data[i].addr.slice(0,2)+'지역입니다. 잘못된 데이터에요.')
 		}
-       	//ps.keywordSearch(data[i].statNm, searchInMethod)
    } // for
-   console.log('keywordArr = keywordSearch에 넣은순,'+keywordArr.length+'만큼 돕니다.')
-   console.log(keywordArr)
+   console.log('dataIndexArr = keywordSearch에 넣은순,'+dataIndexArr.length+'만큼 돕니다.')
+   console.log(dataIndexArr)
    console.log("search places Done 222222");
 } // searchPlaces
-
-
-
       
     
 curPage = 1; //페이징처리하기위한 현재페이지 1로 초기화
@@ -218,7 +239,6 @@ function displayPlaces(places,curPage) { //places == searchArr
     menuEl = document.getElementById('menu_wrap'),
     fragment = document.createDocumentFragment(), 
     bounds = new kakao.maps.LatLngBounds(), 
-    listStr = '';
 	maxPage = Math.floor((searchArr.length+14)/15) 
     // 검색 결과 목록에 추가된 항목들을 제거합니다
     removeAllChildNods(listEl);
@@ -235,7 +255,6 @@ function displayPlaces(places,curPage) { //places == searchArr
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
         bounds.extend(placePosition);
-
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
@@ -261,15 +280,10 @@ function displayPlaces(places,curPage) { //places == searchArr
             	console.log('dataIndexArr.length: '+dataIndexArr.length)
             	console.log('searchArr.length: '+searchArr.length)//filteredArr
             	console.log('이걸로검색해보자 : '+filteredArray[0].road_address_name.slice(3))
-            	
-            	//console.log(dataIndexArr)
-            	//console.log(searchArr)
             	console.log(fiteredArray2)
-            	
             	/////////onclick 시 행안부API 정보
             	let plcaeinfo = '<tr><td>충전소명 : '+fiteredArray2[0].statNm+'</td></tr>'
             	console.log(fiteredArray2[0])
-            	//plcaeinfo += '<tr><td>주소값비교 필터2 : '+fiteredArray2[0].addr.slice(6)+'</td></tr>'
             	let chgerStat = '';
             	if(fiteredArray2[0].stat==='1') {
             		chgerStat = '통신이상'
@@ -293,10 +307,9 @@ function displayPlaces(places,curPage) { //places == searchArr
     			+fiteredArray2[0].statUpdDt.substr(6,2)+'일&nbsp'
     			+fiteredArray2[0].statUpdDt.substr(8,2)+':'+fiteredArray2[0].statUpdDt.substr(10,2)+'</td></tr>'
             	plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+fiteredArray2[0].lastTsdt.substr(2,2)+'년'
-            			+fiteredArray2[0].lastTsdt.substr(4,2)+'월'
-            			+fiteredArray2[0].lastTsdt.substr(6,2)+'일&nbsp'
-            			+fiteredArray2[0].lastTsdt.substr(8,2)+':'+fiteredArray2[0].lastTsdt.substr(10,2)+'</td></tr>'
-            	
+            				+fiteredArray2[0].lastTsdt.substr(4,2)+'월'
+            				+fiteredArray2[0].lastTsdt.substr(6,2)+'일&nbsp'
+            				+fiteredArray2[0].lastTsdt.substr(8,2)+':'+fiteredArray2[0].lastTsdt.substr(10,2)+'</td></tr>'
             	if(fiteredArray2[0].parkingFree=='N'){
             		plcaeinfo += '<tr><td>주차료 : 무료</td></tr>'
             	}else if(fiteredArray2[0].parkingFree=='Y'){
@@ -309,7 +322,8 @@ function displayPlaces(places,curPage) { //places == searchArr
             	}
             	$("#placesList2").append(plcaeinfo)
             	//////////onclick 시 카카오맵 api 정보
-            	let plcaeinfo2 = '<tr><td>카카오맵 api</tr></td>'
+            	let plcaeinfo2 = '<tr><td>===================</tr></td>'
+            	plcaeinfo2 += '<tr><td>카카오맵 api</tr></td>'
             	plcaeinfo2 += '<tr><td>장소명 : '+filteredArray[0].place_name+'</td></tr>'
             	plcaeinfo2 += '<tr><td>장소분류 : '+filteredArray[0].category_name+'</td></tr>'
             	plcaeinfo2 += '<tr><td>주소 : '+filteredArray[0].address_name+'</td></tr>'
@@ -323,7 +337,7 @@ function displayPlaces(places,curPage) { //places == searchArr
             };
 
             itemEl.onmouseout =  function () {
-                infowindow.close();
+            infowindow.close();
             };
         })(marker, places[i].place_name);
 
@@ -334,7 +348,6 @@ function displayPlaces(places,curPage) { //places == searchArr
     // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
     listEl.appendChild(fragment);
     menuEl.scrollTop = 0;
-
     // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
     map.setBounds(bounds);
 }
@@ -349,18 +362,14 @@ function getListItem(index, places) {
                 '   <h5>' + places.place_name + '</h5>';
 
     if (places.road_address_name) {
-        itemStr += '    <span>' + places.road_address_name + '</span>' +
-                    '   <span class="jibun gray">' +  places.address_name  + '</span>';
+        itemStr += '<span>' + places.road_address_name + '</span>' +
+                    '<span class="jibun gray">' +  places.address_name  + '</span>';
     } else {
-        itemStr += '    <span>' +  places.address_name  + '</span>'; 
+        itemStr += '<span>' +  places.address_name  + '</span>'; 
     }
-//      itemStr += '  <span class="tel"><a href='+place_url+'></span>' 
-      	itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                '</div>';           
-
+	itemStr += '<span class="tel">' + places.phone  + '</span>' +'</div>';           
     el.innerHTML = itemStr;
     el.className = 'item';
-
     return el;
 }
 
@@ -378,7 +387,6 @@ function addMarker(position, idx, title) {
             position: position, // 마커의 위치
             image: markerImage 
         });
-
     marker.setMap(map); // 지도 위에 마커를 표출합니다
     markers.push(marker);  // 배열에 생성된 마커를 추가합니다
 
@@ -399,8 +407,6 @@ function displayPagination(searchArr) {
 	var paginationEl = document.getElementById('pagination'),
         fragment = document.createDocumentFragment(),
         i;
-    //console.log(pagination)
-
     // 기존에 추가된 페이지번호를 삭제합니다
     while (paginationEl.hasChildNodes()) {
         paginationEl.removeChild (paginationEl.lastChild);
@@ -449,52 +455,36 @@ function removeAllChildNods(el) {
  
  function ecclocationApi() {
 	 dataIndexArr = [];
-	 searchArr = [];
-	 console.log('ecclocationApi 호출')
-	 params = "zscode=" + document.getElementById('zscode').value;
+	searchArr = [];
+	console.log('ecclocationApi 호출')
+	params = "zscode=" + document.getElementById('zscode').value;
     $("#placetable *").remove();
     removeAllChildNods(document.getElementById('placesList'));
     removeMarker();
+    $("#placesList2 *").remove();
+    $("#placesList3 *").remove();
     mark_index = 0;
     var placeslist = []
-         $.ajax({
-            url : "${path}/api/ecclocationApi",
-            type : "POST",
-            data : params,
-         success : function(data) {
-            //lodash 메서드를 임포트 후 uniqBy를 사용하여 data에서 특정 부분에 유일성을 줬음
-              data = _.uniqBy(data,'statNm')
-              data = _.uniqBy(data,'addr')
-            data1=data
-              let table = '<caption>'+$("select[name=si2]").val()+' '+$("select[name=gu2]").val()+'</caption><tr><td>충전소명</td><td>충전기타입</td><td>주소</td><td>이용가능시간</td><td>운영기관연락처</td></tr>';
-              $.each(data, function(i){
-                 placeslist[i] = data[i].statNm;
-      /*             let chgerType = data[i].chgerType.replace(/(01|02|03|04|05|06|07|89)/g, function(ex){
-                      switch(ex){
-                       case "01" : return "DC차데모";
-                       case "02" : return "AC완속";
-                       case "03" : return "DC차데모+AC3상";
-                       case "04" : return "DC콤보";
-                       case "05" : return "DC차데모+DC콤보";
-                       case "06" : return "DC차데모+AC3상+DC콤보";
-                       case "07" : return "AC3상";
-                       case "89" : return "H2";
-                      }
-                }) */
-                
-                 //table += '<tr><td>'+data[i].statNm+'</td><td>'+chgerType+'</td><td>'+data[i].addr+'</td><td>'+data[i].useTime+'</td><td>'+data[i].busiCall+'</td></tr>';
-              });
-              //const set = new Set(placeslist); //placeslist배열을 set에 저장후
-              //placeslist = [...set];//set을 다시 배열로
-              //$("#placetable").append(table)
-              searchPlaces(data)
-           },
-           error : function(e) {
-              alert("충전소 찾다가 에러발생 : "+e.status)
-           }
+	$.ajax({
+		url : "${path}/api/ecclocationApi",
+		type : "POST",
+		data : params,
+		success : function(data) {
+		//lodash 메서드를 임포트 후 uniqBy를 사용하여 data에서 특정 부분에 유일성을 줬음
+ 		data = _.uniqBy(data,'statNm')
+		data = _.uniqBy(data,'addr')
+		data1=data
+		 $.each(data, function(i){
+		placeslist[i] = data[i].statNm;
+	});
+	searchPlaces(data)
+		},
+		error : function(e) {
+			alert("충전소 찾다가 에러발생 : "+e.status)
+		}
         })
         console.log('ecclocationApi Done')
-     }
+}
  
  function cityCode() {
      $.ajax("${path}/api/cityCodeApi",{ // Map로 데이터 수신
