@@ -130,6 +130,7 @@ var runCnt = 0;
 kakaoPlaceData = []
 function searchInMethod (data2 ,status, pagination) {
 	console.log(runCnt+'=========================')
+	console.log(data2)
 	console.log(dataIndexArr?.[runCnt]?.addr+'에 있는 =>'+dataIndexArr?.[runCnt]?.statNm+'로 검색하자')
 	runCnt++; //placeSearch 메서드의 콜백인데 for문안에서 앞메서드가 돌아서..비동기식이면 배열에 값이 누락됨 그래서 Cnt값으로
 				//몇번 돌았는지 체크해줘야함
@@ -140,22 +141,20 @@ function searchInMethod (data2 ,status, pagination) {
 	//	kakaoPlaceData = data2.filter (obj => obj.category_name === '교통,수송 > 자동차 > 전기자동차 충전소');
 		
 		// convert object
-		// data2 = [인천 서구 자동차삼겹살 {음식점}, 인천 서구 자동차삼겹살 {유리ㅏ판매}, 인천 서구 자동차삼겹살 {자동차}]
 		for(const dataObj of data2){
-			if(dataObj?.categey_name === '교통,수송 > 자동차 > 전기자동차 충전소' || _.isEmpty(dataObj?.categey_name)) {
+			if(dataObj?.categey_name === '교통,수송 > 자동차 > 전기자동차 충전소' || _.isEmpty(dataObj?.categey_name)) {//옵셔널체이닝
 				console.log("_.isEmpty(dataObj?.categey_name : ", _.isEmpty(dataObj?.categey_name));
 				//kakaoPlaceData.push(dataObj);
 				searchArr.push(dataObj);
 				break;
 			} 
-			// else -> searchArr.push(고기집.)
 		}
 		
 		if(searchArr.length === 0) {
 			searchArr.push(data2[0]);
 		}
 		
-		/* 임시로 닫아놈. 나중에 안되면 풀으셈@###@######@@*/
+		/* 임시로 닫아놨음 나중에 안되면 풀자*/
 	//    if(kakaoPlaceData.length==0){
 	//    	console.log('충전소 태그 없네 까비')
 	//    	kakaoPlaceData = [data2[0]];	
@@ -209,6 +208,7 @@ function searchPlaces(data) {
 	if($("select[name=si2]").val().substr(0,2)=='경상'){
 		si22 = $("select[name=si2]").val().substr(0,1)+$("select[name=si2]").val().substr(2,1);
 	}
+	console.log(data)
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
     for (i=0; i<data.length; i++ ) {
        // searchInMethod
@@ -234,7 +234,8 @@ function searchPlaces(data) {
 curPage = 1; //페이징처리하기위한 현재페이지 1로 초기화
 // 검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places,curPage) { //places == searchArr
-	console.log('displayPlaces call')
+	console.log('displayPlaces call===')
+	console.log(places.length);
 	var listEl = document.getElementById('placesList'), 
     menuEl = document.getElementById('menu_wrap'),
     fragment = document.createDocumentFragment(), 
