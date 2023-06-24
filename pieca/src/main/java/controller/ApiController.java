@@ -88,7 +88,6 @@ public class ApiController {
         JSONObject body = (JSONObject) response.get("body");
         JSONObject items = (JSONObject) body.get("items");
         JSONArray item = (JSONArray) items.get("item");
-       
         //System.out.println("obj : "+obj);
         System.out.println("item out : \n"+item);
       return item;
