@@ -88,7 +88,6 @@ public class ApiController {
         JSONObject body = (JSONObject) response.get("body");
         JSONObject items = (JSONObject) body.get("items");
         JSONArray item = (JSONArray) items.get("item");
-       
         //System.out.println("obj : "+obj);
         System.out.println("item out : \n"+item);
       return item;
@@ -136,6 +135,7 @@ public class ApiController {
            JSONObject jsonObj = (JSONObject) obj;
            JSONObject items = (JSONObject) jsonObj.get("items");
            JSONArray item = (JSONArray) items.get("item");
+           System.out.println(item);
            
            return item;
    }
@@ -151,7 +151,7 @@ public class ApiController {
         urlBuilder.append("&" + URLEncoder.encode("returnType","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
         
         URL url = new URL(urlBuilder.toString());
-        System.out.println(url);
+      //  System.out.println(url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
@@ -185,7 +185,7 @@ public class ApiController {
          }
       }
       List<String> list = new ArrayList<>(set); //set 객체 => List 객체
-      System.out.println("list.tostring   :   " + list.toString());
+      //System.out.println("list.tostring   :   " + list.toString());
       return list.toString();   //리스트 객체가 브라우저에 전달. 뷰가 아님
                   //pom.xml의 fasterxml.jackson...의 설정에 의해서 브라우저는 배열로 인식함
    }
@@ -199,6 +199,7 @@ public class ApiController {
         urlBuilder.append("&" + URLEncoder.encode("returnType","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
         
         URL url = new URL(urlBuilder.toString());
+        System.out.println("=================url===");
         System.out.println(url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -233,7 +234,7 @@ public class ApiController {
          System.out.println("si2 value : "+si2);
          for(int i=0; i<data.size(); i++ ) {
             if(si2.equals(data.get(i).toString().substring(25,data.get(i).toString().indexOf("codeNm")-3).trim())) {
-               set.add(data.get(i).toString().substring(data.get(i).toString().indexOf("codeNm")+9,data.get(i).toString().indexOf("codeTy")-3).trim());
+            	set.add(data.get(i).toString().substring(data.get(i).toString().indexOf("codeNm")+9,data.get(i).toString().indexOf("codeTy")-3).trim());
             }
          }
       }else if(si2!=null && gu2!=null && !si2.equals("") && !gu2.equals("")) {
@@ -252,6 +253,10 @@ public class ApiController {
             }
          }
       }
+      if(si2.equals("인천광역시")) {
+    	  set.remove("중구");
+      }
+      System.out.println(set);
       List<String> list = new ArrayList<>(set); //set 객체 => List 객체
       System.out.println("selectText_list out : "+list);
       return list;   //리스트 객체가 브라우저에 전달. 뷰가 아님
@@ -260,19 +265,22 @@ public class ApiController {
    @RequestMapping("placecode")   //select box 두번째 출력을 위한 api
    public JSONArray test5(String si2, String gu2, HttpServletRequest request) throws Exception{
       System.out.println("placecode 호출됨");
+      if(si2.equals("강원도")) {
+    	  si2 = "강원특별자치도";
+      }
       String placeCode=si2+" "+gu2;
-      System.out.println("s2 : "+si2 + "gu2 : "+gu2);
-      System.out.println("placeCode : " + placeCode);
+      //System.out.println("s2 : "+si2 + "gu2 : "+gu2);
+      //System.out.println("placeCode : " + placeCode);
        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1741000/StanReginCd/getStanReginCdList");
        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=cIU8HoBdDJx9IAv4NEQ88GvIfz3eoVBo1LHbEfxRtMKcNlK7xaWgZQexbnedoiqNWqPVRcLQ4JeBb8YhhBW6Cw%3D%3D"); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));//json 데이터 페이지
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("locatadd_nm","UTF-8") + "=" + URLEncoder.encode(placeCode, "UTF-8"));
         
         
         URL url = new URL(urlBuilder.toString());
-        System.out.println(url);
+        //System.out.println("placecode\n"+url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
