@@ -135,7 +135,6 @@ public class ApiController {
            JSONObject jsonObj = (JSONObject) obj;
            JSONObject items = (JSONObject) jsonObj.get("items");
            JSONArray item = (JSONArray) items.get("item");
-           System.out.println(item);
            
            return item;
    }
@@ -231,7 +230,6 @@ public class ApiController {
          }
       }else if(si2!=null && gu2==null) {
          si2 = si2.trim();
-         System.out.println("si2 value : "+si2);
          for(int i=0; i<data.size(); i++ ) {
             if(si2.equals(data.get(i).toString().substring(25,data.get(i).toString().indexOf("codeNm")-3).trim())) {
             	set.add(data.get(i).toString().substring(data.get(i).toString().indexOf("codeNm")+9,data.get(i).toString().indexOf("codeTy")-3).trim());
