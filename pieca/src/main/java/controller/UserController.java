@@ -66,7 +66,8 @@ public class UserController {
    private String emailDecrypt(User user) {
       try {
          String key = util.makehash(user.getUserid(), "SHA-256");
-         String email = util.decrypt(user.getEmail(),key);
+         String email = "";
+       	 email = util.decrypt(user.getEmail(),key);
          return email;
       } catch(Exception e) {
          e.printStackTrace();
@@ -243,7 +244,7 @@ public class UserController {
       }
       
       @RequestMapping("kakao_login")
-      public void kakao_login(String code, String state, HttpSession session) {
+      public String kakao_login(String code, String state, HttpSession session) {
          System.out.println("kakao_OAuth code : "+code);
          String result = "";
          try {
@@ -284,7 +285,7 @@ public class UserController {
           }
          
          JSONParser parser = new JSONParser();  //json-simple-1.1.1.jar 파일 설정 
-          JSONObject json=null;
+         JSONObject json=null;
           try {
             json = (JSONObject)parser.parse(result.toString());
           } catch (ParseException e) {
@@ -316,10 +317,48 @@ public class UserController {
               while ((line = br.readLine()) != null) {
                   result += line;
               }
-              System.out.println("response body : " + result);
+        System.out.println("response body : " + result);
           }catch(IOException e){
              e.printStackTrace();
           }
+        JSONObject jsonDetail=null;
+		try {
+			jsonDetail = (JSONObject)parser.parse(result.toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		//System.out.println("jsonDetail### " + jsonDetail);
+		JSONObject kakao_account = (JSONObject)jsonDetail.get("kakao_account");
+		//System.out.println("kakao_account### " + kakao_account);
+		JSONObject kakao_profile = (JSONObject)kakao_account.get("profile");
+        //System.out.println("###kakao_profile###\n"+kakao_profile);
+        String username = kakao_profile.get("nickname").toString();
+        //System.out.println("username = "+username);
+        String userEmail = kakao_account.get("email").toString();
+        //System.out.println("userEmail : " + userEmail);
+        String userid = jsonDetail.get("id").toString();
+        String birthday = kakao_account.get("birthday").toString();
+        
+        //System.out.println("userid = "+ userid);
+        User user = service.selectUserOne(userid);
+          if (user == null) { // db에 데이터가 없을 때
+             user = new User();
+             user.setUserid(userid); // 아이디 등록 
+             user.setUsername(username.toString()); // 이름 등록
+             user.setEmail(this.emailEncrypt(userEmail, userid));
+             try {
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse("0000"+"-"+birthday.substring(0,2)+"-"+birthday.substring(2));
+                user.setBirthday(date);
+             } catch (java.text.ParseException e) {
+                e.printStackTrace();
+             }
+             
+             String email = userEmail.toString();
+             user.setChannel("kakao");
+             service.userInsert(user);
+          }
+          session.setAttribute("loginUser", user);
+          return "redirect:mypage?userid="+user.getUserid();
    }
    
    public void setNaverBirthday(String year, String month) {
