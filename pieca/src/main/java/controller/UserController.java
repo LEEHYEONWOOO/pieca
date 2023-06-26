@@ -1,7 +1,10 @@
 package controller;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
@@ -100,14 +103,13 @@ public class UserController {
       mav.addObject(new User());
       mav.addObject("apiURL",apiURL);
       mav.addObject(new User());
-      System.out.println("요청 url : "+apiURL); //요청 URL
       session.getServletContext().setAttribute("session",session);
-      //System.out.println("1.session.id="+session.getId());
+      System.out.println("1.session.id="+session.getId());
       return mav;
    }
    @RequestMapping("naverlogin")
    public String naverlogin(String code, String state, HttpSession session) {
-      //System.out.println("2.session.id="+session.getId());
+      System.out.println("2.session.id="+session.getId());
       String clientId = "0aX5qsWcmly0lCZBWEqr";//애플리케이션 클라이언트 아이디값";
       String clientSecret = "dj7NytCQSF";//애플리케이션 클라이언트 시크릿값";
        String redirectURI=null;
@@ -123,7 +125,6 @@ public class UserController {
        apiURL += "&redirect_uri=" + redirectURI;
        apiURL += "&code=" + code;  //네이버에서 전달해준 파라미터값
        apiURL += "&state=" + state; //네이버에서 전달해준 파라미터값. 초기에는 로그인 시작시 개발자가 전달한 임의의 수
-       System.out.println("응답 URL : "+apiURL);
        System.out.println("code="+code+",state="+state);
        String access_token = "";
        String refresh_token = "";
@@ -164,10 +165,6 @@ public class UserController {
        } catch (ParseException e) {
          e.printStackTrace();
        } //네이버 응답데이터를 json 객체로 생성.
-       
-       System.out.println("======로그인 성공 시 json 데이터=======");
-       System.out.println(json);
-       
        String token = (String)json.get("access_token"); //정상적인 로그인 요청인 경우 네이버가 발생한 코드값
        System.out.println("\n=====token:"+token);
        String header = "Bearer " + token; // Bearer 다음에 공백 추가
@@ -235,6 +232,96 @@ public class UserController {
       return "redirect:mypage?userid="+user.getUserid();
    }
    
+      @RequestMapping("kakao_connect")
+      public String kakao_connect(String code, String state, HttpSession session) {
+         StringBuffer url = new StringBuffer();
+         url.append("https://kauth.kakao.com/oauth/authorize?");
+         url.append("&client_id=6e73ded87a32820e5ffa86f62d0e0c64");
+         url.append("&redirect_uri=http://localhost:8080/pieca/user/kakao_login");
+         url.append("&response_type=code");
+         return "redirect:"+url;
+      }
+      
+      @RequestMapping("kakao_login")
+      public void kakao_login(String code, String state, HttpSession session) {
+         System.out.println("kakao_OAuth code : "+code);
+         String result = "";
+         try {
+              URL url = new URL("https://kauth.kakao.com/oauth/token");
+              HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+              conn.setRequestMethod("POST");
+              conn.setDoOutput(true);
+
+              StringBuilder sb = new StringBuilder();
+              sb.append("grant_type=authorization_code");
+              sb.append("&client_id=" + "6e73ded87a32820e5ffa86f62d0e0c64");
+              sb.append("&code=" + code);
+              BufferedWriter bw = null;
+              try{
+                  bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+                  bw.write(sb.toString());
+              }catch(IOException e){
+                  throw e;
+              }finally{
+                  if(bw != null) bw.flush();
+              }
+              BufferedReader br = null;
+              String line = "";
+              try {
+                  br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                  while ((line = br.readLine()) != null) {
+                      result += line;
+                  }
+              } catch (IOException e) {
+                  throw e;
+              } finally {
+                  if (br != null)
+                      br.close();
+              }
+              System.out.println("result : " + result);
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+         
+         JSONParser parser = new JSONParser();  //json-simple-1.1.1.jar 파일 설정 
+          JSONObject json=null;
+          try {
+            json = (JSONObject)parser.parse(result.toString());
+          } catch (ParseException e) {
+            e.printStackTrace();
+          }
+          System.out.println("json : "+json);
+          String token = (String)json.get("access_token");
+          //////////////////////Token 정보 요청 끝//////////////////////
+         String access_token = token;
+         System.out.println("access_token = "+access_token);
+         String reqURL = "https://kapi.kakao.com/v2/user/me";
+          try {
+              URL url = new URL(reqURL);
+              HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+              conn.setRequestMethod("GET");
+
+              //    요청에 필요한 Header에 포함될 내용
+              conn.setRequestProperty("Authorization", "Bearer " + access_token);
+              conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+              int responseCode = conn.getResponseCode();
+              System.out.println("responseCode : " + responseCode);
+
+              BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+              String line = "";
+              result = "";
+
+              while ((line = br.readLine()) != null) {
+                  result += line;
+              }
+              System.out.println("response body : " + result);
+          }catch(IOException e){
+             e.printStackTrace();
+          }
+   }
+   
    public void setNaverBirthday(String year, String month) {
       System.out.println(year);
       System.out.println(month);
@@ -267,6 +354,7 @@ public class UserController {
           */
          user.setPassword(passwordHash(user.getPassword()));
          user.setEmail(emailEncrypt(user.getEmail(),user.getUserid()));
+         user.setChannel("pieca");
          service.userInsert(user); //db에 insert
          mav.addObject("user",user);
       }catch(DataIntegrityViolationException e) {
@@ -325,8 +413,9 @@ public class UserController {
    @RequestMapping("mypage")
    public ModelAndView idCheckMypage(String userid,HttpSession session) {
       ModelAndView mav = new ModelAndView();
-      System.out.println(userid);
+      System.out.println("마이페이지 유저아이디 :: "+userid);
       User user = service.selectUserOne(userid);
+      System.out.println("마이페이지 User :: "+user);
       user.setEmail(emailDecrypt(user));  //이메일 복호화
       mav.addObject("user", user); //회원정보데이터
       return mav;
@@ -336,28 +425,9 @@ public class UserController {
    @RequestMapping("logout")
    public String logout(HttpSession session) {
       session.invalidate();
-	   
-	   
-		/*
-		 * System.out.println(session); if(session.getAttribute("loginUser")!=null) {
-		 * System.out.println("삭제전 : "+session.getAttribute("loginUser"));
-		 * session.removeAttribute("loginUser");
-		 * System.out.println("session.getAttribute(\"loginUser\") 있음");
-		 * System.out.println("loginUser"+session.getAttribute("loginUser")); }
-		 */
-	   
-	   
       return "redirect:../main/home";
    }
    //로그인 상태, 본인정보만 조회 검증 => AOP 클래스(UserLoginAspect.userIdCheck() 검증)
-   @GetMapping({"update","delete"})
-   public ModelAndView idCheckUser(String userid,HttpSession session) {
-      ModelAndView mav = new ModelAndView();
-      User user = service.selectUserOne(userid);
-      user.setEmail(emailDecrypt(user));  //이메일 복호화
-      mav.addObject("user",user);
-      return mav;
-   }
    
    @PostMapping("update")
    public ModelAndView idCheckUpdate(@Valid User user,BindingResult bresult,String userid,HttpSession session) {
@@ -419,20 +489,34 @@ public class UserController {
       User loginUser = (User)session.getAttribute("loginUser");
       //password : 입력된 비밀번호
       //loginUser.getPassword() : 로그인 사용자의 비밀번호
-      if(!password.equals(loginUser.getPassword())) {
-         throw new LoginException
-              ("delete?userid="+userid);
+      if(loginUser.getChannel().equals("naver")) {
+         try {
+            service.userDelete(userid);
+            session.invalidate();
+            return "redirect:login";
+         } catch(DataIntegrityViolationException e) {
+            throw new LoginException ("mypage?userid="+userid);
+         } catch(Exception e) {
+            e.printStackTrace();
+            throw new LoginException ("delete?userid="+userid);
+         }
       }
-      //비밀번호 일치 : 고객정보 제거
-      try {
-         service.userDelete(userid);
-      } catch(DataIntegrityViolationException e) {
-         throw new LoginException
-         ("mypage?userid="+userid);
-      } catch(Exception e) {
-         e.printStackTrace();
-         throw new LoginException("delete?userid="+userid);
+      if(loginUser.getChannel().equals("pieca")) {
+         if(!passwordHash(password).equals(loginUser.getPassword())) {
+            throw new LoginException
+                 ("mypage?userid="+userid);
+         }
+         //비밀번호 일치 : 고객정보 제거
+         try {
+            service.userDelete(userid);
+         } catch(DataIntegrityViolationException e) {
+            throw new LoginException ("mypage?userid="+userid);
+         } catch(Exception e) {
+            e.printStackTrace();
+            throw new LoginException ("delete?userid="+userid);
+         }
       }
+      
       //탈퇴 성공 : 회원정보를 제거 된 상태
       if(loginUser.getUserid().equals("admin")) {  //관리자가 강제 탈퇴
          return "redirect:../admin/list";
@@ -441,6 +525,7 @@ public class UserController {
          return "redirect:login";
       }   
    }
+   
    /*
     * UserLoginAspect.loginCheck() : UserController.loginCheck*(..) 인 메서드
     *                                 마지막 매개변수 HttpSession인 메서드
@@ -476,11 +561,9 @@ public class UserController {
    
    @RequestMapping("pwCheck")
    @ResponseBody
-   public Boolean pwCheck(String userid, String password,HttpSession session) {
+   public Boolean pwCheck(String userid, String password, HttpSession session) {
       User dbUser = null;
       Boolean check = false;
-      System.out.println("userid"+userid);
-      System.out.println("password"+password);
       try {
          dbUser = service.selectUserOne(userid);
       } catch (NullPointerException e) {
@@ -501,17 +584,6 @@ public class UserController {
       User dbUser = service.selectUserId(userid);
       Boolean check = false;
       if(dbUser == null) {
-         check = true;
-      }
-      return check;
-   }
-   
-   @RequestMapping("idSearch")
-   @ResponseBody
-   public Boolean idSearch(String email, String phoneno, HttpSession session) {
-      User dbUser = service.selectUserId(email);
-      Boolean check = false;
-      if(dbUser != null) {
          check = true;
       }
       return check;
@@ -557,7 +629,8 @@ public class UserController {
       String result = null;
       if(user.getUserid() == null) { //아이디 찾기
          //전화번호 기준으로 회원목록 조회 => 이메일로는 검증 안됨
-         List<User> list =service.getUserlist(user.getPhoneno());
+         user.setChannel("pieca");
+         List<User> list =service.getUserlist(user.getPhoneno(),user.getChannel());
          System.out.println(list);
          for(User u : list) {
             //u 객체의 email 정보 : 암호화상태

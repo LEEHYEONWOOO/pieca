@@ -11,41 +11,41 @@ import org.apache.ibatis.annotations.Update;
 import logic.User;
 
 public interface UserMapper {
-	@Insert("insert into usersecurity (userid,username,password,"
-			+ " birthday,phoneno,email,channel) values " 
-			+ " (#{userid},#{username},#{password},"
-			+ " #{birthday},#{phoneno},#{email},#{channel})")
-	void insert(User user);
-	
-	@Select({"<script>",
-		  "select * from usersecurity ",
-		  "<if test='userid != null'> where userid=#{userid}</if>",
-		  "<if test='userids != null'> where userid in "
-		  + "<foreach collection='userids' item='id' separator=',' open='(' close=')'>#{id}"
-		  + "</foreach></if>",
-		  "</script>"})
-	List<User> select(Map<String,Object> param);
+   @Insert("insert into usersecurity (userid,username,password,"
+         + " birthday,phoneno,email,channel) values " 
+         + " (#{userid},#{username},#{password},"
+         + " #{birthday},#{phoneno},#{email},#{channel})")
+   void insert(User user);
 
-	@Update("update usersecurity set username=#{username},"
-			+ "birthday=#{birthday},phoneno=#{phoneno},"
-			+ "email=#{email} where userid=#{userid}")
-	void update(User user);
+   @Select({"<script>",
+        "select * from usersecurity ",
+        "<if test='userid != null'> where userid=#{userid}</if>",
+        "<if test='userids != null'> where userid in "
+        + "<foreach collection='userids' item='id' separator=',' open='(' close=')'>#{id}"
+        + "</foreach></if>",
+        "</script>"})
+   List<User> select(Map<String,Object> param);
 
-	@Delete("delete from usersecurity where userid=#{userid}")
-	void delete(Map<String, Object> param);
+   @Update("update usersecurity set username=#{username},"
+         + "birthday=#{birthday},phoneno=#{phoneno},"
+         + "email=#{email} where userid=#{userid}")
+   void update(User user);
 
-	@Update("update usersecurity set password=#{password} where userid=#{userid}")
-	void chgpass(Map<String, Object> param);
+   @Delete("delete from usersecurity where userid=#{userid}")
+   void delete(Map<String, Object> param);
 
-	@Select({"<script>",
-		"select ${col} from usersecurity where email=#{email} and phoneno=#{phoneno} "
-		+ "<if test='userid != null'> and userid=#{userid}</if>",
-		"</script>"})
-	String search(Map<String, Object> param);
+   @Update("update usersecurity set password=#{password} where userid=#{userid}")
+   void chgpass(Map<String, Object> param);
 
-	@Select("select * from usersecurity where phoneno = #{value}")
-	List<User> phoneList(String phoneno);
-	
-	@Select("select * from usersecurity where userid = #{userid}")
-	User selectId(String userid);
+   @Select({"<script>",
+      "select ${col} from usersecurity where email=#{email} and phoneno=#{phoneno}"
+      + "<if test='userid != null'> and userid=#{userid}</if>",
+      "</script>"})
+   String search(Map<String, Object> param);
+
+   @Select("select * from usersecurity where phoneno = #{phoneno} and channel=#{channel}")
+   List<User> phoneList(Map<String, Object> param);
+   
+   @Select("select * from usersecurity where userid = #{userid}")
+   User selectId(String userid);
 }

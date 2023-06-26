@@ -43,7 +43,7 @@
   .sidenav a {font-size: 18px;}
 }
 
-#writeInput:focus{
+#basic_info_left_naver_username:focus{
     outline:none;
 }
 
@@ -59,7 +59,6 @@
  --%>
 <body>
 
-
 <div class="sidenav">
   <a href="#about"><span class="fa-regular fa-user"></span> 회원 정보</a>
   <a href="#about"><span class="fa-solid fa-lock"></span> 개인정보</a>
@@ -68,20 +67,20 @@
   <a href="#contact">4</a>
 </div>
 
-   <div class="main">
-
-   <div id="basic_info_wrapper" style="transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:120px 0px 50px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:340px; ">
-   
+<div class="main">
+   <div id="basic_info_wrapper" style="transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:120px 0px 50px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:280px; ">
    <form:form modelAttribute="user" method="post" action="update">
-   
-      <div id="basic_info_left_inner" style="float:left; width:20%; height:230px; margin: 40px 0px 0px 50px; ">
+      
+      <div id="basic_info_left_inner" style="float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; ">
          <div id="basic_info_left_title" style="display: inline;">
+            <input type="hidden" id="login_mode" value="${user.channel}">
             <c:if test="${user.channel eq 'naver' }">
-               <img src="../img/mypage_N.png" style="width:30px; height:30px;">
-               <b><form:input path="userid" value="${user.username}" id="writeInput" readonly="true" spellcheck="false"
+               <img src="../img/mypage_N.png" id="basic_info_left_naver_img" style="width:30px; height:30px;"> 회원<br>
+               <b><form:input path="userid" value="${user.username}" id="basic_info_left_naver_username" readonly="true" spellcheck="false"
                 style="font-size:24px; width:100px; border:none; margin:-5px 0px 0px 0px;"/></b>
             </c:if>
-            <c:if test="${user.channel eq null }">
+            <c:if test="${user.channel eq 'pieca' }">
+               <img src="../img/mypage_P.png" id="basic_info_left_pieca_img" style="width:100px; height:30px;"> 회원<br>
                <b><form:input path="userid" value="${user.userid}" id="userid" readonly="true" spellcheck="false"
                 style="font-size:24px; width:200px; border:none;"/></b>
              </c:if>
@@ -93,7 +92,7 @@
          </div>
       </div>
       
-      <div id="basic_info_right" style="float:left; width:55%; height:230px; margin: 30px 0px 0px 165px;">
+      <div id="basic_info_right_inner" style="float:left; width:55%; height:230px; margin: 0px 0px 0px 165px;">
          <%-- 이름 --%>
          <div id="basic_info_right_username" style="width:80px; position:relative; float:left; margin: 0px 0px 0px 0px;">
             <label for="username" style="font-size:16px; color: #747474;">name</label>
@@ -110,13 +109,9 @@
             style="width:420px; border:2px solid #FFFFFF; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 14px;"/>
          </div>
          <div id="basic_info_right_update" style="float: left; position:relative;margin: -12px 0px 0px -335px;">
-      <a class="fa-regular fa-pen-to-square" id="show_update"></a>
-   </div>
+            <a class="fa-regular fa-pen-to-square" id="show_update"></a>
+         </div>
          
-         <%-- 
-         
-         
-         --%>         
          <input type="hidden" id="mode"/>
          <%-- 이메일 --%>
          <div id="basic_info_right_email_email" style="width:60px; position:relative; float:left;">
@@ -234,6 +229,7 @@
          <%-- 비밀번호 --%>
          <div id="basic_info_right_password" style="width:60%; position:relative; float:left;">
             <label for="password" style="font-size:16px; color: #747474;">password</label>
+            <input type="hidden" id="mode_pass">
          </div>
          <div id="basic_info_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
             <form:password path="password"  oninput=" upSubmitChk(); up_pwCheck(password.value);"
@@ -244,7 +240,7 @@
          </div>
          
          <div id="basic_info_right_password_submit" style="float:left; margin: -42px 0px 0px -5px">
-            <input type="submit" id="up_submit" value="수정" style="border:2px solid #D5D5D5; border-radius: 6px; font-size:18px; width:60px; height:28px; color:#FFFFFF;">
+            <input type="submit" id="up_submit" value="수정" style="transition-duration: 0.5s; border:2px solid #D5D5D5; border-radius: 6px; font-size:18px; width:60px; height:28px; color:#FFFFFF;">
          </div>
          
          <div id="basic_info_right_password_cancel" style="float:left; margin: -11px 0px 0px -5px">
@@ -274,10 +270,11 @@
               <form action="password" id="form" method="post" name="f" onsubmit="return inchk(this)">
               
             <%-- xxx --%>
+            
             <div id="change_pass_right_password" style="width:60%; position:relative; float:left;">
                <input type="hidden" id="userid" value="${sessionScope.loginUser.userid}">
                  <input type="hidden" id="decesion">
-               <label for="chg_password" style="font-size:16px; color: #747474;">password</label>
+               <label for="chg_password" id="change_pass_right_password_title" style="font-size:16px; color: #747474;">password</label>
             </div>
             
             <div id="change_pass_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
@@ -287,39 +284,41 @@
             <div id="change_pass_right_password_check" style="position:relative; float:left; margin: -25px 0px 0px -50px">
                <span id="chg_check" class="fa-regular fa-circle-check" style="color: green;"></span>
             </div>
+            
             <%-- xxx --%>
             
             <div id="change_pass_right_current" style="width:150px; position:relative; float:left;">
                <label for="chgpass" style="font-size:16px; color: #747474;">New password</label>
             </div>
             
-            <div id="basic_info_right_birth_error" style="width:280px; position:relative; float:left; margin:-1px 0px 0px -10px; ">
+            <div id="basic_info_right_password_error" style="width:280px; position:relative; float:left; margin:-1px 0px 0px -10px; ">
                <label id="pwValid" for="chgpass" style="font-size:13px; color: #747474;">&nbsp;</label>
             </div>
              
              <div id="change_pass_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
-               <input type="password" id="chgpass" name="chgpass" oninput="passValid()" style="width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+               <input type="password" id="chgpass" name="chgpass" oninput="passValid()" style="transition-duration: 0.5s; width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
             </div>
             <%-- xxx --%>
             
-             <div id="change_pass_right_curren2" style="width:220px; position:relative; float:left;">
+             <div id="change_pass_right_current2" style="width:220px; position:relative; float:left;">
                <label for="chgpass2" style="font-size:16px; color: #747474;">New password</label>
             </div>
             
              <div id="change_pass_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
-               <input type="password" id="chgpass2" name="chgpass2" oninput="passValid()" style="width:355px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+               <input type="password" id="chgpass2" name="chgpass2" oninput="passValid()" style="transition-duration: 0.5s; width:355px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
             </div>
             
              <div id="change_pass_right_button" style="float:left; margin: -35px 0px 0px -5px">
-                <input type="submit" id="pw_submit" value="변경" style="border:2px solid #747474; border-radius: 6px; font-size:18px; width:60px; height:60px; color:#FFFFFF;">    
+                <input type="submit" id="pw_submit" value="변경" style="transition-duration: 0.5s; border:2px solid #747474; border-radius: 6px; font-size:18px; width:60px; height:60px; color:#FFFFFF;">    
              </div>
             </form>
       </div>
    </div>
    
    <%-- 회원 탈퇴 --%>
+   
    <div id="basic_delete_wrapper" style="transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:120px 0px 50px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:160px; ">
-    
+      
       <div id="basic_delete_left_inner" style="float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; ">
          <div id="basic_delete_left_title" style="font-size:24px;">
             <span><b>회원 탈퇴</b></span>
@@ -328,59 +327,55 @@
             <p>PIECA에서 사용되는 회원님의 정보를 삭제하며, 복구 불가능 합니다.</p>
          </div>
       </div>
-      
       <div id="basic_delete_right" style="float:left; width:55%; height:350px; margin: 10px 0px 0px 165px;">
-      
-              <form method="post" action="delete" name="deleteForm">
+         <form method="post" action="delete" name="deleteForm">
               <input type="hidden" name="userid" value="${param.userid}">
             <%-- xxx --%>
-            <div id="change_delete_right_password" style="width:60%; position:relative; float:left;">
+            <div id="basic_delete_right_password" style="width:60%; position:relative; float:left;">
                <input type="hidden" id="userid" value="${sessionScope.loginUser.userid}">
                  <input type="hidden" id="decesion">
-               <label for="delete_password" style="font-size:16px; color: #747474;">password</label>
+               <label for="delete_password" id="basic_delete_right_password_title" style="font-size:16px; color: #747474;">password</label>
+            </div>
+         
+            <div id="basic_delete_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
+               <input type="password" id="delete_password" name="password" oninput="delete_pwCheck(password.value); security_codeChk();" style="width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
             </div>
             
-            <div id="change_delete_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
-               <input type="password" id="delete_password" name="password" oninput="delete_pwCheck(password.value)" style="width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
-            </div>
-            
-            <div id="change_delete_right_password_check" style="position:relative; float:left; margin: -25px 0px 0px -50px">
-               <span id="delete_check" class="fa-regular fa-circle-check" style="color: green;"></span>
+            <div id="basic_delete_right_password_check" style="position:relative; float:left; margin: -25px 0px 0px -50px">
+            <span id="delete_check" class="fa-regular fa-circle-check" style="color: green;"></span>
             </div>
             <%-- xxx --%>
-            <div id="change_delete_right_password_security" style="width:145px; position:relative; float:left;">
+            <div id="basic_delete_right_password_security" style="width:145px; position:relative; float:left;">
                <label for="sec_code" style="font-size:16px; color: #747474;">보안코드</label>
             </div>
-            <div id="change_delete_right_password_security_show" style="float:left; margin:5px 10px 0px -162px;">
-               <input type="text" id="security_code" readonly="readonly"  style="width:140px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+            <div id="basic_delete_right_password_security_show" style="float:left; margin:5px 10px 0px -162px;">
+               <input type="text" id="security_code" readonly="readonly"  style="transition-duration: 0.5s; width:208px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
             </div>
             <%-- xxx --%>
-            <div id="change_delete_right_password_security2" style="width:110px; position:relative; float:left;">
-               <label for="sec_code" style="font-size:16px; color: #747474;">보안코드 확인</label>
-            </div>
-            <div id="change_delete_right_password_security_input" style="float:left; margin:5px 10px 0px -126px;">
-               <input type="text" id="security_code2" oninput="security_codeChk()" style="width:274px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
-            </div>
-            <div id="change_delete_right_password_check2" style="position:relative; float:left; margin: 17px 0px 0px -50px">
-               <span id="delete_check2" class="fa-regular fa-circle-check" style="color: green;"></span>
-            </div>
-            <%-- xxx --%>
-            <div id="change_delete_right_password_check_logo" style="position:relative; float:left; margin: 12px 0px 0px 0px; font-size:35px;">
+            <div id="basic_delete_right_password_check_logo" style="position:relative; float:left; margin: 12px 0px 0px -60px; font-size:35px;">
                <span id="delete_check" onclick="getRandomString();" class="fa-sharp fa-solid fa-arrows-rotate" style="color:#2196F3"></span>
             </div>
+               
             <%-- xxx --%>
-            
-            
-            
-            <div>
-  
-  
-  
-</div>
-            <%-- <a href="javascript:document.deleteForm.submit()">[회원탈퇴]</a>--%>
+            <div id="basic_delete_right_password_security2" style="width:110px; position:relative; float:left; margin: 0px 0px 0px 10px;">
+               <label for="sec_code" style="font-size:16px; color: #747474;">보안코드 확인</label>
+            </div>
             <%-- xxx --%>
-            
-            </form>
+            <div id="basic_delete_right_password_security_input" style="float:left; margin:5px 10px 0px -123px;">
+               <input type="text" id="security_code2" oninput="security_codeChk()" style="transition-duration: 0.5s; width:205px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+            </div>
+            <div id="basic_delete_right_password_check2" style="position:relative; float:left; margin: 17px 0px 0px -50px">
+               <span id="delete_check2" class="fa-regular fa-circle-check" style="color: green;"></span>
+            </div>
+         
+            <div id="basic_delete_right_submit_desc" style="transition-duration: 0.5s; line-height:50%; width:150px; position:relative; float:left;">
+               <p style="font-size:14px; color: #FFFFFF;">모든 정보가 삭제되며,</p>
+               <p style="font-size:14px; color: #FFFFFF;">복구는 불가능 합니다.</p>
+            </div>
+            <div id="basic_delete_right_submit_btn" style="transition-duration: 0.5s;float:left; margin:-65px 0px 0px -16px">
+               <input type="submit" id="delete_submit" value="회원 탈퇴" style="transition-duration: 0.5s; background-color: #F15F5F; border:2px solid #F15F5F; border-radius: 6px; font-size:25px; width:420px; height:60px; color:#FFFFFF; padding:0px 0px 0px 250px;">
+            </div>            
+         </form>
       </div>
    </div>
    
@@ -392,34 +387,31 @@
 <script type="text/javascript">
 
 $(document).ready(function () {
-   
    $("#username").attr("disabled","disabled");
    $("#email_original").attr("disabled","disabled");
-   //$("#input_email").attr("disabled","disabled");
    $("#phoneno").attr("disabled","disabled");
    $("#birthday").attr("disabled","disabled");
-   
    $("#select_email").hide();
    $("#input_email").hide();
    $("#basic_info_right_email_address").hide();
    $("#basic_info_right_birthday_input_update_s2").hide();
-   
    $("#basic_info_right_update").show();
    $("#test11").hide()
-   
    $("#basic_info_right_password").hide()
    $("#basic_info_right_password_input").hide();
    $("#basic_info_right_password_input").hide();
    $("#basic_info_right_password_submit").hide();
    $("#basic_info_right_password_cancel").hide();
-   $("#change_delete_right_password_check_logo").hide();
-
+   $("#basic_delete_right_password_check_logo").hide();
+   $("#basic_delete_right_submit_desc").hide();
+   $("#basic_delete_right_submit_btn").hide();   
    $("#chgpass").attr("disabled","disabled");
    $("#chgpass").css("background-color","#D5D5D5");
    $("#chgpass2").css("background-color","#D5D5D5");
    $("#chgpass2").attr("disabled","disabled");
    $("#pw_submit").attr("disabled","disabled");
    $("#up_submit").attr("disabled","disabled");
+   $("#delete_submit").attr("disabled","disabled");
    $("#security_code2").attr("disabled","disabled");
    $("#pw_submit").css("background-color","#D5D5D5");
    $("#up_submit").css("background-color","#D5D5D5");
@@ -430,7 +422,32 @@ $(document).ready(function () {
    $("#delete_check").hide();
    $("#delete_check2").hide();
    $("#update_info_wrapper").hide();
-  });
+   
+   if ($("#login_mode").val() == 'pieca') {
+      $("#basic_info_right_update").show();
+      $("#chg_password").attr('type', 'password');
+   } else if ($("#login_mode").val() == 'naver') {
+      $("#basic_info_right_update").hide();
+      $("#chg_password").attr('type', 'text');
+      $("#chg_password").prop('readonly', true);
+      $("#chg_password").css({"background-color":"#F15F5F","border":"2px solid #F15F5F","font-size":"19px","color":"#FFFFFF"});
+      $("#chg_password").val('Naver회원은 이용 불가능 합니다.');
+      $("#change_pass_right_password_title").css("color","#FFFFFF");
+      
+      $("#delete_password").attr('type', 'text');
+      $("#delete_password").prop('readonly', true);
+      $("#delete_password").css({"background-color":"#F15F5F","border":"2px solid #F15F5F","font-size":"19px","color":"#FFFFFF"});
+      $("#delete_password").val('Naver회원은 보안코드로 탈퇴 가능 합니다.');
+      $("#basic_delete_right_password_title").css("color","#FFFFFF");
+
+      $("#security_code").removeAttr("disabled");
+      $("#security_code2").removeAttr("disabled");
+      $("#security_code").css("background-color","#FFFFFF");
+      $("#security_code2").css("background-color","#FFFFFF");
+      $("#basic_delete_right_password_check_logo").show();
+      getRandomString()
+   }
+});
 
 $(document).ready(function(){
    $("#show_update").click(function(){
@@ -470,7 +487,7 @@ $(document).ready(function(){
       $("#phoneno").css("border","2px solid #747474");
       $("#birthday").css("border","2px solid #747474");
       
-      $("#basic_info_wrapper").css("height","420px");
+      $("#basic_info_wrapper").css("height","360px");
       $("#basic_info_right_update").hide(0);
       
       $("#basic_info_right_birthday_input_update_s1").hide();
@@ -517,7 +534,7 @@ $(document).ready(function(){
       $("#phoneno").css("border","2px solid #FFFFFF");
       $("#birthday").css("border","2px solid #FFFFFF");
       
-      $("#basic_info_wrapper").css("height","340px");
+      $("#basic_info_wrapper").css("height","280px");
       $("#basic_info_right_update").show(0);
       
       $("#basic_info_right_birthday_input_update_s1").show();
@@ -677,23 +694,16 @@ function up_pwCheck(password){
       success:function(result){
          if (result == true) {
             $("#mode_pass").val("enable");
-            $("#up_check").show();
+            $("#up_check").show(500);
          } else {
             $("#mode_pass").val("disable");
-            $("#up_check").hide();
+            $("#up_check").hide(500);
          }
          upSubmitChk() // delay
       }
    });   
 }
-/*
-$("#up_submit").removeAttr("disabled");
-$("#up_submit").css("background-color","#2196F3");
-$("#up_submit").css("border","2px solid #2196F3");
-$("#up_submit").attr("disabled","disabled");
-$("#up_submit").css("background-color","#D5D5D5");
-$("#up_submit").css("border","2px solid #D5D5D5");
-*/
+
 function chg_pwCheck(password){
    console.log(password)
    $.ajax({
@@ -702,41 +712,46 @@ function chg_pwCheck(password){
       data : {"userid":$("#userid").val(),
             "password": password },
       success:function(result){
-         console.log(result)
          if (result == true) {
-            $("#chg_check").show();
-            $('#decesion').val("ready");
+            $("#chg_check").show(500);
+            $("#decesion").val("ready");
             $("#chgpass").removeAttr("disabled");
             $("#chgpass").css("background-color","#FFFFFF");
          } else {
-            $("#chg_check").hide();
-            $('#decesion').val("not");
+            $("#chg_check").hide(500);
+            $("#decesion").val("not");
+            $("#chgpass").val("");
+            $("#chgpass2").val('');
+            $("#pwValid").text("");
             $("#chgpass").attr("disabled","disabled");
+            $("#chgpass2").attr("disabled","disabled");
             $("#chgpass").css("background-color","#D5D5D5");
+            $("#chgpass2").css("background-color","#D5D5D5");
          }
       }
    });   
 }
 
 function delete_pwCheck(password){
+   var security_code = $("#security_code").val();
+   var security_code2 = $("#security_code2").val();
    $.ajax({
       type:"POST",
       url: "pwCheck",
       data : {"userid":$("#userid").val(),
             "password": password },
       success:function(result){
-         console.log(result)
          if (result == true) {
             getRandomString();
-            $("#delete_check").show();
+            $("#delete_check").show(500);
             $("#security_code").removeAttr("disabled");
             $("#security_code2").removeAttr("disabled");
             $("#security_code").css("background-color","#FFFFFF");
             $("#security_code2").css("background-color","#FFFFFF");
-            $("#security_code2").css("width","224px");
-            $("#change_delete_right_password_check_logo").show();
+            $("#basic_delete_right_password_check_logo").show();
+            security_codeChk()
          } else {
-            $("#delete_check").hide();
+            $("#delete_check").hide(500);
             $("#delete_check2").hide();
             $("#security_code").val('');
             $("#security_code2").val('');
@@ -744,9 +759,10 @@ function delete_pwCheck(password){
             $("#security_code2").attr("disabled","disabled");
             $("#security_code").css("background-color","#D5D5D5");
             $("#security_code2").css("background-color","#D5D5D5");
-            $("#security_code2").css("width","274px");
-            $("#change_delete_right_password_check_logo").hide();
+            $("#basic_delete_right_password_check_logo").hide();
+            security_codeChk()
          }
+         
       }
    });   
 }
@@ -757,21 +773,28 @@ function security_codeChk(){
    console.log(security_code)
    console.log(security_code2)
    
-   if (security_code == security_code2) {
+   if ((security_code == security_code2) && (security_code != '')){
       $("#delete_check2").show();
-      $("#basic_delete_wrapper").css("height","260px");
+      $("#basic_delete_wrapper").css("height","225px");
+      $("#basic_delete_right_submit_desc").show();
+      $("#basic_delete_right_submit_btn").show();
+      $("#delete_submit").removeAttr("disabled");
    } else {
       $("#delete_check2").hide();
       $("#basic_delete_wrapper").css("height","160px");
+      $("#basic_delete_right_submit_desc").hide();
+      $("#basic_delete_right_submit_btn").hide();
+      $("#delete_submit").attr("disabled","disabled");
    }
-   
 }
 
 function getRandomString() {
    console.log('here')
-   var letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+   var letters = "!@#$%^&*ABCDEFGHJKMNPQRSTUVWXYZ23456789";
      var randomString = "";
-     for (var i = 0; i < 1; i++) {
+     $("#security_code2").val('');
+     security_codeChk()
+     for (var i = 0; i < 6; i++) {
        randomString += letters.charAt(Math.floor(Math.random() * letters.length));
      }
      $('#security_code').val(randomString);
@@ -810,41 +833,42 @@ function passValid(){
       $("#chgpass2").removeAttr("disabled");
       $("#chgpass2").css("background-color","#FFFFFF");
    } else if (/(\w)\1\1/.test(chgpass)) {
-      $("#pwValid").text("3번이상 반복되는 문자는 사용 불가능 합니다.");
+      $("#pwValid").text("3번이상 반복되는 문자는 불가능 합니다.");
       $("#pwValid").css("color","red");
       $("#passDec").val("false");
       $("#chgpass2").attr("disabled","disabled");
       $("#chgpass2").css("background-color","#D5D5D5");
+      $("#chgpass2").val('');
    } else if (chgpass.search(" ") != -1) {
       $("#pwValid").text("공백은 사용 불가능 합니다.");
       $("#pwValid").css("color","red");
       $("#passDec").val("false");
       $("#chgpass2").attr("disabled","disabled");
       $("#chgpass2").css("background-color","#D5D5D5");
+      $("#chgpass2").val('');
    } else if (!reg.test(chgpass)) {
       $("#pwValid").text("대소문자, 숫자, 특수문자, 8~20자리");
       $("#pwValid").css("color","red");
       $("#passDec").val("false");
       $("#chgpass2").attr("disabled","disabled");
       $("#chgpass2").css("background-color","#D5D5D5");
+      $("#chgpass2").val('');
    } else if (password == chgpass) {
-      $("#pwValid").text("기존과 동일한 password 사용 불가");
+      $("#pwValid").text("기존 비밀번호와 다르게 입력 하세요.");
       $("#pwValid").css("color","red");
       $("#passDec").val("false");
       $("#chgpass2").attr("disabled","disabled");
       $("#chgpass2").css("background-color","#D5D5D5");
+      $("#chgpass2").val('');
+      
    }
    
    if (chgpass != "" || chgpass2 != "") {
       if ((chgpass == chgpass2)) {
-         $("#pwCheck").text("비밀번호가 일치합니다 :)");
-         $("#pwCheck").css("color","green");
          $("#pw_submit").removeAttr("disabled");
          $("#pw_submit").css("background-color","#2196F3");
          $("#pw_submit").css("border","2px solid #2196F3");
       } else if (chgpass != chgpass2) {
-         $("#pwCheck").text("비밀번호가 일치하지 않습니다.");
-         $("#pwCheck").css("color","red");
          $("#pw_submit").attr("disabled","disabled");
          $("#pw_submit").css("background-color","#D5D5D5");
          $("#pw_submit").css("border","2px solid #D5D5D5");
