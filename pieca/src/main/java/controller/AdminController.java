@@ -47,7 +47,7 @@ public class AdminController {
 	@Autowired 
 	private ShopService service;
 	@Autowired
-	private CipherUtil cipher;
+	private CipherUtil cipher;//CipherUtil
 
 	private List<User> emailDecrypt(List<User> userlist) {
 		for(User u : userlist) {
