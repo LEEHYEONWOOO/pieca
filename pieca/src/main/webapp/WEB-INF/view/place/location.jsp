@@ -134,6 +134,7 @@ function searchInMethod (data2 ,status, pagination) {
 	console.log(dataIndexArr?.[runCnt]?.addr+'에 있는 =>'+dataIndexArr?.[runCnt]?.statNm+'로 검색하자')
 	runCnt++; //placeSearch 메서드의 콜백인데 for문안에서 앞메서드가 돌아서..비동기식이면 배열에 값이 누락됨 그래서 Cnt값으로
 				//몇번 돌았는지 체크해줘야함
+				//runCnt
 	console.log('keywordSearch의 콜백 데이터')
 	console.log(data2)
 	if (status === kakao.maps.services.Status.OK) {//키워드 검색결과 정상일때,
