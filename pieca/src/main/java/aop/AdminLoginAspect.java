@@ -15,7 +15,7 @@ import logic.User;
 public class AdminLoginAspect {
 	@Around("execution(* controller.AdminController.*(..)) && args(..,session)")
 	public Object adminCheck(ProceedingJoinPoint joinPoint, HttpSession session) 
-			throws Throwable {
+			throws Throwable {//AOP수정필요
 		User loginUser = (User)session.getAttribute("loginUser");
 		if(loginUser == null) {
 			throw new LoginException("../user/login");
