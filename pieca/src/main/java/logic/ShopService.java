@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import dao.BoardDao;
+import dao.PaymentDao;
 import dao.UserDao;
 @Service   //@Component + Service(controller 기능과 dao 기능의 중간 역할 기능) 
 public class ShopService {
@@ -23,6 +24,11 @@ public class ShopService {
    private UserDao userDao;
    @Autowired 
    private BoardDao boardDao;
+   @Autowired
+   private PaymentDao paymentDao;
+   
+   
+   
 
    public void uploadFileCreate(MultipartFile file, String path) {
       //file : 파일의 내용
@@ -147,4 +153,9 @@ public class ShopService {
    public User selectUserId(String userid) {
       return userDao.selectId(userid);
    }
+   
+   public void payInsert(Payment payment) {
+      paymentDao.insertkakao(payment);
+   }
+   
 }

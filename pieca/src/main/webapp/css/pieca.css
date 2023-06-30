@@ -1,0 +1,248 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'KIMM_Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/KIMM_Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+body * {
+   margin: 0;
+   font-family: 'KIMM_Bold';
+}
+
+#join_container {
+   width: 100%;
+   height: 100%;
+   margin: 7% 0% 10% 37.7%;
+}
+
+#join_logo {
+   width: 470px;
+   text-align: center;
+   margin-bottom: 50px;
+}
+
+#join_userid_title {
+   display: inline;
+   text-align: left;
+}
+
+#join_password2_title, #join_username_title, #join_phoneno_title, #join_birthday_title, #join_email_title, #join_password_title {
+   display: inline;
+}
+
+#join_userid_error, #join_idCheck, #join_password_error, #join_pwValid, #join_pwCheck, #join_username_error, 
+#join_nameChk, #join_email_error, #join_emailChk, #join_phoneChk, #join_birthdayChk, #join_phoneno_error, #join_birthday_error  {
+   display: inline;
+   font-size: 13px;
+}
+
+#join_userid_input, #join_password_input, #join_phoneno_input, #join_email_input, #join_password2_input, #join_username_input {
+   margin: 5px 0px 20px 0px;
+}
+
+#join_birthday_input {
+   margin: 5px 0px 50px 0px;
+}
+
+
+#join_input_userid, #join_input_password, #join_input_password2, #join_input_username, #join_input_phoneno, 
+#join_input_email, #join_select_email, #join_year, #join_month, #join_day {
+   border: 2px solid #747474;
+   border-radius: 6px;
+   font-size: 15px;
+   width: 470px;
+   height: 40px;
+   padding-left: 15px;
+}
+
+#join_input_email, #join_select_email {
+   width: 222px;
+}
+
+#join_select_email {
+   cursor: pointer;
+}
+
+#join_year, #join_month, #join_day {
+   width: 140px;
+}
+
+#join_year, #join_month {
+   margin-right: 19.5px;
+}
+
+#join_submit, #join_reset {
+   width: 232px;
+   height: 40px;
+   border-radius: 6px;
+   border: 2px solid #D5D5D5;
+   cursor: pointer;
+}
+
+#join_reset {
+   border: 2px solid #FFBB00;
+   background-color: #FFBB00;
+}
+
+#login_container {width:100%; height:450px; margin: 10% 0% 10% 42.2%;}
+#login_logo {width:300px; text-align:center; margin-bottom: 50px;}
+#login_global_error {width:300px; font-size: 13px; margin:0px 0px 10px 0px;}
+#login_input_userid, #login_input_password {border:2px solid #747474; border-radius: 6px; font-size:22px; width:300px; height:70px; padding-left:10px;}
+#login_userid_input, #login_password_input {margin:15px 0px 20px 0px;}
+#login_submit_button {width:300px; height:70px; border:2px solid #00B6EF; border-radius: 6px; background-color: #00B6EF;font-size: 25px; color:white; cursor:pointer;}
+#login_submit_container {display: inline;}
+#login_naver_container, #login_kakao_container{margin-top:20px;}
+#login_etc_container {font-size: 14px; width:300px; text-align:center; margin: 20px 0px 20px 0px}
+
+
+#idsearch_container, #pwsearch_container {width: 80%;margin: 0% 0% 0% 19.5%;}
+#idsearch_logo, #pwsearch_logo {width: 296px;text-align: center;margin: 20px 0px 20px 0px;}
+#idsearch_global_error, #pwsearch_global_error {font-size: 13px;margin: 0px 0px 10px 0px;}
+#idsearch_phoneno_title, #idsearch_email_title, #pwsearch_userid_title, #pwsearch_email_title, #pwsearch_phoneno_title {display: inline;}
+#idsearch_emailChk, #idsearch_email_error, #idsearch_phoneChk, #idsearch_phoneno_error, 
+#pwsearch_useridChk, #pwsearch_userid_error, #pwsearch_emailChk, #pwsearch_email_error, #pwsearch_phoneChk, #pwsearch_phoneno_error  {display: inline;font-size: 13px;}
+#idsearch_display_container, #pwsearch_result_container {font-size: 15px; margin: 0px 0px 20px 0px;}
+#idsearch_phoneno_input , #idsearch_email_input, #pwsearch_userid_input, #pwsearch_email_input, #pwsearch_phoneno_input {margin: 5px 0px 20px 0px;}
+#idsearch_input_phone, #idsearch_input_email {border: 2px solid #747474;border-radius: 6px;font-size: 15px;width: 75%;height: 40px;padding-left: 15px;}
+#idsearch_display {border: none;outline: none;width: 75%;height: 20px;}
+#pwsearch_result {border:none; outline:none; width:18%; height:20px;}
+#idsearch_send_button, #idsearch_submit {width: 39.6%;height: 44px;border: 2px solid #D5D5D5;border-radius: 6px;background-color: #D5D5D5;font-size: 18px;color: white;cursor: pointer;}
+#pwsearch_input_phone, #pwsearch_input_email, #pwsearch_input_userid {border:2px solid #747474; border-radius: 6px; font-size:15px; width:71%; height:40px; padding-left: 15px;}
+#pwsearch_send_button, #pwsearch_submit {width:37.5%; height:44px; border:2px solid #D5D5D5; border-radius: 6px; background-color: #D5D5D5; font-size: 18px; color:white; cursor:pointer;}
+
+.mypage_sidenav {
+  width: 300px;
+  position: fixed;
+  z-index: 1;
+  top: 120px;  /* y */
+  left: 250px; /* x */
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+.mypage_sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 22px;
+  color: #5D5D5D;
+  display: block;
+}
+
+.mypage_sidenav a:hover {
+  color: #064579;
+}
+
+.mypage_main {
+  margin-left: 740px; /* .sidenav의 width를 고려해서 지정해야함 */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+  width: 900px;
+}
+
+@media screen and (max-height: 450px) {
+  .mypage_sidenav {padding-top: 15px;}
+  .mypage_sidenav a {font-size: 18px;}
+}
+
+#basic_info_left_naver_username:focus{
+    outline:none;
+}
+
+#basic_info_wrapper {transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:120px 0px 50px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:280px; }
+#basic_info_left_inner {float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; }
+#basic_info_left_title {display: inline;}
+#basic_info_left_naver_img {width:30px; height:30px;}
+#basic_info_left_naver_username {font-size:24px; width:100px; border:none; margin:-5px 0px 0px 0px;}
+#basic_info_left_pieca_img {width:100px; height:30px;}
+#basic_info_left_desc {font-size:15px;}
+#basic_info_right_inner {float:left; width:55%; height:230px; margin: 0px 0px 0px 165px;}
+#basic_info_right_username {width:80px; position:relative; float:left; margin: 0px 0px 0px 0px;}
+#basic_info_right_username_error {width:180px; position:relative; float:left; margin:-1px 0px 0px -20px; }
+#usernameCheck {font-size:13px; color: #747474;}
+#basic_info_right_username_input {float:left; margin:-30px 30px 0px -17px;}
+#username {width:420px; border:2px solid #FFFFFF; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 14px;}
+#basic_info_right_update {float: left; position:relative;margin: -12px 0px 0px -335px;}
+#basic_info_right_email_email {width:60px; position:relative; float:left;}
+#basic_info_right_email_error {width:150px; position:relative; float:left;}
+#emailCheck {font-size:13px; color: #747474;}
+#basic_info_right_email_input {float:left; margin:-35px 10px 0px -17px;}
+#input_email {margin:42px 0px 0px -210px; width:230px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
+#email_original {width:440px; border:2px solid #FFFFFF; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
+#basic_info_right_email_address {width:50px; position:relative; float:left; margin:0px 0px 0px 0px;}
+#basic_info_right_email_input {float:left; margin:-60px 30px 0px 217px;}
+#select_email {border:2px solid #747474; border-radius: 6px; font-size:23px; width:187px; height:60px; padding:14px 0px 0px 0px;}
+#basic_info_right_phoneno {width:50px; position:relative; float:left;}
+#basic_info_right_phoneno_error {width:200px; position:relative; float:left; margin:-1px 0px 0px -20px; }
+#phonenoCheck {font-size:13px; color: #747474;}
+#basic_info_right_phoneno_input {float:left; margin:-33px 100px 0px -17px;}
+#phoneno {width:420px; border:2px solid #FFFFFF; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
+#basic_info_right_birth {width:50px; position:relative; float:left;}
+#basic_info_right_birth_error {width:200px; position:relative; float:left; margin:-1px 0px 0px -20px; }
+#birthCheck {font-size:13px; color: #747474;}
+#basic_info_right_birth_input {float:left; margin:-35px 10px 0px -68px;}
+#birthday {width:360px; border:2px solid #FFFFFF; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:19px 0px 0px 14px;}
+#basic_info_right_birthday_year {width:50px; position:relative; float:left;}
+#basic_info_right_birthday_input_year {float:left; margin:7px 10px 0px -67px;}
+#year {width:138px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 10px;}
+#basic_info_right_birthday_month {width:50px; position:relative; float:left;}
+#basic_info_right_birthday_input_month {float:left; margin:7px 10px 0px -57px;}
+#month {width:138px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 5px;}
+#basic_info_right_birthday_day {width:50px; position:relative; float:left;}
+#basic_info_right_birthday_input_day {float:left; margin:7px 10px 0px -57px;}
+#day {width:138px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 5px;}
+#basic_info_right_password {width:60%; position:relative; float:left;}
+#basic_info_right_password_input {float:left; margin:-35px 10px 0px -17px;}
+#basic_info_right_password_check {position:relative; float:left; margin: -25px 0px 0px -50px}
+#up_check {color: green;}
+#basic_info_right_password_submit {float:left; margin: -42px 0px 0px -5px}
+#up_submit {transition-duration: 0.5s; border:2px solid #D5D5D5; border-radius: 6px; font-size:18px; width:60px; height:28px; color:#FFFFFF;}
+#basic_info_right_password_cancel {float:left; margin: -11px 0px 0px -5px}
+#update_cancel {background-color:#FFBB00; border:2px solid #FFBB00; border-radius: 6px; font-size:18px; width:60px; height:28px; color:#FFFFFF;}
+#basic_pass_wrapper {border:1px solid #FFFFFF; border-radius: 5px; margin-bottom:50px; margin-top:120px; box-shadow: 0px 2px 4px 0px #1B1B1B;height:240px; }
+#basic_pass_left_inner {float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; }
+#basic_pass_left_title {font-size:24px;}
+#basic_pass_left_desc {font-size:15px;}
+#basic_pass_right {float:left; width:55%; height:350px; margin: 10px 0px 0px 165px;}
+#change_pass_right_password {width:60%; position:relative; float:left;}
+#change_pass_right_password_title {font-size:16px; color: #747474;}password/label>
+#change_pass_right_password_input {float:left; margin:-35px 10px 0px -17px;}
+#chg_password {width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
+#change_pass_right_password_check {position:relative; float:left; margin: -25px 0px 0px -50px}
+#chg_check {color: green;}
+#change_pass_right_current {width:150px; position:relative; float:left;}
+#basic_info_right_password_error {width:280px; position:relative; float:left; margin:-1px 0px 0px -10px; }
+#pwValid {font-size:13px; color: #747474;}
+#change_pass_right_password_input {float:left; margin:-35px 10px 0px -17px;}
+#chgpass {transition-duration: 0.5s; width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
+#change_pass_right_current2 {width:220px; position:relative; float:left;}
+#change_pass_right_password_input {float:left; margin:-35px 10px 0px -17px;}
+#chgpass2 {transition-duration: 0.5s; width:355px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
+#change_pass_right_button {float:left; margin: -35px 0px 0px -5px}
+#pw_submit {transition-duration: 0.5s; border:2px solid #747474; border-radius: 6px; font-size:18px; width:60px; height:60px; color:#FFFFFF;}
+#basic_delete_wrapper {transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:120px 0px 0px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:160px; }
+#basic_delete_left_inner {float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; }
+#basic_delete_left_title {font-size:24px;}
+#basic_delete_left_desc {font-size:15px;}
+#basic_delete_right {float:left; width:55%; height:250px; margin: 10px 0px 0px 165px;}
+#basic_delete_right_password {width:60%; position:relative; float:left;}
+#basic_delete_right_password_title {font-size:16px; color: #747474;}password/label>
+#basic_delete_right_password_input {float:left; margin:-35px 10px 0px -17px;}
+#delete_password {width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
+#basic_delete_right_password_check {position:relative; float:left; margin: -25px 0px 0px -50px}
+#delete_check {color: green;}
+#basic_delete_right_password_security {width:145px; position:relative; float:left;}
+#basic_delete_right_password_security_show {float:left; margin:5px 10px 0px -162px;}
+#security_code {transition-duration: 0.5s; width:208px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
+#basic_delete_right_password_check_logo {position:relative; float:left; margin: 12px 0px 0px -60px; font-size:35px;}
+#delete_check {color:#2196F3;}
+#basic_delete_right_password_security2 {width:110px; position:relative; float:left; margin: 0px 0px 0px 10px;}
+#basic_delete_right_password_security_input {float:left; margin:5px 10px 0px -123px;}
+#security_code2 {transition-duration: 0.5s; width:205px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
+#basic_delete_right_password_check2 {position:relative; float:left; margin: 17px 0px 0px -50px}
+#delete_check2 {color: green;}
+#basic_delete_right_submit_desc {transition-duration: 0.5s; line-height:50%; width:150px; height:15px; position:relative; float:left; margin-top:20px;}
+#basic_delete_right_submit_btn {transition-duration: 0.5s;float:left; margin:-25px 0px 0px -16px}
+#delete_submit {transition-duration: 0.5s; background-color: #F15F5F; border:2px solid #F15F5F; border-radius: 6px; font-size:25px; width:420px; height:60px; color:#FFFFFF; margin-top:-40px; padding:0px 0px 0px 250px;}

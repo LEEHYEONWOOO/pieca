@@ -11,6 +11,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://kit.fontawesome.com/f060468afd.js" crossorigin="anonymous"></script>
+
+<link href="../css/pieca.css" rel="stylesheet" type="text/css">
+
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -29,8 +32,12 @@
     font-style: normal;
 }
 
+input::placeholder {
+   font-family: 'KIMM_Bold';
+}
+
 input[type=password]{
-   font-family:"arial";
+   font-family: "arial";
 }
 
 body {
@@ -91,28 +98,28 @@ a {
    text-align:left;
 }
 
-.user-content a {
-   color: black;
-   padding: 12px 12px;
-   display: block;
-   text-align:left;
-}
-
-.home, .map-menu, .pay, .user-menu{
+.home, .map-menu, .news, .card, .login, .mypage, .logout{
+   text-align:center;
    font-size: 22px;
 }
 
-.home {
-   margin-left: 10%;
+.map, .news, .card{
+   width:11%;
 }
 
-.map, .user {
-   margin-left: 33%;
+.home {
+   width:33%;
+   text-align:center;
 }
- 
+
+.login, .mypage {
+   width:33%;
+   text-align:center;
+}
+
 
 /* map-menu 에는 hover 적용이 안됨 */
-.map:hover .map-content, .user:hover .user-content {
+.map:hover .map-content {
    display: block;
 }
 
@@ -152,9 +159,10 @@ a {
       <ul>
          <li class="home">
             <a href="${path}/main/home">
-               <img src="${path}/img/PIECA_logo.png" style="width:70px; height:70px;">
+               <img src="${path}/img/PIECA_logo.png" style="width:140px; height:70px;">
             </a>
          </li>
+         
          <li class="map">
             <div class="map-menu">
                <span>Map</span>
@@ -164,33 +172,19 @@ a {
                <a href="${path}/place/main">주차장</a>
             </div>
          </li>
-         <li class="pay"><a href="${path}/news/main">News</a></li>
-
-
-         <li class="user">
-            <div class="user-menu">
-               <span><i class="fa-regular fa-user"></i></span>
-            </div>
-            <div class="user-content">
-               <c:if test="${empty sessionScope.loginUser}">
-                  <a href="${path}/user/login">Login</a>
-               </c:if>
-               
-               <c:if test="${!empty sessionScope.loginUser}">
-                  <a href="${path}/user/mypage?userid=${sessionScope.loginUser.userid}">Info</a>
-                  <a href="${path}/user/logout">Logout</a>
-               </c:if>
-            </div>
-         </li>         
-         <%-- 
+         <li class="news"><a href="${path}/news/main">News</a></li>
+         <li class="card"><a href="${path}/news/main">Card</a></li>
          <c:if test="${empty sessionScope.loginUser}">
-            <li class="user"><a href="${path}/user/mypage"><i class="fa-regular fa-user"></i> Login</a></li>
+            <li class="login"><a class="fa-regular fa-user" href="${path}/user/login"></a></li>
          </c:if>
-         
          <c:if test="${!empty sessionScope.loginUser}">
-            <li class="user"><a href="${path}/user/mypage?userid=${sessionScope.loginUser.userid}"><i class="fa-regular fa-user"></i> Logout</a></li>
+            <li class="mypage"style="margin-top:10px;">
+               <a class="fa-regular fa-user" href="${path}/user/mypage?userid=${sessionScope.loginUser.userid}" style="margin-top:-15px;"></a>
+               &nbsp;&nbsp;
+               <a class="fa-solid fa-arrow-right-from-bracket" href="${path}/user/logout"></a>
+            </li>
+            <li class="logout"></li>
          </c:if>
-         --%>
          
       </ul>
    </nav>
@@ -211,15 +205,18 @@ a {
 
 <script>
 var loc = document.location.href.split("pieca/");
-console.log(loc[0])
 
 if (loc[1] == "main/home") {
 $(window).on('load',function() {
    $("ul").css('background-color', '#1B1B1B');
    $(".map span").css('color', '#FFFFFF');
-   $(".pay").css('color', '#FFFFFF');
-   $(".user").css('color', '#FFFFFF');
+   $(".news").css('color', '#FFFFFF');
+   $(".card").css('color', '#FFFFFF');
    $(".home").css('color', '#FFFFFF');
+   $(".login").css('color', '#FFFFFF');
+   $(".mypage").css('color', '#FFFFFF');
+   $(".logout").css('color', '#FFFFFF');
+   
   });
 }
 
@@ -227,17 +224,23 @@ $(window).scroll(function() {
    if ($(window).scrollTop() > 1) {
        $("ul").css('background-color', '#FFFFFF');
        $(".map span").css('color', '#1B1B1B');
-       $(".pay").css('color', '#1B1B1B');
-       $(".user").css('color', '#1B1B1B');
+       $(".news").css('color', '#1B1B1B');
+       $(".card").css('color', '#1B1B1B');
        $(".home").css('color', '#1B1B1B');
+       $(".login").css('color', '#1B1B1B');
+       $(".mypage").css('color', '#1B1B1B');
+       $(".logout").css('color', '#1B1B1B');
    }
    if ($(window).scrollTop() == 0) {
       if (loc[1] == "main/home") {
          $("ul").css('background-color', '#1B1B1B');
          $(".map span").css('color', '#FFFFFF');
-         $(".pay").css('color', '#FFFFFF');
-         $(".user").css('color', '#FFFFFF');
+         $(".news").css('color', '#FFFFFF');
+         $(".card").css('color', '#FFFFFF');
          $(".home").css('color', '#FFFFFF');
+         $(".login").css('color', '#FFFFFF');
+         $(".mypage").css('color', '#FFFFFF');
+         $(".logout").css('color', '#FFFFFF');
       }
    }
 });

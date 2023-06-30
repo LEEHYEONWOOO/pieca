@@ -7,48 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>mypage</title>
-
-<style>
-.sidenav {
-  width: 300px;
-  position: fixed;
-  z-index: 1;
-  top: 120px;  /* y */
-  left: 300px; /* x */
-  overflow-x: hidden;
-  padding: 8px 0;
-}
-
-.sidenav a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 22px;
-  color: #2196F3;
-  display: block;
-}
-
-.sidenav a:hover {
-  color: #064579;
-}
-
-.main {
-  margin-left: 800px; /* .sidenav의 width를 고려해서 지정해야함 */
-  font-size: 28px; /* Increased text to enable scrolling */
-  padding: 0px 10px;
-  width: 900px;
-}
-
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-
-#basic_info_left_naver_username:focus{
-    outline:none;
-}
-
-
-</style>
+<script type="text/javascript" src= "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <%--
    http://localhost:8080/shop1/user/mypage?userid=id명
@@ -59,62 +18,61 @@
  --%>
 <body>
 
-<div class="sidenav">
-  <a href="#about"><span class="fa-regular fa-user"></span> 회원 정보</a>
-  <a href="#about"><span class="fa-solid fa-lock"></span> 개인정보</a>
-  <a href="#services">2</a>
-  <a href="#clients">3</a>
-  <a href="#contact">4</a>
+<div class="mypage_sidenav">
+  <a onclick="movePage(1);" id="movepage1" style="cursor: pointer;"><span class="fa-regular fa-user"></span> 회원 정보</a>
+  <a onclick="movePage(2);" id="movepage2" style="cursor: pointer;"><span class="fa-solid fa-lock"></span> 비밀번호 변경</a>
+  <a onclick="movePage(3);" id="movepage3" style="cursor: pointer;"><span class="fa-regular fa-circle-xmark"></span> 회원 탈퇴</a>
 </div>
 
-<div class="main">
-   <div id="basic_info_wrapper" style="transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:120px 0px 50px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:280px; ">
+<div class="mypage_main">
+   <div id="basic_info_wrapper">
    <form:form modelAttribute="user" method="post" action="update">
       
-      <div id="basic_info_left_inner" style="float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; ">
-         <div id="basic_info_left_title" style="display: inline;">
+      <div id="basic_info_left_inner">
+         <div id="basic_info_left_title">
             <input type="hidden" id="login_mode" value="${user.channel}">
             <c:if test="${user.channel eq 'naver' }">
-               <img src="../img/mypage_N.png" id="basic_info_left_naver_img" style="width:30px; height:30px;"> 회원<br>
-               <b><form:input path="userid" value="${user.username}" id="basic_info_left_naver_username" readonly="true" spellcheck="false"
-                style="font-size:24px; width:100px; border:none; margin:-5px 0px 0px 0px;"/></b>
+               <img src="../img/mypage_N.png" id="basic_info_left_naver_img"> 회원<br>
+               <b><form:input path="userid" value="${user.username}" id="basic_info_left_naver_username" readonly="true" spellcheck="false"/></b>
+            </c:if>
+            <c:if test="${user.channel eq 'kakao' }">
+               <img src="../img/mypage_K.png" id="basic_info_left_naver_img"> 회원<br>
+               <b><form:input path="userid" value="${user.username}" id="basic_info_left_naver_username" readonly="true" spellcheck="false"/></b>
             </c:if>
             <c:if test="${user.channel eq 'pieca' }">
-               <img src="../img/mypage_P.png" id="basic_info_left_pieca_img" style="width:100px; height:30px;"> 회원<br>
-               <b><form:input path="userid" value="${user.userid}" id="userid" readonly="true" spellcheck="false"
-                style="font-size:24px; width:200px; border:none;"/></b>
+               <img src="../img/mypage_P.png" id="basic_info_left_pieca_img"> 회원<br>
+               <b><form:input path="userid" value="${user.userid}" id="userid" readonly="true" spellcheck="false" style="font-size:24px; width:200px; border:none;"/></b>
              </c:if>
          </div>
          
          
-         <div id="basic_info_left_desc" style="font-size:15px;">
+         <div id="basic_info_left_desc">
             <p>위 항목은 개인 정보로써 다른 사람에게 공유되지 않는 개인정보 입니다.</p>
          </div>
       </div>
       
-      <div id="basic_info_right_inner" style="float:left; width:55%; height:230px; margin: 0px 0px 0px 165px;">
+      <div id="basic_info_right_inner">
          <%-- 이름 --%>
-         <div id="basic_info_right_username" style="width:80px; position:relative; float:left; margin: 0px 0px 0px 0px;">
+         <div id="basic_info_right_username">
             <label for="username" style="font-size:16px; color: #747474;">name</label>
             <input type="hidden" id="mode_name">
          </div>
          
-         <div id="basic_info_right_username_error" style="width:180px; position:relative; float:left; margin:-1px 0px 0px -20px; ">
-            <label id="usernameCheck" for="username" style="font-size:13px; color: #747474;">&nbsp;</label>
+         <div id="basic_info_right_username_error">
+            <label id="usernameCheck" for="username">&nbsp;</label>
          </div>
          
-         <div id="basic_info_right_username_input" style="float:left; margin:-30px 30px 0px -17px;">
+         <div id="basic_info_right_username_input">
             <input type="hidden" id="start_name">
-            <form:input path="username" id="username" value="${user.username}" oninput="nameChk(); upSubmitChk();"
-            style="width:420px; border:2px solid #FFFFFF; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 14px;"/>
+            <form:input path="username" id="username" value="${user.username}" oninput="nameChk(); upSubmitChk();"/>
          </div>
-         <div id="basic_info_right_update" style="float: left; position:relative;margin: -12px 0px 0px -335px;">
+         <div id="basic_info_right_update">
             <a class="fa-regular fa-pen-to-square" id="show_update"></a>
          </div>
          
          <input type="hidden" id="mode"/>
          <%-- 이메일 --%>
-         <div id="basic_info_right_email_email" style="width:60px; position:relative; float:left;">
+         <div id="basic_info_right_email_email">
             <label for="input_email" style="font-size:16px; color: #747474;">email</label>
             <input type="hidden" id="mode_email">
          </div>
@@ -132,19 +90,17 @@
                <input type="hidden" id="start_email_be">
                <input type="hidden" id="start_email_af">
                <input type="hidden" id="email_af" value="${email_af}">
-               <input type="text" id="input_email" value="${email_be}" oninput="emailChk(); upSubmitChk();"
-               style="margin:42px 0px 0px -210px; width:230px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;"/>
+               <input type="text" id="input_email" value="${email_be}" oninput="emailChk(); upSubmitChk();"/>
                
-               <form:input path="email" id="email_original" value="${user.email}"
-               style="width:440px; border:2px solid #FFFFFF; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;"/>
+               <form:input path="email" id="email_original" value="${user.email}"/>
                
          </div>
-         <div id="basic_info_right_email_address" style="width:50px; position:relative; float:left; margin:0px 0px 0px 0px;">
+         <div id="basic_info_right_email_address">
             <label for="select_email" style="font-size:16px; color: #747474;">address</label>
          </div>
          
-         <div id="basic_info_right_email_input" style="float:left; margin:-60px 30px 0px 217px;">
-            <select name="select_email" id="select_email" style="border:2px solid #747474; border-radius: 6px; font-size:23px; width:187px; height:60px; padding:14px 0px 0px 0px;">
+         <div id="basic_info_right_email_input">
+            <select name="select_email" id="select_email">
                   <option value="naver.com" id="naver.com">naver.com</option>
                   <option value="gmail.com" id="gmail.com">gmail.com</option>
                   <option value="hanmail.net" id="hanmail.net">hanmail.net</option>
@@ -164,35 +120,33 @@
            </select>
          --%>
          <%-- 전화번호 --%>
-         <div id="basic_info_right_phoneno" style="width:50px; position:relative; float:left;">
+         <div id="basic_info_right_phoneno">
             <label for="tel" style="font-size:16px; color: #747474;">Tel</label>
             <input type="hidden" id="mode_phone">
          </div>
          
-         <div id="basic_info_right_phoneno_error" style="width:200px; position:relative; float:left; margin:-1px 0px 0px -20px; ">
+         <div id="basic_info_right_phoneno_error">
             <label id="phonenoCheck" for="tel" style="font-size:13px; color: #747474;">&nbsp;</label>
          </div>
          
-         <div id="basic_info_right_phoneno_input" style="float:left; margin:-33px 100px 0px -17px;">
-            <form:input path="phoneno" id="phoneno" value="${user.phoneno}" oninput="phonenoChk(); upSubmitChk();"
-            style="width:420px; border:2px solid #FFFFFF; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;"/>
+         <div id="basic_info_right_phoneno_input">
             <input type="hidden" id="start_phoneno">
+              <form:input path="phoneno" id="phoneno" value="${user.phoneno}" oninput="phonenoChk(); upSubmitChk();"/>
          </div>
          
          <%-- 생년월일 --%>
          <div id="basic_info_right_birthday_input_update_s1">
-         <div id="basic_info_right_birth" style="width:50px; position:relative; float:left;">
+         <div id="basic_info_right_birth">
             <label for="tel" style="font-size:16px; color: #747474;">birth</label>
          </div>
          
-         <div id="basic_info_right_birth_error" style="width:200px; position:relative; float:left; margin:-1px 0px 0px -20px; ">
+         <div id="basic_info_right_birth_error">
             <label id="birthCheck" for="tel" style="font-size:13px; color: #747474;">&nbsp;</label>
          </div>
          
-         <div id="basic_info_right_birth_input" style="float:left; margin:-35px 10px 0px -68px;">
+         <div id="basic_info_right_birth_input">
             <fmt:formatDate value="${user.birthday}" var="birth" type="date" pattern="yyyy-MM-dd" />
-            <form:input path="birthday" id="birthday" value="${birth}" oninput=""
-            style="width:360px; border:2px solid #FFFFFF; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:19px 0px 0px 14px;"/>
+            <form:input path="birthday" id="birthday" value="${birth}" oninput=""/>
             <input type="hidden" id="start_birthday">
          </div>
          </div>
@@ -201,51 +155,51 @@
          <form:hidden path="birthday" id="birthday" />
          <div id="basic_info_right_birthday_input_update_s2">
             
-            <div id="basic_info_right_birthday_year" style="width:50px; position:relative; float:left;">
+            <div id="basic_info_right_birthday_year">
                <label for="year" style="font-size:16px; color: #747474;">Year</label>
             </div>
-            <div id="basic_info_right_birthday_input_year" style="float:left; margin:7px 10px 0px -67px;">
+            <div id="basic_info_right_birthday_input_year">
                <fmt:formatDate value="${user.birthday}" var="year" type="date" pattern="yyyy" />
-               <select name="yy" id="year" style="width:138px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 10px;" ></select>
+               <select name="yy" id="year" onchange="birthChk();"></select>
             </div>
             <%-- 월 --%>
-            <div id="basic_info_right_birthday_month" style="width:50px; position:relative; float:left;">
+            <div id="basic_info_right_birthday_month">
                <label for="month" style="font-size:16px; color: #747474;">&nbsp;Month</label>
             </div>
-            <div id="basic_info_right_birthday_input_month" style="float:left; margin:7px 10px 0px -57px;">
+            <div id="basic_info_right_birthday_input_month">
                <fmt:formatDate value="${user.birthday}" var="month" type="date" pattern="MM" />
-               <select name="mm" id="month" style="width:138px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 5px;" ></select>
+               <select name="mm" id="month" onchange="birthChk();"></select>
             </div>
             <%-- 일 --%>
-            <div id="basic_info_right_birthday_day" style="width:50px; position:relative; float:left;">
+            <div id="basic_info_right_birthday_day">
                <label for="day" style="font-size:16px; color: #747474;">&nbsp;Day</label>
             </div>
-            <div id="basic_info_right_birthday_input_day" style="float:left; margin:7px 10px 0px -57px;">
+            <div id="basic_info_right_birthday_input_day">
                <fmt:formatDate value="${user.birthday}" var="day" type="date" pattern="dd" />
-               <select name="dd" id="day" style="width:138px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 5px;" ></select>
+               <select name="dd" id="day" onchange="birthChk();"></select>
             </div>
          </div>
          
          <%-- 비밀번호 --%>
-         <div id="basic_info_right_password" style="width:60%; position:relative; float:left;">
+         <div id="basic_info_right_password">
             <label for="password" style="font-size:16px; color: #747474;">password</label>
             <input type="hidden" id="mode_pass">
          </div>
-         <div id="basic_info_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
+         <div id="basic_info_right_password_input">
             <form:password path="password"  oninput=" upSubmitChk(); up_pwCheck(password.value);"
             style="width:355px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;"/>
          </div>
-         <div id="basic_info_right_password_check" style="position:relative; float:left; margin: -25px 0px 0px -50px">
-            <span id="up_check" class="fa-regular fa-circle-check" style="color: green;"></span>
+         <div id="basic_info_right_password_check">
+            <span id="up_check" class="fa-regular fa-circle-check"></span>
          </div>
          
-         <div id="basic_info_right_password_submit" style="float:left; margin: -42px 0px 0px -5px">
-            <input type="submit" id="up_submit" value="수정" style="transition-duration: 0.5s; border:2px solid #D5D5D5; border-radius: 6px; font-size:18px; width:60px; height:28px; color:#FFFFFF;">
+         <div id="basic_info_right_password_submit">
+            <input type="submit" id="up_submit" value="수정">
          </div>
          
-         <div id="basic_info_right_password_cancel" style="float:left; margin: -11px 0px 0px -5px">
-                 <input type="button" id="update_cancel" value="취소" style="background-color:#FFBB00; border:2px solid #FFBB00; border-radius: 6px; font-size:18px; width:60px; height:28px; color:#FFFFFF;">
-              </div>
+         <div id="basic_info_right_password_cancel">
+            <input type="button" id="update_cancel" value="취소">
+         </div>
               
       </div>
    </form:form>
@@ -254,139 +208,216 @@
    <%-- basic_info_wrapper --%>
    <%-- basic_info_wrapper --%>
    <%-- 비밀번호 수정 --%>
-   <div id="basic_pass_wrapper" style="border:1px solid #FFFFFF; border-radius: 5px; margin-bottom:50px; margin-top:120px; box-shadow: 0px 2px 4px 0px #1B1B1B;height:240px; ">
+   <div id="basic_pass_wrapper">
     
-      <div id="basic_pass_left_inner" style="float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; ">
-         <div id="basic_pass_left_title" style="font-size:24px;">
+      <div id="basic_pass_left_inner">
+         <div id="basic_pass_left_title">
             <span><b>비밀번호 변경</b></span>
          </div>
-         <div id="basic_pass_left_desc" style="font-size:15px;">
+         <div id="basic_pass_left_desc">
             <p>주기적으로 비밀번호를 변경하여 타인의 무단 사용을 방지하세요.</p>
          </div>
       </div>
       
-      <div id="basic_pass_right" style="float:left; width:55%; height:350px; margin: 10px 0px 0px 165px;">
+      <div id="basic_pass_right">
       
               <form action="password" id="form" method="post" name="f" onsubmit="return inchk(this)">
               
             <%-- xxx --%>
             
-            <div id="change_pass_right_password" style="width:60%; position:relative; float:left;">
+            <div id="change_pass_right_password">
                <input type="hidden" id="userid" value="${sessionScope.loginUser.userid}">
-                 <input type="hidden" id="decesion">
-               <label for="chg_password" id="change_pass_right_password_title" style="font-size:16px; color: #747474;">password</label>
+               <label for="chg_password" id="change_pass_right_password_title">password</label>
             </div>
             
-            <div id="change_pass_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
-               <input type="password" id="chg_password" name="password" oninput="chg_pwCheck(password.value)" style="width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+            <div id="change_pass_right_password_input">
+               <input type="password" id="chg_password" name="password" oninput="chg_pwCheck(password.value)">
             </div>
             
-            <div id="change_pass_right_password_check" style="position:relative; float:left; margin: -25px 0px 0px -50px">
-               <span id="chg_check" class="fa-regular fa-circle-check" style="color: green;"></span>
+            <div id="change_pass_right_password_check">
+               <span id="chg_check" class="fa-regular fa-circle-check"></span>
             </div>
             
             <%-- xxx --%>
             
-            <div id="change_pass_right_current" style="width:150px; position:relative; float:left;">
+            <div id="change_pass_right_current">
                <label for="chgpass" style="font-size:16px; color: #747474;">New password</label>
             </div>
             
-            <div id="basic_info_right_password_error" style="width:280px; position:relative; float:left; margin:-1px 0px 0px -10px; ">
-               <label id="pwValid" for="chgpass" style="font-size:13px; color: #747474;">&nbsp;</label>
+            <div id="basic_info_right_password_error">
+               <label id="pwValid" for="chgpass">&nbsp;</label>
             </div>
              
-             <div id="change_pass_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
-               <input type="password" id="chgpass" name="chgpass" oninput="passValid()" style="transition-duration: 0.5s; width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+             <div id="change_pass_right_password_input">
+               <input type="password" id="chgpass" name="chgpass" oninput="passValid()">
             </div>
             <%-- xxx --%>
             
-             <div id="change_pass_right_current2" style="width:220px; position:relative; float:left;">
+             <div id="change_pass_right_current2">
                <label for="chgpass2" style="font-size:16px; color: #747474;">New password</label>
             </div>
             
-             <div id="change_pass_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
-               <input type="password" id="chgpass2" name="chgpass2" oninput="passValid()" style="transition-duration: 0.5s; width:355px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+             <div id="change_pass_right_password_input">
+               <input type="password" id="chgpass2" name="chgpass2" oninput="passValid()">
             </div>
             
-             <div id="change_pass_right_button" style="float:left; margin: -35px 0px 0px -5px">
-                <input type="submit" id="pw_submit" value="변경" style="transition-duration: 0.5s; border:2px solid #747474; border-radius: 6px; font-size:18px; width:60px; height:60px; color:#FFFFFF;">    
+             <div id="change_pass_right_button">
+                <input type="submit" id="pw_submit" value="변경">    
              </div>
             </form>
       </div>
    </div>
    
+   
+
+   
    <%-- 회원 탈퇴 --%>
    
-   <div id="basic_delete_wrapper" style="transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:120px 0px 50px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:160px; ">
+   <div id="basic_delete_wrapper">
       
-      <div id="basic_delete_left_inner" style="float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; ">
-         <div id="basic_delete_left_title" style="font-size:24px;">
+      <div id="basic_delete_left_inner">
+         <div id="basic_delete_left_title">
             <span><b>회원 탈퇴</b></span>
          </div>
-         <div id="basic_delete_left_desc" style="font-size:15px;">
+         <div id="basic_delete_left_desc">
             <p>PIECA에서 사용되는 회원님의 정보를 삭제하며, 복구 불가능 합니다.</p>
          </div>
       </div>
-      <div id="basic_delete_right" style="float:left; width:55%; height:350px; margin: 10px 0px 0px 165px;">
+      <div id="basic_delete_right">
          <form method="post" action="delete" name="deleteForm">
               <input type="hidden" name="userid" value="${param.userid}">
             <%-- xxx --%>
-            <div id="basic_delete_right_password" style="width:60%; position:relative; float:left;">
+            <div id="basic_delete_right_password">
                <input type="hidden" id="userid" value="${sessionScope.loginUser.userid}">
                  <input type="hidden" id="decesion">
-               <label for="delete_password" id="basic_delete_right_password_title" style="font-size:16px; color: #747474;">password</label>
+               <label for="delete_password" id="basic_delete_right_password_title">password</label>
             </div>
          
             <div id="basic_delete_right_password_input" style="float:left; margin:-35px 10px 0px -17px;">
-               <input type="password" id="delete_password" name="password" oninput="delete_pwCheck(password.value); security_codeChk();" style="width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+               <input type="password" id="delete_password" name="password" oninput="delete_pwCheck(password.value); security_codeChk();">
             </div>
             
-            <div id="basic_delete_right_password_check" style="position:relative; float:left; margin: -25px 0px 0px -50px">
+            <div id="basic_delete_right_password_check">
             <span id="delete_check" class="fa-regular fa-circle-check" style="color: green;"></span>
             </div>
             <%-- xxx --%>
-            <div id="basic_delete_right_password_security" style="width:145px; position:relative; float:left;">
+            <div id="basic_delete_right_password_security">
                <label for="sec_code" style="font-size:16px; color: #747474;">보안코드</label>
             </div>
-            <div id="basic_delete_right_password_security_show" style="float:left; margin:5px 10px 0px -162px;">
-               <input type="text" id="security_code" readonly="readonly"  style="transition-duration: 0.5s; width:208px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+            <div id="basic_delete_right_password_security_show">
+               <input type="text" id="security_code" readonly="readonly">
             </div>
             <%-- xxx --%>
-            <div id="basic_delete_right_password_check_logo" style="position:relative; float:left; margin: 12px 0px 0px -60px; font-size:35px;">
-               <span id="delete_check" onclick="getRandomString();" class="fa-sharp fa-solid fa-arrows-rotate" style="color:#2196F3"></span>
+            <div id="basic_delete_right_password_check_logo">
+               <span id="delete_check" class="fa-sharp fa-solid fa-arrows-rotate"  onclick="getRandomString();"></span>
             </div>
                
             <%-- xxx --%>
-            <div id="basic_delete_right_password_security2" style="width:110px; position:relative; float:left; margin: 0px 0px 0px 10px;">
+            <div id="basic_delete_right_password_security2">
                <label for="sec_code" style="font-size:16px; color: #747474;">보안코드 확인</label>
             </div>
             <%-- xxx --%>
-            <div id="basic_delete_right_password_security_input" style="float:left; margin:5px 10px 0px -123px;">
-               <input type="text" id="security_code2" oninput="security_codeChk()" style="transition-duration: 0.5s; width:205px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+            <div id="basic_delete_right_password_security_input">
+               <input type="text" id="security_code2" oninput="security_codeChk()">
             </div>
-            <div id="basic_delete_right_password_check2" style="position:relative; float:left; margin: 17px 0px 0px -50px">
-               <span id="delete_check2" class="fa-regular fa-circle-check" style="color: green;"></span>
+            <div id="basic_delete_right_password_check2">
+               <span id="delete_check2" class="fa-regular fa-circle-check"></span>
             </div>
          
-            <div id="basic_delete_right_submit_desc" style="transition-duration: 0.5s; line-height:50%; width:150px; position:relative; float:left;">
+            <div id="basic_delete_right_submit_desc">
                <p style="font-size:14px; color: #FFFFFF;">모든 정보가 삭제되며,</p>
                <p style="font-size:14px; color: #FFFFFF;">복구는 불가능 합니다.</p>
             </div>
-            <div id="basic_delete_right_submit_btn" style="transition-duration: 0.5s;float:left; margin:-65px 0px 0px -16px">
-               <input type="submit" id="delete_submit" value="회원 탈퇴" style="transition-duration: 0.5s; background-color: #F15F5F; border:2px solid #F15F5F; border-radius: 6px; font-size:25px; width:420px; height:60px; color:#FFFFFF; padding:0px 0px 0px 250px;">
+            <div id="basic_delete_right_submit_btn">
+               <input type="submit" id="delete_submit" value="회원 탈퇴">
             </div>            
          </form>
       </div>
    </div>
    
-  
-  
-
-
+   
+<%-- 카드결제 --%>
+<div id="mypage_card_wrapper" style="transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin-bottom:50px; margin-top:120px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:335px; ">
+   <div id="mypage_card_left_inner" style="float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; ">
+      <div id="mypage_card_left_title" style="font-size:24px;">
+         <span><b>PIECA CARD</b></span>
+        </div>
+        <div id="mypage_card_left_desc" style="font-size:15px;">
+         <p>카드로 다양한 혜택을 누리세요.</p>
+        </div>
+   </div>
+      
+   <div id="mypage_card_right_inner" style="float:left; width:55%; height:350px; margin: 10px 0px 0px 165px;">
+      <br><br><br><br><br>
+      
+      <div id="mypage_card_right_balance_title_box" style="width:430px; position:relative; float:left;">
+         <label for="mypage_card_right_balance_title" style="font-size:16px; color: #747474;">잔액</label>
+      </div>
+      <div id="mypage_card_right_balance_input_box" style="float:left; margin:-38px 10px 0px -17px;">
+         <input type="text" id="mypage_card_right_balance_input" style="width:420px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;">
+      </div>
+        <a href="javascript:win_open('payment')" style="text-decoration: none; color:black;">충전하기</a>
+      <div id="mypage_card_right_dropdown_box" style="width:800px; text-align:center; position:relative; float:left;">
+           <div id="mypage_card_right_detail_button_box" style="width:50px; position:relative; float:left; padding-top:5px;">
+                 <span id="mypage_card_right_detail_button" class="fa-solid fa-angle-down" style="color:#747474"></span>
+            </div>
+      </div>
+      
+            <%--
+            <div id="mypage_card_right_coupon_title_box" style="width:70px; position:relative; float:left;">
+               <label for="mypage_card_right_coupon_title" style="font-size:16px; color: #747474;">보유 쿠폰</label>
+            </div>
+            
+            <div id="mypage_card_right_coupon_input_box" style="float:left; margin: -42px 10px 0px 290px;">
+               <input type="text" id="mypage_card_right_coupon_input" style="transition-duration: 0.5s; width:113px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 18px;">
+            </div>
+            --%>
+   </div>
+   
+   
+   
+   
+</div>
 </div> <%-- main --%>
 <script type="text/javascript">
+function win_open(page) {
+	   var loginUser = sessionStorage.getItem("loginUser");
+	   var childWindow = window.open("payment", "child", "width=500, height=600, top=150, left=150");
+	     childWindow.opener = this;
+	     childWindow.sessionStorage.setItem("loginUser", loginUser);
+	     <%--
+	   var op = "width=500, height=500, left=50,top=150";
+	   open(page ,"",op);
+	   --%>
+	}
+function movePage(decesion) {
+   if (decesion == '1') {
+      window.scrollTo(0, 0);
+   } else if (decesion == '2') {
+      window.scrollTo(0, 200);
+   } else if (decesion == '3') {
+      window.scrollTo(0, 500);
+      //F15F5F
+   }
+}
 
-$(document).ready(function () {
+window.onscroll = function() {
+   if (window.scrollY < 120) {
+      document.getElementById("movepage1").style.color = "#008000";
+      document.getElementById("movepage2").style.color = "#5D5D5D";
+      document.getElementById("movepage3").style.color = "#5D5D5D";
+   } else if ((window.scrollY > 250) && (window.scrollY < 350)) {
+      document.getElementById("movepage1").style.color = "#5D5D5D";
+         document.getElementById("movepage2").style.color = "#008000";
+         document.getElementById("movepage3").style.color = "#5D5D5D";
+   } else if ((window.scrollY > 350) && (window.scrollY < 500)) {
+      document.getElementById("movepage1").style.color = "#5D5D5D";
+         document.getElementById("movepage2").style.color = "#5D5D5D";
+         document.getElementById("movepage3").style.color = "#008000";
+   }
+};
+   
+$(document).ready(function(){
    $("#username").attr("disabled","disabled");
    $("#email_original").attr("disabled","disabled");
    $("#phoneno").attr("disabled","disabled");
@@ -422,128 +453,134 @@ $(document).ready(function () {
    $("#delete_check").hide();
    $("#delete_check2").hide();
    $("#update_info_wrapper").hide();
-   
+      
    if ($("#login_mode").val() == 'pieca') {
       $("#basic_info_right_update").show();
-      $("#chg_password").attr('type', 'password');
+       $("#chg_password").attr('type', 'password');
    } else if ($("#login_mode").val() == 'naver') {
-      $("#basic_info_right_update").hide();
-      $("#chg_password").attr('type', 'text');
-      $("#chg_password").prop('readonly', true);
-      $("#chg_password").css({"background-color":"#F15F5F","border":"2px solid #F15F5F","font-size":"19px","color":"#FFFFFF"});
-      $("#chg_password").val('Naver회원은 이용 불가능 합니다.');
-      $("#change_pass_right_password_title").css("color","#FFFFFF");
-      
-      $("#delete_password").attr('type', 'text');
-      $("#delete_password").prop('readonly', true);
-      $("#delete_password").css({"background-color":"#F15F5F","border":"2px solid #F15F5F","font-size":"19px","color":"#FFFFFF"});
-      $("#delete_password").val('Naver회원은 보안코드로 탈퇴 가능 합니다.');
-      $("#basic_delete_right_password_title").css("color","#FFFFFF");
-
-      $("#security_code").removeAttr("disabled");
-      $("#security_code2").removeAttr("disabled");
-      $("#security_code").css("background-color","#FFFFFF");
-      $("#security_code2").css("background-color","#FFFFFF");
-      $("#basic_delete_right_password_check_logo").show();
-      getRandomString()
+       $("#chg_password").val('Naver회원은 이용 불가능 합니다.');
+       $("#delete_password").val('Naver회원은 보안코드로 탈퇴 가능 합니다.');
+   } else if ($("#login_mode").val() == 'kakao') {
+       $("#phoneno").val('-');
+       console.log($("#birthday").val())
+       $("#birthday").val($("#birthday").val().replace(/^0001-/, ""));
+       $("#chg_password").val('kakao회원은 이용 불가능 합니다.');
+       $("#delete_password").val('kakao회원은 보안코드로 탈퇴 가능 합니다.');
    }
-});
-
-$(document).ready(function(){
+   if ($("#login_mode").val() != 'pieca') {
+      $("#basic_info_right_update").hide();
+       $("#chg_password").attr('type', 'text');
+       $("#chg_password").prop('readonly', true);
+       $("#chg_password").css({"background-color":"#F15F5F","border":"2px solid #F15F5F","font-size":"19px","color":"#FFFFFF"});
+       $("#change_pass_right_password_title").css("color","#FFFFFF");
+       $("#delete_password").attr('type', 'text');
+       $("#delete_password").prop('readonly', true);
+       $("#delete_password").css({"background-color":"#F15F5F","border":"2px solid #F15F5F","font-size":"19px","color":"#FFFFFF"});
+       $("#basic_delete_right_password_title").css("color","#FFFFFF");
+       $("#security_code").removeAttr("disabled");
+       $("#security_code2").removeAttr("disabled");
+       $("#security_code").css("background-color","#FFFFFF");
+       $("#security_code2").css("background-color","#FFFFFF");
+       $("#basic_delete_right_password_check_logo").show();
+       getRandomString()
+   }
+   
    $("#show_update").click(function(){
       var birthday = $("#birthday").val();
-      var email_af = $("#email_af").val();
+         var email_af = $("#email_af").val();
       
-      username
-      $("#start_name").val($("#username").val());
-      $("#start_birthday").val(birthday);
-      $("#start_phoneno").val($("#phoneno").val());
-      $("#start_email").val($("#email_original").val());
-      $("#start_email_be").val($("#input_email").val());
-      
+         $("#start_name").val($("#username").val());
+         $("#start_birthday").val(birthday);
+         $("#start_phoneno").val($("#phoneno").val());
+         $("#start_email").val($("#email_original").val());
+         $("#start_email_be").val($("#input_email").val());
       
       $("#year").val(birthday.substring(0, 4))
-      $("#month").val(birthday.substring(5, 7))
-      $("#day").val(birthday.substring(8, 10))
+         $("#month").val(birthday.substring(5, 7))
+         $("#day").val(birthday.substring(8, 10))
       
-      $("#mode_name").val('enable');
-      $("#mode_email").val('enable');
-      $("#mode_phone").val('enable');
+        $("#mode_name").val('enable');
+         $("#mode_email").val('enable');
+         $("#mode_phone").val('enable');
    
-      $("#select_email").val(email_af);
-      $("#email_original").hide();
-      $("#select_email").show();
-      $("#input_email").show();
-      $("#basic_info_right_email_address").show();
+         $("#select_email").val(email_af);
+         $("#email_original").hide();
+         $("#select_email").show();
+         $("#input_email").show();
+         $("#basic_info_right_email_address").show();
       
-      $("#username").removeAttr("disabled");
-      $("#email").removeAttr("disabled");
-      $("#input_email").removeAttr("disabled");
-      $("#phoneno").removeAttr("disabled");
-      $("#birthday").removeAttr("disabled");
-      $("#username").css("border","2px solid #747474");
-      $("#email").css("border","2px solid #747474");
-      $("#input_email").css("border","2px solid #747474");
-      $("#phoneno").css("border","2px solid #747474");
-      $("#birthday").css("border","2px solid #747474");
+         $("#username").removeAttr("disabled");
+         $("#email").removeAttr("disabled");
+         $("#input_email").removeAttr("disabled");
+         $("#phoneno").removeAttr("disabled");
+         $("#birthday").removeAttr("disabled");
+         $("#username").css("border","2px solid #747474");
+         $("#email").css("border","2px solid #747474");
+         $("#input_email").css("border","2px solid #747474");
+         $("#phoneno").css("border","2px solid #747474");
+         $("#birthday").css("border","2px solid #747474");
       
-      $("#basic_info_wrapper").css("height","360px");
-      $("#basic_info_right_update").hide(0);
+         $("#basic_info_wrapper").css("height","360px");
+         $("#basic_info_right_update").hide(0);
       
-      $("#basic_info_right_birthday_input_update_s1").hide();
-      $("#basic_info_right_birthday_input_update_s2").show();
+         $("#basic_info_right_birthday_input_update_s1").hide();
+         $("#basic_info_right_birthday_input_update_s2").show();
       
-      $("#basic_info_right_password").slideDown(600);
-      $("#basic_info_right_password_input").slideDown(610);
-      $("#basic_info_right_password_submit").slideDown(610);
-      $("#basic_info_right_password_cancel").slideDown(610);
+         $("#basic_info_right_password").slideDown(600);
+         $("#basic_info_right_password_input").slideDown(610);
+         $("#basic_info_right_password_submit").slideDown(610);
+         $("#basic_info_right_password_cancel").slideDown(610);
    });
-});
-
-$(document).ready(function(){
    $("#update_cancel").click(function(){
       var email_af = $("#email_af").val();
-      $("#username").val($("#start_name").val());
-      $("#birthday").val($("#start_birthday").val());
-      $("#phoneno").val($("#start_phoneno").val());
-      $("#email_original").val($("#start_email").val());
-      $("#input_email").val($("#start_email_be").val());
-      
-      $("#emailCheck").css("color","#ffffff");
-      $("#phonenoCheck").text("");
-      $("#password").val('')
-      
-      $("#mode_email").val('disable');
-      $("#mode_phone").val('disable');
-      
-      $("#select_email").val(email_af);
-      $("#email_original").show();
-      $("#select_email").hide();
-      $("#input_email").hide();
-      $("#basic_info_right_email_address").hide();
-      
-      $("#username").attr("disabled","disabled");
-      $("#email").attr("disabled","disabled");
-      $("#input_email").attr("disabled","disabled");
-      $("#phoneno").attr("disabled","disabled");
-      $("#birthday").attr("disabled","disabled");
-      
-      $("#username").css("border","2px solid #FFFFFF");
-      $("#email").css("border","2px solid #FFFFFF");
-      $("#input_email").css("border","2px solid #FFFFFF");
-      $("#phoneno").css("border","2px solid #FFFFFF");
-      $("#birthday").css("border","2px solid #FFFFFF");
-      
-      $("#basic_info_wrapper").css("height","280px");
-      $("#basic_info_right_update").show(0);
-      
-      $("#basic_info_right_birthday_input_update_s1").show();
-      $("#basic_info_right_birthday_input_update_s2").hide();
-      
-      $("#basic_info_right_password").hide(0);
-      $("#basic_info_right_password_input").hide(0);
-      $("#basic_info_right_password_submit").hide(0);
-      $("#basic_info_right_password_cancel").hide(0);
+       $("#username").val($("#start_name").val());
+       $("#birthday").val($("#start_birthday").val());
+       $("#phoneno").val($("#start_phoneno").val());
+       $("#email_original").val($("#start_email").val());
+       $("#input_email").val($("#start_email_be").val());
+         
+       $("#emailCheck").css("color","#ffffff");
+       $("#phonenoCheck").text("");
+       $("#password").val('')
+         
+       $("#mode_email").val('disable');
+       $("#mode_phone").val('disable');
+         
+       $("#select_email").val(email_af);
+       $("#email_original").show();
+       $("#select_email").hide();
+       $("#input_email").hide();
+       $("#basic_info_right_email_address").hide();
+         
+       $("#username").attr("disabled","disabled");
+       $("#email").attr("disabled","disabled");
+       $("#input_email").attr("disabled","disabled");
+       $("#phoneno").attr("disabled","disabled");
+       $("#birthday").attr("disabled","disabled");
+         
+       $("#username").css("border","2px solid #FFFFFF");
+       $("#email").css("border","2px solid #FFFFFF");
+       $("#input_email").css("border","2px solid #FFFFFF");
+       $("#phoneno").css("border","2px solid #FFFFFF");
+       $("#birthday").css("border","2px solid #FFFFFF");
+         
+       $("#basic_info_wrapper").css("height","280px");
+       $("#basic_info_right_update").show(0);
+         
+       $("#basic_info_right_birthday_input_update_s1").show();
+       $("#basic_info_right_birthday_input_update_s2").hide();
+         
+       $("#basic_info_right_password").hide(0);
+       $("#basic_info_right_password_input").hide(0);
+       $("#basic_info_right_password_submit").hide(0);
+       $("#basic_info_right_password_cancel").hide(0);
+   });
+   
+   $("#mypage_card_right_detail_button_box").click(function(){
+      $("#mypage_card_wrapper").css("height","500px");
+            
+      $("#mypage_card_right_detail_box").show(500);
+      $("#mypage_card_right_detail_box").show(500);
    });
 });
 
@@ -640,26 +677,12 @@ $(document).ready(function() {
    $("#day  > option[value=" + day + "]").attr("selected", "true");
 })
 
-$("select[name=yy]").change(function() {
+function birthChk() {
    var year = $("#year").val();
    var month = $("#month").val();
    var day = $("#day").val();
    $('#birthday').val(year + '-' + month + '-' + day);
-});
-
-$("select[name=mm]").change(function() {
-   var year = $("#year").val();
-   var month = $("#month").val();
-   var day = $("#day").val();
-   $('#birthday').val(year + '-' + month + '-' + day);
-});
-
-$("select[name=dd]").change(function() {
-   var year = $("#year").val();
-   var month = $("#month").val();
-   var day = $("#day").val();
-   $('#birthday').val(year + '-' + month + '-' + day);
-});
+}
 
 function upSubmitChk() {
    var mode_name = $("#mode_name").val();
@@ -752,7 +775,7 @@ function delete_pwCheck(password){
             security_codeChk()
          } else {
             $("#delete_check").hide(500);
-            $("#delete_check2").hide();
+            $("#delete_check2").hide(500);
             $("#security_code").val('');
             $("#security_code2").val('');
             $("#security_code").attr("disabled","disabled");
@@ -774,13 +797,13 @@ function security_codeChk(){
    console.log(security_code2)
    
    if ((security_code == security_code2) && (security_code != '')){
-      $("#delete_check2").show();
+      $("#delete_check2").show(500);
       $("#basic_delete_wrapper").css("height","225px");
       $("#basic_delete_right_submit_desc").show();
       $("#basic_delete_right_submit_btn").show();
       $("#delete_submit").removeAttr("disabled");
    } else {
-      $("#delete_check2").hide();
+      $("#delete_check2").hide(500);
       $("#basic_delete_wrapper").css("height","160px");
       $("#basic_delete_right_submit_desc").hide();
       $("#basic_delete_right_submit_btn").hide();
