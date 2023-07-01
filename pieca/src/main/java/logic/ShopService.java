@@ -74,7 +74,8 @@ public class ShopService {
    public String getSearch(User user) {
       return userDao.search(user);
    }
-   public void boardWrite(Board board, HttpServletRequest request) {
+   //lombok?..
+   public void boardWrite(Board board, HttpServletRequest request) { 
       int maxnum = boardDao.maxNum(); //등록된 게시물의 최대 num값 리턴
       board.setNum(++maxnum);
       board.setGrp(maxnum);
