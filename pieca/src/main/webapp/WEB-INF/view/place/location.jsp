@@ -130,36 +130,37 @@ var runCnt = 0;
 kakaoPlaceData = []
 function searchInMethod (data2 ,status, pagination) {
    console.log(runCnt+'=========================')
-   console.log(data2)
-   console.log(dataIndexArr?.[runCnt]?.addr+'에 있는 =>'+dataIndexArr?.[runCnt]?.statNm+'로 검색하자')
+   console.log(dataIndexArr?.[runCnt]?.addr+'로검색했다. =>'+dataIndexArr?.[runCnt]?.statNm+'은 장소명이다')
    runCnt++; //placeSearch 메서드의 콜백인데 for문안에서 앞메서드가 돌아서..비동기식이면 배열에 값이 누락됨 그래서 Cnt값으로
             //몇번 돌았는지 체크해줘야함
             //runCnt
    console.log('keywordSearch의 콜백 데이터')
    console.log(data2)
    if (status === kakao.maps.services.Status.OK) {//키워드 검색결과 정상일때,
-       // origin
-   //   kakaoPlaceData = data2.filter (obj => obj.category_name === '교통,수송 > 자동차 > 전기자동차 충전소');
-      
+      let add_flag = 0;
       // convert object
       for(const dataObj of data2){
          if(dataObj?.category_name === '교통,수송 > 자동차 > 전기자동차 충전소' || _.isEmpty(dataObj?.category_name)) {//옵셔널체이닝
             console.log("_.isEmpty(dataObj?.category_name : ", _.isEmpty(dataObj?.category_name));
-            //kakaoPlaceData.push(dataObj);
-            searchArr.push(dataObj);
+            searchArr[runCnt] = dataObj; //testt
+           	console.log(runCnt+'번째에 searcharr 넣음') 
+           	console.log(dataIndexArr[runCnt])
+           	console.log(searchArr.length+'는 searcharr의 길이')
+           	console.log(dataIndexArr.length+'는 dataindexarr의 길이')
+           	add_flag = 1;
             break;
-         } 
+         }
       }
       
-      if(searchArr.length === 0) {
-         searchArr.push(data2[0]);
-      }
+      if(add_flag == 0) {
+    	  searchArr[runCnt] = data2[0];
+      } 
    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-       return;
        dataIndexArr.splice(runCnt-1,1);
        console.log('검색결과없음')
        console.log('searchArr.length2:'+searchArr.length)
       console.log('dataIndexArr.length:'+dataIndexArr.length)
+       return;
       //검색결과없음
    } else if (status === kakao.maps.services.Status.ERROR) {
       dataIndexArr.splice(runCnt-1,1);
@@ -168,6 +169,15 @@ function searchInMethod (data2 ,status, pagination) {
    return;
    }
       if(maxCallCnt === runCnt) { // searchInMethod가 다 돌고 나서
+    	 for(let i=0; i<searchArr.length; i++){
+    		 console.log(_.isEmpty(searchArr[i])+" == "+i+"_.isEmpty(searchArr[i])")
+    		 if(_.isEmpty(searchArr[i])){
+    			 console.log('비었다 이거##########'+runCnt)
+    			 searchArr.splice(i,1)
+    			 dataIndexArr.splice(i,1)
+    			 i = i-1;
+    		 }
+    	 }
          console.log("searchArr 제대로 나와야함. : ", searchArr);
          displayPlaces(searchArr,curPage); // 화면에 리스트 출력
          displayPagination(searchArr); // 페이징 처리 호출 
@@ -197,20 +207,18 @@ function searchPlaces(data) {
    }
    console.log(data)
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-    for (i=0; i<data.length; i++ ) {
+    for (let i=0; i<data.length; i++ ) {
+    	console.log(i+'발싸@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
        // searchInMethod
-      if(si22==data[i].addr.slice(0,2) ){
-             dataIndexArr.push(data[i])//전기차 자료 검증(지역이 동일하면 넣었음)
-             // param1 - > 이디아 
-             // param1 - > 스타벅스 
-             // param1 - > 전기차 
-             // param1 - > 피시방 
+      //if(si22==data[i].addr.slice(0,2) ){
+             //dataIndexArr.push(data[i])//전기차 자료 검증(지역이 동일하면 넣었음)
+             dataIndexArr[i] = data[i]//전기차 자료 검증(지역이 동일하면 넣었음)
              // ps.keywordSearch(data[i].addr, searchInMethod)
              // searchInMethod (data2 ,status, pagination)
              ps.keywordSearch(data[i].addr, (a, b, c) => searchInMethod(a, b, c))
-      }else{
-         console.log('검색한 정보는 : '+data[i].addr.slice(0,2)+'지역입니다. 잘못된 데이터에요.')
-      }
+      //}else{
+      //   console.log('검색한 정보는 : '+data[i].addr.slice(0,2)+'지역입니다. 잘못된 데이터에요.')
+      //}
    } // for
    console.log('dataIndexArr = keywordSearch에 넣은순,'+dataIndexArr.length+'만큼 돕니다.')
    console.log(dataIndexArr)
@@ -260,51 +268,61 @@ function displayPlaces(places,curPage) { //places == searchArr
             };
             marker.onclick = itemEl.onclick =  function () {//좌측 리스트 onclick 이벤트
                 const filteredArray = searchArr.filter(obj => obj.place_name == title);//title이 searchArr에서 가져온거라 ==로 비교 가능
-                const fiteredArray2 = dataIndexArr.filter (obj => obj.addr.slice(6) == filteredArray[0].road_address_name.slice(3));
+                const dataIndex = searchArr.findIndex(obj => obj.place_name == title);
+                const filteredArray2 = [dataIndexArr[dataIndex]];
                 $("#placesList2 *").remove();
                 $("#placesList3 *").remove();
                console.log(title)
+               console.log('################')
                console.log('dataIndexArr.length: '+dataIndexArr.length)
                console.log('searchArr.length: '+searchArr.length)//filteredArr
+                console.log('dataindex = '+dataIndex)
+               console.log('dataindexArr  ==  행안부 title로 장소명 필터')
                console.log(dataIndexArr)
+               console.log('searcharr ==  카카오api title로 장소명 필터')
                console.log(searchArr)
+               console.log('밑에 두개는 배열길이 1이어야함')
+               console.log(filteredArray2)
+               console.log(filteredArray)
+               
                /////////onclick 시 행안부API 정보
-               let plcaeinfo = '<tr><td>충전소명 : '+fiteredArray2[0].statNm+'</td></tr>'
+               let plcaeinfo = '<tr><td>충전소명 : '+filteredArray2[0].statNm+'</td></tr>'
                let chgerStat = '';
-               if(fiteredArray2[0].stat==='1') {
+               if(filteredArray2[0].stat==='1') {
                   chgerStat = '통신이상'
-               }else if(fiteredArray2[0].stat==='2') {
+               }else if(filteredArray2[0].stat==='2') {
                   chgerStat = '충전대기완속'
-               }else if(fiteredArray2[0].stat==='3'){
+               }else if(filteredArray2[0].stat==='3'){
                   chgerStat = '충전중'
-               }else if(fiteredArray2[0].stat==='4'){
+               }else if(filteredArray2[0].stat==='4'){
                   chgerStat = '운영중지'
-               }else if(fiteredArray2[0].stat==='5'){
+               }else if(filteredArray2[0].stat==='5'){
                   chgerStat = '점검중'
-               }else if(fiteredArray2[0].stat==='9'){
+               }else if(filteredArray2[0].stat==='9'){
                   chgerStat = '상태미확인'
                }
                plcaeinfo += '<tr><td>충전기 상태 : '+chgerStat+'</td></tr>'
-               plcaeinfo += '<tr><td>realreal : '+fiteredArray2[0].stat+'</td></tr>'
-               plcaeinfo += '<tr><td>이용가능시간 : '+fiteredArray2[0].useTime+'</td></tr>'
-               plcaeinfo += '<tr><td>운영기관 : '+fiteredArray2[0].busiNm+'&nbsp/&nbsp('+fiteredArray2[0].busiCall+')</td></tr>'
-               plcaeinfo += '<tr><td>최근 상태조회 시간 : '+fiteredArray2[0].statUpdDt.substr(2,2)+'년'
-             +fiteredArray2[0].statUpdDt.substr(4,2)+'월'
-             +fiteredArray2[0].statUpdDt.substr(6,2)+'일&nbsp'
-             +fiteredArray2[0].statUpdDt.substr(8,2)+':'+fiteredArray2[0].statUpdDt.substr(10,2)+'</td></tr>'
-               plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+fiteredArray2[0].lastTsdt.substr(2,2)+'년'
-                        +fiteredArray2[0].lastTsdt.substr(4,2)+'월'
-                        +fiteredArray2[0].lastTsdt.substr(6,2)+'일&nbsp'
-                        +fiteredArray2[0].lastTsdt.substr(8,2)+':'+fiteredArray2[0].lastTsdt.substr(10,2)+'</td></tr>'
-               if(fiteredArray2[0].parkingFree=='N'){
+               plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].stat+'</td></tr>'
+               plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].addr+'</td></tr>'
+               plcaeinfo += '<tr><td>이용가능시간 : '+filteredArray2[0].useTime+'</td></tr>'
+               plcaeinfo += '<tr><td>운영기관 : '+filteredArray2[0].busiNm+'&nbsp/&nbsp('+filteredArray2[0].busiCall+')</td></tr>'
+               plcaeinfo += '<tr><td>최근 상태조회 시간 : '+filteredArray2[0].statUpdDt.substr(2,2)+'년'
+             +filteredArray2[0].statUpdDt.substr(4,2)+'월'
+             +filteredArray2[0].statUpdDt.substr(6,2)+'일&nbsp'
+             +filteredArray2[0].statUpdDt.substr(8,2)+':'+filteredArray2[0].statUpdDt.substr(10,2)+'</td></tr>'
+               plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+filteredArray2[0].lastTsdt.substr(2,2)+'년'
+                        +filteredArray2[0].lastTsdt.substr(4,2)+'월'
+                        +filteredArray2[0].lastTsdt.substr(6,2)+'일&nbsp'
+                        +filteredArray2[0].lastTsdt.substr(8,2)+':'+filteredArray2[0].lastTsdt.substr(10,2)+'</td></tr>'
+               if(filteredArray2[0].parkingFree=='N'){
                   plcaeinfo += '<tr><td>주차료 : 무료</td></tr>'
-               }else if(fiteredArray2[0].parkingFree=='Y'){
+               }else if(filteredArray2[0].parkingFree=='Y'){
                   plcaeinfo += '<tr><td>주차료 : 유료</td></tr>'
                }else{
                   plcaeinfo += '<tr><td>주차료 : 현장확인 필요</td></tr>'
                }
-               if(fiteredArray2[0].limitYn=='Y'){
-                  plcaeinfo += '<tr><td>이용제한 : '+fiteredArray2[0].limitDetail+'</td></tr>'
+               if(filteredArray2[0].limitYn=='Y'){
+                  plcaeinfo += '<tr><td>이용제한 : '+filteredArray2[0].limitDetail+'</td></tr>'
                }
                $("#placesList2").append(plcaeinfo)
                //////////onclick 시 카카오맵 api 정보
@@ -450,7 +468,7 @@ function removeAllChildNods(el) {
     $("#placesList2 *").remove();
     $("#placesList3 *").remove();
     mark_index = 0;
-    var placeslist = []
+    //var placeslist = []
    $.ajax({
       url : "${path}/api/ecclocationApi",
       type : "POST",
@@ -461,7 +479,7 @@ function removeAllChildNods(el) {
       data = _.uniqBy(data,'addr')
       data1=data
        $.each(data, function(i){
-      placeslist[i] = data[i].statNm;
+      //placeslist[i] = data[i].addr;
    });
    searchPlaces(data)
       },

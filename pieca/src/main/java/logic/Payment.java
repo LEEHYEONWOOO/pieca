@@ -12,6 +12,9 @@ import lombok.ToString;
 
 @Component
 @RequiredArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Payment {
 	
    private String orderno;
@@ -20,6 +23,8 @@ public class Payment {
    private String type;
    private Date regdate;
    private String status;
+   
+   /*
 public String getOrderno() {
 	return orderno;
 }
@@ -61,6 +66,6 @@ public String toString() {
 	return "Payment [orderno=" + orderno + ", userid=" + userid + ", amount=" + amount + ", type=" + type + ", regdate="
 			+ regdate + ", status=" + status + "]";
 }
-   
+   */
    
 }
