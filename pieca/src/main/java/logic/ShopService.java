@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import dao.BoardDao;
+import dao.CarDao;
+import dao.CommentDao;
 import dao.PaymentDao;
 import dao.UserDao;
 @Service   //@Component + Service(controller 기능과 dao 기능의 중간 역할 기능) 
@@ -26,6 +28,10 @@ public class ShopService {
    private BoardDao boardDao;
    @Autowired
    private PaymentDao paymentDao;
+   @Autowired 
+   private CommentDao commDao;
+   @Autowired 
+   private CarDao carDao;
    
    
    
@@ -50,6 +56,9 @@ public class ShopService {
       System.out.println("샵서비스 유저아이디 :: "+userid);
       return userDao.selectOne(userid);
    }
+   public List<Car> carList() {
+	      return carDao.list();
+	   }
    /*
     * 1.로그인정보,장바구니정보 => sale, saleitem 테이블의 데이터 저장
     * 2.결과는 Sale 객체에 저장
@@ -95,6 +104,10 @@ public class ShopService {
    public Board getBoard(Integer num) {
       return boardDao.selectOne(num);  //board 레코드 조회
    }
+   public void recog(Integer num) {
+	   boardDao.recog(num);
+   }
+   
    public void addReadcnt(Integer num) {
       boardDao.addReadcnt(num);       //조회수 증가
    }
@@ -167,4 +180,20 @@ public class ShopService {
    public void setcard(User user) {
       userDao.setcard(user);
    }
+   //============================
+   public int commmaxseq(int num) {
+		return commDao.maxseq(num);
+	}
+	public void comminsert(Comment comm) {
+		commDao.insert(comm);		
+	}
+	public List<Comment> commentlist(Integer num) {
+		return commDao.list(num);
+	}
+	public void commdel(int num, int seq) {
+		commDao.delete(num,seq);
+	}
+	public Comment commSelectOne(int num, int seq) {
+		return commDao.selectOne(num,seq);
+	}
 }

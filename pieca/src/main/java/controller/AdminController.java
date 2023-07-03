@@ -22,15 +22,20 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import exception.LoginException;
+import logic.Board;
 import logic.Mail;
 import logic.ShopService;
 import logic.User;
@@ -219,6 +224,24 @@ public class AdminController {
 		protected PasswordAuthentication getPasswordAuthentication() {
 			return new PasswordAuthentication(id, pw);
 		}		
+	}
+	
+	@RequestMapping("recog")
+	public ModelAndView recog(Integer num) {
+		ModelAndView mav = new ModelAndView("alert");
+		Board board = service.getBoard(num);
+		int recogCnt = board.getRecogCnt();
+		System.out.println(board);
+		System.out.println(recogCnt);
+		if(recogCnt==0) {
+			service.recog(num);
+			mav.addObject("message","승인 완료.");
+	  		mav.addObject("url","../board/detail?num="+num);
+		}else {
+			mav.addObject("message","이미 승인 완료.");
+	  		mav.addObject("url","../board/detail?num="+num);
+		}
+		return mav;
 	}
 	
 }

@@ -25,6 +25,12 @@ public class BoardDao {
 	private Map<String,Object> param = new HashMap<>();
 	private Class<BoardMapper> cls = BoardMapper.class;
 
+	public void recog(Integer num) {
+		param.clear();
+		param.put("num", num);
+		template.getMapper(cls).recog(num);
+	}
+	
 	public int maxNum() {
 		return template.getMapper(cls).maxNum();
 	}

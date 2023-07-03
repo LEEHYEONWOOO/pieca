@@ -18,7 +18,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class User {
-   @Size(min=6,max=20,message="사용할 수 없는 아이디입니다.")
+   @Size(min=5,max=20,message="사용할 수 없는 아이디입니다.")
    private String userid;
    
    private String channel; // 네이버, 카카오 소셜로그인

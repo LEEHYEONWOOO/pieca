@@ -172,8 +172,19 @@ a {
                <a href="${path}/place/main">주차장</a>
             </div>
          </li>
+         
+         <li class="map">
+               <div class="map-menu">
+                     <span>Board</span>
+               </div>
+               <div class="map-content">
+                     <a href="${path}/board/list?boardid=1">공지사항</a>
+                     <a href="${path}/board/list?boardid=2">신고 게시판</a>
+               </div>
+            </li>
+         
          <li class="news"><a href="${path}/news/main">News</a></li>
-         <li class="card"><a href="${path}/news/main">Card</a></li>
+         <li class="card"><a href="${path}/car/list">Car</a></li>
          <c:if test="${empty sessionScope.loginUser}">
             <li class="login"><a class="fa-regular fa-user" href="${path}/user/login"></a></li>
          </c:if>

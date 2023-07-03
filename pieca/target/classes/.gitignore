@@ -1,4 +1,7 @@
-/sitemesh/
 /controller/
 /logic/
 /dao/
+/exception/
+/aop/
+/interceptor/
+/config/

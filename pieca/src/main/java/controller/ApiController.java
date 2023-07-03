@@ -272,7 +272,6 @@ public class ApiController {
        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
        urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*XML/JSON 여부*/
        URL url = new URL(urlBuilder.toString());
-       String str;
        
        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
        System.out.println("url : "+url);

@@ -52,4 +52,5 @@ public class Board {
 	private int grplevel;
 	private int grpstep;
 	private int commcnt;
+	private int recogCnt;
 }
