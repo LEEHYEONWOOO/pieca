@@ -79,4 +79,7 @@ public class UserDao {
       param.put("userid", userid);
       return template.getMapper(cls).selectId(userid);
    }
+   public void setcard(User user) {
+      template.getMapper(cls).setcard(user);
+   }
 }

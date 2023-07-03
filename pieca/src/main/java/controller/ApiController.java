@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -260,6 +261,43 @@ public class ApiController {
       return list;   //리스트 객체가 브라우저에 전달. 뷰가 아님
       }
    
+   @RequestMapping("getParking")   //select box 두번째 출력을 위한 api
+   public JSONArray test5(String place, HttpServletRequest request) throws Exception{
+	   String servicekey = "cIU8HoBdDJx9IAv4NEQ88GvIfz3eoVBo1LHbEfxRtMKcNlK7xaWgZQexbnedoiqNWqPVRcLQ4JeBb8YhhBW6Cw%3D%3D";
+	  // String decode = URLDecoder.decode(servicekey, "utf-8");
+	   StringBuilder urlBuilder = new StringBuilder("http://api.data.go.kr/openapi/tn_pubr_prkplce_info_api"); /*URL*/
+	   urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=VlI2nytWZUbH0w4TLDLGyzrRCkTx1nOr9%2BsF8P2L04cixYagQAejVLoT5vLbaFi7jpccSxIh%2FhGpROGmeXT46A%3D%3D"); /*Service Key*/
+       //urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") +"=" + URLDecoder.decode(servicekey, "utf-8"));
+       urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
+       urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
+       urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*XML/JSON 여부*/
+       URL url = new URL(urlBuilder.toString());
+       String str;
+       
+       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+       System.out.println("url : "+url);
+       conn.setRequestMethod("GET");
+       conn.setRequestProperty("Content-type", "application/json");
+       System.out.println("Response code: " + conn.getResponseCode());
+       BufferedReader rd;
+       if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+           rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+       } else {
+           rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+       }
+       StringBuilder sb = new StringBuilder();
+       String line;
+       while ((line = rd.readLine()) != null) {
+           sb.append(line);
+       }
+       rd.close();
+       conn.disconnect();
+       System.out.println(sb.toString());
+	   
+	   
+	   return null;
+   }
+   
    @RequestMapping("placecode")   //select box 두번째 출력을 위한 api
    public JSONArray test5(String si2, String gu2, HttpServletRequest request) throws Exception{
       System.out.println("placecode 호출됨");
@@ -310,6 +348,8 @@ public class ApiController {
            
       return StanReginCd;   //리스트 객체가 브라우저에 전달. 뷰가 아님
       }
+   
+   
    
       
       

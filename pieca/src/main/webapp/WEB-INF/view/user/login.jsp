@@ -14,17 +14,14 @@
 </script>
 </head>
 <body>
-<div style="width:100%; height:450px; margin: 10% 0% 10% 42.2%;">
-   <div id="join_title" style="width:300px; text-align:center; margin-bottom: 50px;">
-      <img src="../img/PIECA_logo.png" style="width:140px; height:70px;">
-   </div>
+<div id="login_container">
    <form:form modelAttribute="user" method="post" action="login"
       name="loginform">
       <input type="hidden" name="username" value="유효성검증을위한데이터">
       <input type="hidden" name="email" value="a@a.a">
       <input type="hidden" name="birthday" value="2000-01-01">
       
-      <div style="width:300px; font-size: 13px; margin:0px 0px 10px 0px;">
+      <div id="login_global_error">
          <spring:hasBindErrors name="user">
             <font color="red">
                <c:forEach items="${errors.globalErrors}" var="error">
@@ -34,31 +31,31 @@
          </spring:hasBindErrors>   
       </div>
          
-      <div style="margin:15px 0px 20px 0px; ">
-         <form:input path="userid" id="input_userid" style="border:2px solid #747474; border-radius: 6px; font-size:15px; width:300px; height:50px; padding-left:10px;" placeholder="아이디 입력"/>
+      <div id="login_userid_input">
+         <form:input path="userid" id="login_input_userid" placeholder="아이디 입력"/>
       </div>
       
-      <div style="margin:5px 0px 20px 0px; ">
-         <form:password path="password" id="input_password" style="border:2px solid #747474; border-radius: 6px; font-size:15px; width:300px; height:50px; padding-left:10px;" placeholder="비밀번호 입력"/>
+      <div id="login_password_input">
+         <form:password path="password" id="login_input_password" placeholder="비밀번호 입력"/>
       </div>
       
-      <div style="display: inline; ">
-         <input type="submit" value="로그인" style="width:300px; height:44px; border:2px solid #00B6EF; border-radius: 6px; background-color: #00B6EF;font-size: 18px; color:white; cursor:pointer;">
+      <div id="login_submit_container">
+         <input type="submit" id="login_submit_button" value="로그인">
       </div>
-      
-      <div style="font-size: 14px; width:300px; text-align:center; margin: 20px 0px 20px 0px">
-         <a href="../user/join" style="text-decoration: none; color:black;">회원 가입</a>
+      <div id="login_naver_container">
+         <a href="${apiURL}"><img width="300px;" height="70px;" src="../img/login_naver.png"></a>
+      </div>
+      <div id="login_kakao_container">
+           <a href="../user/kakao_connect"><img width="300px;" height="70px;"src="../img/kakao_login.png"></a>
+         </div>
+      <div id="login_etc_container">
+         <a href="../user/join">회원 가입</a>
          <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
          <a href="javascript:win_open('idsearch')" style="text-decoration: none; color:black;">아이디 찾기</a>
          <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
          <a href="javascript:win_open('pwsearch')" style="text-decoration: none; color:black;">비밀번호 찾기</a>
       </div>
-      <div style="display: inline; font-size: 13px;">
-         <a href="${apiURL}"><img width="140px;" src="../img/login_naver2.png"></a>
-      </div>
-      <div style="display: inline; font-size: 13px;">
-           <a href="../user/kakao_connect"><img width="140px;" src="../img/kakao_login.png"></a>
-         </div>
+      
    </form:form>
    </div>
 <script>
@@ -66,30 +63,6 @@ function win_open(page) {
       var op = "width=500, height=500, left=50,top=150";
       open(page ,"",op);
 }
-
-<%--
-function winOpen(page) {
-   var link = page
-   if (link == 'join') window.resizeTo(600,950);
-   if (link == 'idsearch') window.resizeTo(616,467);
-   if (link == 'pwsearch') window.resizeTo(616,507);
-   location.href=link;
-   location.replace(link);
-}
-
-function winLogin()
-{   
-   var decesion = $("#decesion").val();
-   
-   if (decesion == "ready") {
-      window.opener.name ="parentPage";
-      document.loginform.target ="parentPage";
-      document.loginform.submit();
-      window.open('','_self').close();
-   }
-}
---%>
-
 </script>
 </body>
 </html>

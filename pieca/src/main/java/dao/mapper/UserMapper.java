@@ -12,9 +12,9 @@ import logic.User;
 
 public interface UserMapper {
    @Insert("insert into usersecurity (userid,username,password,"
-         + " birthday,phoneno,email,channel) values " 
+         + " birthday,phoneno,email,channel,card) values " 
          + " (#{userid},#{username},#{password},"
-         + " #{birthday},#{phoneno},#{email},#{channel})")
+         + " #{birthday},#{phoneno},#{email},#{channel},#{card})")
    void insert(User user);
 
    @Select({"<script>",
@@ -48,4 +48,7 @@ public interface UserMapper {
    
    @Select("select * from usersecurity where userid = #{userid}")
    User selectId(String userid);
+   
+   @Update("update usersecurity set card='y' where userid=#{userid}")
+   void setcard(User user);
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,9 +19,17 @@ public class PaymentDao {
     private Class<PaymentMapper> cls = PaymentMapper.class;
     
    public void insertkakao(Payment payment) {
-	   System.out.println("이곳은 dao");
-	   System.out.println(payment);
       template.getMapper(cls).insert(payment);
+   }
+
+   public String getBalance(String userid) {
+      param.clear();
+      param.put("userid", userid);
+      return template.getMapper(cls).selectBalance(userid);
+   }
+
+   public List<Payment> list(String userid) {
+      return template.getMapper(cls).select(userid);
    }
    
 

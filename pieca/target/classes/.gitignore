@@ -1,9 +1,4 @@
-/aop/
-/config/
-/controller/
-/dao/
-/exception/
-/interceptor/
-/logic/
 /sitemesh/
-/util/
+/controller/
+/logic/
+/dao/

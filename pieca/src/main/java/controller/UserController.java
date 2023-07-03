@@ -3,6 +3,7 @@ package controller;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -67,7 +68,7 @@ public class UserController {
       try {
          String key = util.makehash(user.getUserid(), "SHA-256");
          String email = "";
-       	 email = util.decrypt(user.getEmail(),key);
+           email = util.decrypt(user.getEmail(),key);
          return email;
       } catch(Exception e) {
          e.printStackTrace();
@@ -322,15 +323,15 @@ public class UserController {
              e.printStackTrace();
           }
         JSONObject jsonDetail=null;
-		try {
-			jsonDetail = (JSONObject)parser.parse(result.toString());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		//System.out.println("jsonDetail### " + jsonDetail);
-		JSONObject kakao_account = (JSONObject)jsonDetail.get("kakao_account");
-		//System.out.println("kakao_account### " + kakao_account);
-		JSONObject kakao_profile = (JSONObject)kakao_account.get("profile");
+      try {
+         jsonDetail = (JSONObject)parser.parse(result.toString());
+      } catch (ParseException e) {
+         e.printStackTrace();
+      }
+      //System.out.println("jsonDetail### " + jsonDetail);
+      JSONObject kakao_account = (JSONObject)jsonDetail.get("kakao_account");
+      //System.out.println("kakao_account### " + kakao_account);
+      JSONObject kakao_profile = (JSONObject)kakao_account.get("profile");
         //System.out.println("###kakao_profile###\n"+kakao_profile);
         String username = kakao_profile.get("nickname").toString();
         //System.out.println("username = "+username);
@@ -540,6 +541,18 @@ public class UserController {
             throw new LoginException ("delete?userid="+userid);
          }
       }
+      if(loginUser.getChannel().equals("kakao")) {
+          try {
+             service.userDelete(userid);
+             session.invalidate();
+             return "redirect:login";
+          } catch(DataIntegrityViolationException e) {
+             throw new LoginException ("mypage?userid="+userid);
+          } catch(Exception e) {
+             e.printStackTrace();
+             throw new LoginException ("delete?userid="+userid);
+          }
+       }
       if(loginUser.getChannel().equals("pieca")) {
          if(!passwordHash(password).equals(loginUser.getPassword())) {
             throw new LoginException
@@ -711,4 +724,45 @@ public class UserController {
       mav.addObject("title",title);
       return mav;
    }
+   
+   @PostMapping("getcard")
+   public ModelAndView getcard(User user, BindingResult bresult, HttpSession session) {
+      ModelAndView mav = new ModelAndView();
+      
+      //System.out.println("11 "+user.getUserid());
+      //System.out.println("22 "+user.getEmail());
+      //System.out.println("33 "+user.getPassword());
+      
+      String code = "error.input.check";
+      if(user.getEmail() == null || user.getEmail().trim().equals("")) {
+         bresult.rejectValue("email", "error.required"); //error.required.email 오류코드 
+      }
+      if(user.getPassword() == null || user.getPassword().trim().equals("")) {
+         bresult.rejectValue("password", "error.required"); //error.required.password  오류코드
+      }
+      String result = null;
+      //입력검증 정상완료.
+      if(user.getUserid() != null) {
+         User dbUser = service.selectUserOne(user.getUserid());
+         user.setEmail(emailEncrypt(user.getEmail(), user.getUserid()));
+         if (dbUser.getChannel().equals("pieca")) {
+            if ((passwordHash(user.getPassword()).equals(dbUser.getPassword())) &&
+                (user.getEmail().equals(dbUser.getEmail()))) {
+               service.setcard(user);
+               session.setAttribute("loginUser", user);
+                result = "ok";
+               }
+         }
+      }
+      
+      if (result == null) { // 아이디 또는 비밀번호 검색 실패.
+         bresult.reject(code);
+         mav.getModel().putAll(bresult.getModel());
+         return mav;
+      }
+      
+      mav.addObject("result",result);
+      return mav;
+   }
+   
 }

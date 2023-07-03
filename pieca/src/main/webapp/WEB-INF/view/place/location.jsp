@@ -7,13 +7,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-    <style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
 .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
 .map_wrap {position:relative;width:100%;height:500px;}
 #menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
-#menu_wrap2 {position:absolute;top:0;right:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+#menu_wrap2 {position:absolute;top:0;right:0;bottom:0;width:350px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
 .bg_white {background:#fff;}
 #menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
 #menu_wrap .option{text-align: center;}
@@ -66,11 +66,13 @@
        <select name="gu2" onchange="getText2('gu2')">
           <option value="">구군을 선택하세요</option>
        </select></span>
-       
+          <input type="button" id='location_querybutton' value="충전소 조회" onclick="ecclocationApi()" disabled="true"/>
       </div>
-       <input value="" name="zscode" id="zscode">
+      
+      
+       <input type='hidden' value="" name="zscode"  id="zscode">
        
-   <input type="button" value="시티코드" onclick="ecclocationApi()"/>
+
    
    <div class="w3-container">
      <div>
@@ -91,19 +93,26 @@
         <div id="pagination"></div>
     </div>
     <div id="menu_wrap2" class="bg_white">
+    <div>
+    	span
+		<span id="location_chgerStat" class="fa-solid fa-charging-station"></span>
+       <i id="location_useTime" class="fa-regular fa-clock"></i>
+       <i id="location_parkingFree" class="fa-solid fa-won-sign"></i>
+    </div>
         <div class="option">
         </div>
-        <hr>
-      <div>
-        <table id="placesList2"></table>
-      </div>
-      
+        <hr> 
+        
         <div>
         <table id="placesList3"></table>
         </div>
         
+      <div>
+        <table id="placesList2"></table>
+      </div>
     </div>
 </div>
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02d94db8e10d97b2ae5cfd31f23e9c4c&libraries=services"></script>
 <script>
 var mark_index=0;
@@ -170,11 +179,11 @@ function searchInMethod (data2 ,status, pagination) {
    }
       if(maxCallCnt === runCnt) { // searchInMethod가 다 돌고 나서
     	 for(let i=0; i<searchArr.length; i++){
-    		 console.log(_.isEmpty(searchArr[i])+" == "+i+"_.isEmpty(searchArr[i])")
+    		 //console.log(_.isEmpty(searchArr[i])+" == "+i+"_.isEmpty(searchArr[i])")
     		 if(_.isEmpty(searchArr[i])){
     			 console.log('비었다 이거##########'+runCnt)
     			 searchArr.splice(i,1)
-    			 dataIndexArr.splice(i,1)
+    			 //dataIndexArr.splice(i,1)
     			 i = i-1;
     		 }
     	 }
@@ -195,20 +204,9 @@ searchArr = [];
 function searchPlaces(data) {
    console.log("search places 1111111111111111");
     maxCallCnt = data.length;
-    const si22 = $("select[name=si2]").val().substr(0,2)
-    if($("select[name=si2]").val().substr(0,2)=='충청'){
-      si22 = $("select[name=si2]").val().substr(0,1)+$("select[name=si2]").val().substr(2,1);
-   } 
-   if($("select[name=si2]").val().substr(0,2)=='전라'){
-      si22 = $("select[name=si2]").val().substr(0,1)+$("select[name=si2]").val().substr(2,1);
-   }
-   if($("select[name=si2]").val().substr(0,2)=='경상'){
-      si22 = $("select[name=si2]").val().substr(0,1)+$("select[name=si2]").val().substr(2,1);
-   }
    console.log(data)
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
     for (let i=0; i<data.length; i++ ) {
-    	console.log(i+'발싸@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
        // searchInMethod
       //if(si22==data[i].addr.slice(0,2) ){
              //dataIndexArr.push(data[i])//전기차 자료 검증(지역이 동일하면 넣었음)
@@ -262,18 +260,94 @@ function displayPlaces(places,curPage) { //places == searchArr
             kakao.maps.event.addListener(marker, 'mouseout', function() {
                 infowindow.close();
             });
+            
+            kakao.maps.event.addListener(marker, 'click', function() {
+            const filteredArray = searchArr.filter(obj => obj.place_name == title);//title이 searchArr에서 가져온거라 ==로 비교 가능
+            const dataIndex = searchArr.findIndex(obj => obj.place_name == title);
+            const filteredArray2 = [dataIndexArr[dataIndex]];
+            
+            $("#placesList2 *").remove();
+            $("#placesList3 *").remove();
+           console.log(title)
+           console.log('dataIndexArr.length: '+dataIndexArr.length)
+           console.log('searchArr.length: '+searchArr.length)//filteredArr
+            console.log('dataindex = '+dataIndex)
+           console.log('dataindexArr  ==  행안부 title로 장소명 필터')
+           console.log(dataIndexArr)
+           console.log('searcharr ==  카카오api title로 장소명 필터')
+           console.log(searchArr)
+           
+ 			//////////onclick 시 카카오맵 api 정보
+           plcaeinfo2 = '<tr><td>장소명 : '+filteredArray[0].place_name+'</td></tr>'
+           //plcaeinfo2 += '<tr><td>장소분류 : '+filteredArray[0].category_name+'</td></tr>'
+           plcaeinfo2 += '<tr><td>주소 : '+filteredArray[0].address_name+'</td></tr>'
+           if(filteredArray[0].phone!=null && filteredArray[0].phone!=''){
+              plcaeinfo2 += '<tr><td>phone : '+filteredArray[0].phone+'</td></tr>'
+           }
+           if(filteredArray[0].road_address_name!=null && filteredArray[0].road_address_name!=''){
+              plcaeinfo2 += '<tr><td>지번 : '+filteredArray[0].road_address_name+'</td></tr>'
+           }
+           
+           /////////onclick 시 행안부API 정보
+           //let plcaeinfo = '<tr><td>충전소명 : '+filteredArray2[0].statNm+'</td></tr>'
+           let chgerStat = '';
+           if(filteredArray2[0].stat==='1') {
+              chgerStat = '통신이상'
+           }else if(filteredArray2[0].stat==='2') {
+              chgerStat = '충전대기완속'
+           }else if(filteredArray2[0].stat==='3'){
+              chgerStat = '충전중'
+           }else if(filteredArray2[0].stat==='4'){
+              chgerStat = '운영중지'
+           }else if(filteredArray2[0].stat==='5'){
+              chgerStat = '점검중'
+           }else if(filteredArray2[0].stat==='9'){
+              chgerStat = '상태미확인'
+           }
+           plcaeinfo = '<tr><td>충전기 상태 : '+chgerStat+'</td></tr>'
+           //plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].stat+'</td></tr>'
+           //plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].addr+'</td></tr>'
+           plcaeinfo += '<tr><td><i id="location_chgerStat" class="fa-solid fa-charging-station"></i></td></tr>';
+           plcaeinfo += '<tr><td><i id="location_useTime" class="fa-regular fa-clock"></i></td></tr>';
+           plcaeinfo += '<tr><td><i id="location_parkingFree" class="fa-solid fa-won-sign"></i></td></tr>';
+           plcaeinfo += '<tr><td>이용가능시간 : '+filteredArray2[0].useTime+'</td></tr>'
+           //plcaeinfo += '<tr><td>운영기관 : '+filteredArray2[0].busiNm+'&nbsp/&nbsp('+filteredArray2[0].busiCall+')</td></tr>'
+           plcaeinfo += '<tr><td>최근 상태조회 시간 : '+filteredArray2[0].statUpdDt.substr(2,2)+'년'
+         +filteredArray2[0].statUpdDt.substr(4,2)+'월'
+         +filteredArray2[0].statUpdDt.substr(6,2)+'일&nbsp'
+         +filteredArray2[0].statUpdDt.substr(8,2)+':'+filteredArray2[0].statUpdDt.substr(10,2)+'</td></tr>'
+           plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+filteredArray2[0].lastTsdt.substr(2,2)+'년'
+                    +filteredArray2[0].lastTsdt.substr(4,2)+'월'
+                    +filteredArray2[0].lastTsdt.substr(6,2)+'일&nbsp'
+                    +filteredArray2[0].lastTsdt.substr(8,2)+':'+filteredArray2[0].lastTsdt.substr(10,2)+'</td></tr>'
+           if(filteredArray2[0].parkingFree=='N'){
+              plcaeinfo += '<tr><td>주차료 : 무료</td></tr>'
+           }else if(filteredArray2[0].parkingFree=='Y'){
+              plcaeinfo += '<tr><td>주차료 : 유료</td></tr>'
+           }else{
+              plcaeinfo += '<tr><td>주차료 : 현장확인 필요</td></tr>'
+           }
+           if(filteredArray2[0].limitYn=='Y'){
+              plcaeinfo += '<tr><td>이용제한 : '+filteredArray2[0].limitDetail+'</td></tr>'
+           }
+           $("#placesList2").append(plcaeinfo)
+           
+           $("#placesList3").append(plcaeinfo2)
+            });
+            
 
             itemEl.onmouseover =  function () {
                 displayInfowindow(marker, title);
             };
-            marker.onclick = itemEl.onclick =  function () {//좌측 리스트 onclick 이벤트
+            
+            itemEl.onclick = function() {//좌측 리스트 onclick 이벤트
                 const filteredArray = searchArr.filter(obj => obj.place_name == title);//title이 searchArr에서 가져온거라 ==로 비교 가능
                 const dataIndex = searchArr.findIndex(obj => obj.place_name == title);
                 const filteredArray2 = [dataIndexArr[dataIndex]];
+                
                 $("#placesList2 *").remove();
                 $("#placesList3 *").remove();
                console.log(title)
-               console.log('################')
                console.log('dataIndexArr.length: '+dataIndexArr.length)
                console.log('searchArr.length: '+searchArr.length)//filteredArr
                 console.log('dataindex = '+dataIndex)
@@ -281,12 +355,20 @@ function displayPlaces(places,curPage) { //places == searchArr
                console.log(dataIndexArr)
                console.log('searcharr ==  카카오api title로 장소명 필터')
                console.log(searchArr)
-               console.log('밑에 두개는 배열길이 1이어야함')
-               console.log(filteredArray2)
-               console.log(filteredArray)
+               
+     			//////////onclick 시 카카오맵 api 정보
+               plcaeinfo2 = '<tr><td>장소명 : '+filteredArray[0].place_name+'</td></tr>'
+               //plcaeinfo2 += '<tr><td>장소분류 : '+filteredArray[0].category_name+'</td></tr>'
+               plcaeinfo2 += '<tr><td>주소 : '+filteredArray[0].address_name+'</td></tr>'
+               if(filteredArray[0].phone!=null && filteredArray[0].phone!=''){
+                  plcaeinfo2 += '<tr><td>phone : '+filteredArray[0].phone+'</td></tr>'
+               }
+               if(filteredArray[0].road_address_name!=null && filteredArray[0].road_address_name!=''){
+                  plcaeinfo2 += '<tr><td>지번 : '+filteredArray[0].road_address_name+'</td></tr>'
+               }
                
                /////////onclick 시 행안부API 정보
-               let plcaeinfo = '<tr><td>충전소명 : '+filteredArray2[0].statNm+'</td></tr>'
+               //let plcaeinfo = '<tr><td>충전소명 : '+filteredArray2[0].statNm+'</td></tr>'
                let chgerStat = '';
                if(filteredArray2[0].stat==='1') {
                   chgerStat = '통신이상'
@@ -301,11 +383,11 @@ function displayPlaces(places,curPage) { //places == searchArr
                }else if(filteredArray2[0].stat==='9'){
                   chgerStat = '상태미확인'
                }
-               plcaeinfo += '<tr><td>충전기 상태 : '+chgerStat+'</td></tr>'
-               plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].stat+'</td></tr>'
-               plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].addr+'</td></tr>'
+               plcaeinfo = '<tr><td>충전기 상태 : '+chgerStat+'</td></tr>'
+               //plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].stat+'</td></tr>'
+               //plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].addr+'</td></tr>'
                plcaeinfo += '<tr><td>이용가능시간 : '+filteredArray2[0].useTime+'</td></tr>'
-               plcaeinfo += '<tr><td>운영기관 : '+filteredArray2[0].busiNm+'&nbsp/&nbsp('+filteredArray2[0].busiCall+')</td></tr>'
+               //plcaeinfo += '<tr><td>운영기관 : '+filteredArray2[0].busiNm+'&nbsp/&nbsp('+filteredArray2[0].busiCall+')</td></tr>'
                plcaeinfo += '<tr><td>최근 상태조회 시간 : '+filteredArray2[0].statUpdDt.substr(2,2)+'년'
              +filteredArray2[0].statUpdDt.substr(4,2)+'월'
              +filteredArray2[0].statUpdDt.substr(6,2)+'일&nbsp'
@@ -325,21 +407,11 @@ function displayPlaces(places,curPage) { //places == searchArr
                   plcaeinfo += '<tr><td>이용제한 : '+filteredArray2[0].limitDetail+'</td></tr>'
                }
                $("#placesList2").append(plcaeinfo)
-               //////////onclick 시 카카오맵 api 정보
-               let plcaeinfo2 = '<tr><td>===================</tr></td>'
-               plcaeinfo2 += '<tr><td>카카오맵 api</tr></td>'
-               plcaeinfo2 += '<tr><td>장소명 : '+filteredArray[0].place_name+'</td></tr>'
-               plcaeinfo2 += '<tr><td>장소분류 : '+filteredArray[0].category_name+'</td></tr>'
-               plcaeinfo2 += '<tr><td>주소 : '+filteredArray[0].address_name+'</td></tr>'
-               if(filteredArray[0].phone!=null && filteredArray[0].phone!=''){
-                  plcaeinfo2 += '<tr><td>phone : '+filteredArray[0].phone+'</td></tr>'
-               }
-               if(filteredArray[0].road_address_name!=null && filteredArray[0].road_address_name!=''){
-                  plcaeinfo2 += '<tr><td>지번 : '+filteredArray[0].road_address_name+'</td></tr>'
-               }
+               
                $("#placesList3").append(plcaeinfo2)
             };
 
+            
             itemEl.onmouseout =  function () {
             infowindow.close();
             };
@@ -566,6 +638,7 @@ function removeAllChildNods(el) {
             type : "POST",
             success : function(data){
                $('input[name=zscode]').attr('value',data[1].row[0].region_cd.substr(0,5))
+               document.getElementById("location_querybutton").disabled = false;
             }
          })
       }

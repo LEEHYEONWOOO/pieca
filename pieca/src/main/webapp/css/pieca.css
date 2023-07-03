@@ -147,15 +147,15 @@ body * {
   .mypage_sidenav a {font-size: 18px;}
 }
 
-#basic_info_left_naver_username:focus{
+#basic_info_left_naver_username:focus, #basic_info_left_kakao_username:focus{
     outline:none;
 }
 
 #basic_info_wrapper {transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:120px 0px 50px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:280px; }
 #basic_info_left_inner {float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; }
 #basic_info_left_title {display: inline;}
-#basic_info_left_naver_img {width:30px; height:30px;}
-#basic_info_left_naver_username {font-size:24px; width:100px; border:none; margin:-5px 0px 0px 0px;}
+#basic_info_left_naver_img, #basic_info_left_kakao_img {width:30px; height:30px;}
+#basic_info_left_naver_username, #basic_info_left_kakao_username {font-size:24px; width:100px; border:none; margin:-5px 0px 0px 0px;}
 #basic_info_left_pieca_img {width:100px; height:30px;}
 #basic_info_left_desc {font-size:15px;}
 #basic_info_right_inner {float:left; width:55%; height:230px; margin: 0px 0px 0px 165px;}
