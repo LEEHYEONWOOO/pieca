@@ -10,11 +10,9 @@ function listpage(page) {
 	document.searchform.pageNum.value=page;
 	document.searchform.submit();
 }
+document.recog_Status=1+3;
 </script></head><body>
 <h2>${boardName}</h2>
-<%
-String id = (String)session.getAttribute("id");
-%>
 <table class="w3-table-all w3-border">
   <tr>
     <form action="list" method="post" name="searchform">
@@ -37,7 +35,7 @@ String id = (String)session.getAttribute("id");
       </form></tr>
     <c:if test="${listcount > 0}"> <!-- 등록된 게시물 건수 -->
      <tr><td colspan="5" class="w3-right-align">글개수:${listcount}</td></tr>
-     <tr><th  >번호</th><th>제목</th><th>글쓴이</th><th>날짜</th><th>조회수</th></tr>
+     <tr><th  >번호${recog}</th><th>제목</th><th>글쓴이</th><th>날짜</th><th>조회수</th></tr>
   <c:forEach var="board" items="${boardlist}">
       <tr><td>${boardno}</td> <%-- 화면 보여지는 게시물 번호 --%>
           <c:set var="boardno" value="${boardno - 1}" />
@@ -47,10 +45,11 @@ String id = (String)session.getAttribute("id");
       <c:if test="${empty board.fileurl}">&nbsp;&nbsp;&nbsp;</c:if>
       <c:forEach begin="1" end="${board.grplevel}">&nbsp;&nbsp;</c:forEach>
       <c:if test="${board.grplevel > 0}">└</c:if> <%-- ㅂ 한자--%>
-   <a href="detail?num=${board.num}">${board.title}   
-   <c:if test="${id==admin}">
-           		<c:if test="${recogCnt == 0}">
-           			개같다
+   <a href="detail?num=${board.num}">${board.title}
+   ${recogCnt}
+   <c:if test="${login.userid == ('admin')}">
+           		<c:if test="">
+           			<span style="color: red;">[미확인]</span>
            		</c:if>
    </c:if>
    </a>

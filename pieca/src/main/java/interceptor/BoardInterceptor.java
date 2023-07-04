@@ -19,9 +19,22 @@ public class BoardInterceptor extends HandlerInterceptorAdapter {
 		HttpSession session = request.getSession();
 		String boardid = (String)session.getAttribute("boardid");
 		User login = (User)session.getAttribute("loginUser");
+		System.out.println("boardid = "+boardid);
+		System.out.println("login  = "+login);
+		System.out.println("boardid == null 밑에 결과");
+		System.out.println(boardid==null);
+		//System.out.println(boardid.equals("1")+"    =    boardid.equals(\"1\")");
 		if(boardid == null || boardid.equals("1")) {  //공지사항 글작성
 			if(login == null || !login.getUserid().equals("admin")) {  //로그인 정보 확인
 				String msg = "관리자만 등록 가능합니다.";
+				String url = request.getContextPath()+ "/board/list?boardid=" + boardid;
+				throw new BoardException(msg,url);
+			}
+		}
+		if(boardid.equals("2")) {  //recog / refuse
+			if(login == null || !login.getUserid().equals("admin")) {  //로그인 정보 확인
+				System.out.println("recog / refuse");
+				String msg = "관리자만 승인/거절 가능합니다.";
 				String url = request.getContextPath()+ "/board/list?boardid=" + boardid;
 				throw new BoardException(msg,url);
 			}

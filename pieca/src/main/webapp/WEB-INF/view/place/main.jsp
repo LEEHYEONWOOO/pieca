@@ -203,17 +203,16 @@ function displayPlaces(places) {
                 $("#placesList2 *").remove();
                 //$("#placesList3 *").remove();
             	const filteredArray = places.filter(obj => obj.place_name == title);
-            	console.log(filteredArray[0])
-       let params=filteredArray[0].place_name;
+     params = "place=" + filteredArray[0].place_name;
+     console.log(params);
      $.ajax({
        url : "${path}/api/getParking",
        type : "POST",
        data : params,
        success : function(arr){
-          console.log(arr)
+          //dosomthing
        }
     })
-            	
                 plcaeinfo="";
                 plcaeinfo += '<tr><td>'+filteredArray[0].place_name+'</td></tr>';
                $("#placesList2").append(plcaeinfo)

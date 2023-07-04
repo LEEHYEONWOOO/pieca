@@ -12,15 +12,15 @@ import logic.Board;
 
 public interface BoardMapper {
      String select = "select num,writer,pass,title,content,file1 fileurl,"
-			+ " regdate, readcnt, grp, grplevel, grpstep, boardid,recogCnt from board";
+			+ " regdate, readcnt, grp, grplevel, grpstep, boardid from board";
 
      @Select("select ifnull(max(num),0) from board")
 	int maxNum();
 
      @Insert("insert into board (num,boardid,writer,pass,title,content,file1, regdate,"
-		+ "readcnt,grp,grplevel,grpstep,recogCnt) values (" 
+		+ "readcnt,grp,grplevel,grpstep) values (" 
 		+ "#{num},#{boardid},#{writer},#{pass},#{title},#{content},#{fileurl}, now(),"
-		+ "0,#{grp},#{grplevel},#{grpstep},0)")
+		+ "0,#{grp},#{grplevel},#{grpstep})")
 	void insert(Board board);
 
     @Select({"<script>",
@@ -73,6 +73,6 @@ public interface BoardMapper {
          + "   order by day desc limit 0,7")
 	List<Map<String, Object>> graph2(String id);
 
-    @Update("update board set recogCnt=recogCnt+1 where num=#{num}")
-	void recog(Integer num);
+    @Insert("insert into recog (num,writer,recog_Status) values (#{num},#{writer},0)")
+	void insert_Recog(Board board);
 }

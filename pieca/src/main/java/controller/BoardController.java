@@ -24,6 +24,7 @@ import exception.BoardException;
 import exception.LoginException;
 import logic.Board;
 import logic.Comment;
+import logic.Recog;
 import logic.ShopService;
 
 @Controller
@@ -72,7 +73,7 @@ public class BoardController {
 	@RequestMapping("list")
 	public ModelAndView list(@RequestParam Map<String,String> param, HttpSession session) {
 //	public ModelAndView list(@RequestParam("page") Integer pageNum,String boardid, HttpSession session) {
-//		System.out.println(param);
+		//System.out.println("param : "+param); //boardid
 		Integer pageNum = null;
 		if (param.get("pageNum") != null)
 		   pageNum = Integer.parseInt(param.get("pageNum"));
@@ -86,7 +87,13 @@ public class BoardController {
 		if(boardid == null || boardid.equals("")) {
 			boardid = "1"; 
 		}
+		//session.setAttribute("recogCnt", boardid);
+		List<Recog> recog = service.getRecog();
 		session.setAttribute("boardid", boardid);
+		session.setAttribute("recog", recog);
+		//System.out.println(recog);
+		session.setAttribute("login", session.getAttribute("loginUser"));
+		//System.out.println("list에 로그인한건"+session.getAttribute("loginUser"));
 		if(searchtype == null ||  searchcontent == null || 
 		   searchtype.trim().equals("") ||  searchcontent.trim().equals("")) {
 			searchtype = null;
@@ -124,10 +131,12 @@ public class BoardController {
 		return mav;		
 	}
 	@GetMapping("detail")
-	public ModelAndView detail(Integer num) {
+	public ModelAndView detail(Integer num,HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		Board board = service.getBoard(num); //num 게시판 내용 조회 
 		service.addReadcnt(num);   //조회수 1 증가
+		System.out.println("loginUser = " + session.getAttribute("loginUser"));
+		mav.addObject("login",session.getAttribute("loginUser"));
 		mav.addObject("board",board);
 		if(board.getBoardid() == null || board.getBoardid().equals("1"))
 			mav.addObject("boardName","공지사항");
@@ -135,6 +144,8 @@ public class BoardController {
 			mav.addObject("boardName","자유게시판");
 		else if(board.getBoardid().equals("3"))
 			mav.addObject("boardName","QNA");
+		int status = service.getRecog(num).get(0).getRecog_Status();
+		mav.addObject("status",status);
 	    //댓글 목록 화면에 전달
 	    List<Comment> commlist = service.commentlist(num);
 		mav.addObject("commlist",commlist);

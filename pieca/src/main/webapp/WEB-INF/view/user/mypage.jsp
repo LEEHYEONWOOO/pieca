@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- /shop1/src/main/webapp/WEB-INF/view/user/mypage.jsp --%>
 <%@ include file="/WEB-INF/view/jspHeader.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -18,14 +17,15 @@
    user     : userid에 해당하는 회원정보
  --%>
 <body>
-
    <div class="mypage_sidenav">
-      <a onclick="movePage(1);" id="movepage1" style="cursor: pointer;"><span
-         class="fa-regular fa-user"></span> 회원 정보</a> <a onclick="movePage(2);"
-         id="movepage2" style="cursor: pointer;"><span
-         class="fa-solid fa-lock"></span> 비밀번호 변경</a> <a onclick="movePage(3);"
-         id="movepage3" style="cursor: pointer;"><span
-         class="fa-regular fa-circle-xmark"></span> 회원 탈퇴</a>
+      <a onclick="movePage(1);" id="movepage1" style="cursor: pointer;">
+         <span class="fa-regular fa-user"></span> 회원 정보</a>
+      <a onclick="movePage(2);" id="movepage2" style="cursor: pointer;">
+         <span class="fa-solid fa-lock"></span> 비밀번호 변경</a>
+      <a onclick="movePage(3);" id="movepage3" style="cursor: pointer;">
+         <span class="fa-regular fa-credit-card"></span> PIECA CARD</a>
+      <a onclick="movePage(4);" id="movepage4" style="cursor: pointer;">
+         <span class="fa-regular fa-circle-xmark"></span> 회원 탈퇴</a>         
    </div>
 
    <div class="mypage_main">
@@ -294,12 +294,53 @@
             </form>
          </div>
       </div>
+      
+      <%-- 카드결제 --%>
+      <div id="mypage_card_wrapper" style="transition-duration: 0.5s; border: 1px solid #FFFFFF; border-radius: 5px; margin-bottom: 50px; margin-top: 200px; box-shadow: 0px 2px 4px 0px #1B1B1B; height: 280px;">
+         <div id="mypage_card_left_inner" style="float: left; width: 20%; height: 230px; margin: 20px 0px 0px 50px;">
+            <div id="mypage_card_left_title" style="font-size: 24px;">
+               <span><b>PIECA CARD</b></span>
+            </div>
+            <div id="mypage_card_left_desc" style="font-size: 15px;">
+               <p>카드로 다양한 혜택을 누리세요.</p>
+            </div><br><br>
+            <c:if test="${loginUser.card != 'y' }">
+               <button onclick="win_open('getcard')" style="width: 170px; background-color: #008000; border: 2px solid #008000; border-radius: 6px; color: #FFFFFF; cursor: pointer;">발급하기</button>
+            </c:if>
+            <c:if test="${loginUser.card == 'y' }">
+               <button onclick="win_open('payment')" style="width: 170px; background-color: #008000; border: 2px solid #008000; border-radius: 6px; color: #FFFFFF; cursor: pointer;">충전하기</button>
+            </c:if>
+         </div>
 
+         <div id="mypage_card_right_inner" style="float: left; width: 55%; height: 300px; margin: 10px 0px 0px 148px;">
+            <c:if test="${loginUser.card != 'y' }"> 
+               <div id="mypage_card_right_card_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
+                  <div id="mypage_card_right_card" style="display:flex; width: 420px; height: 220px; font-size:35px; border: 2px dashed #747474; border-radius: 6px; justify-content: center; align-items: center;">+</div>
+               </div>
+            </c:if>
+            
+            <c:if test="${loginUser.card == 'y' }"> 
+               <div id="mypage_card_right_card_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
+                  <img src="../img/mypage_card2.png" id="mypage_card_right_card" style="width: 420px; height: 220px; border: 2px solid #747474; border-radius: 6px;">
+               </div>
+            
+            <div id="mypage_card_right_dropdown_box" style="width: 800px; text-align: center; position: relative; float: left;">
+               <div id="mypage_card_right_detail_dropdown_up_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
+                  <span id="mypage_card_right_detail_dropdown_up" class="fa-solid fa-angle-down" style="color: #747474"></span>
+               </div>
+               <div id="mypage_card_right_detail_dropdown_down_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
+                  <span id="mypage_card_right_detail_dropdown_down" class="fa-solid fa-angle-up" style="color: #747474"></span>
+               </div>
+            </div>
+            </c:if>
+         </div>
+         <div id="mypage_card_right_orderlist_box" style="width: 800px; position: relative; float: left; margin: 0px 0px 0px 50px;">
+            <div id="mypage_card_right_orderlist"></div>
+         </div>
+      </div>
 
       <%-- 회원 탈퇴 --%>
-
       <div id="basic_delete_wrapper">
-
          <div id="basic_delete_left_inner">
             <div id="basic_delete_left_title">
                <span><b>회원 탈퇴</b></span>
@@ -365,52 +406,8 @@
             </form>
          </div>
       </div>
-
-      <%-- 카드결제 --%>
-      <div id="mypage_card_wrapper" style="transition-duration: 0.5s; border: 1px solid #FFFFFF; border-radius: 5px; margin-bottom: 50px; margin-top: 120px; box-shadow: 0px 2px 4px 0px #1B1B1B; height: 280px;">
-         <div id="mypage_card_left_inner" style="float: left; width: 20%; height: 230px; margin: 20px 0px 0px 50px;">
-            <div id="mypage_card_left_title" style="font-size: 24px;">
-               <span><b>PIECA CARD</b></span>
-            </div>
-            <div id="mypage_card_left_desc" style="font-size: 15px;">
-               <p>카드로 다양한 혜택을 누리세요.</p>
-            </div><br><br>
-            <c:if test="${loginUser.card != 'y' }">
-               <button onclick="win_open('getcard')" style="width: 170px; background-color: #2196F3; border: 2px solid #2196F3; border-radius: 6px; color: black; cursor: pointer;">발급하기</button>
-            </c:if>
-            <c:if test="${loginUser.card == 'y' }">
-               <button onclick="win_open('payment')" style="width: 170px; background-color: #2196F3; border: 2px solid #2196F3; border-radius: 6px; color: black; cursor: pointer;">충전하기</button>
-            </c:if>
-         </div>
-
-         <div id="mypage_card_right_inner" style="float: left; width: 55%; height: 300px; margin: 10px 0px 0px 148px;">
-            ${loginUser.card}
-            <c:if test="${loginUser.card != 'y' }"> 
-               <div id="mypage_card_right_card_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
-                  <div id="mypage_card_right_card" style="display:flex; width: 420px; height: 220px; font-size:35px; border: 2px dashed #747474; border-radius: 6px; justify-content: center; align-items: center;">+</div>
-               </div>
-            </c:if>
-            
-            <c:if test="${loginUser.card == 'y' }"> 
-               <div id="mypage_card_right_card_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
-                  <img src="../img/mypage_card2.png" id="mypage_card_right_card" style="width: 420px; height: 220px; border: 2px solid #747474; border-radius: 6px;">
-               </div>
-            
-            <div id="mypage_card_right_dropdown_box" style="width: 800px; text-align: center; position: relative; float: left;">
-               <div id="mypage_card_right_detail_dropdown_up_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
-                  <span id="mypage_card_right_detail_dropdown_up" class="fa-solid fa-angle-down" style="color: #747474"></span>
-               </div>
-               <div id="mypage_card_right_detail_dropdown_down_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
-                  <span id="mypage_card_right_detail_dropdown_down" class="fa-solid fa-angle-up" style="color: #747474"></span>
-               </div>
-            </div>
-            </c:if>
-         </div>
-         <div id="mypage_card_right_orderlist_box" style="width: 800px; position: relative; float: left; margin: 0px 0px 0px 50px;">
-            <div id="mypage_card_right_orderlist"></div>
-         </div>
-      </div>
-   </div>
+      
+</div>
 <script type="text/javascript">
 function win_open(page) {
    var loginUser = sessionStorage.getItem("loginUser");
@@ -428,9 +425,11 @@ function movePage(decesion) {
    if (decesion == '1') {
       window.scrollTo(0, 0);
    } else if (decesion == '2') {
-      window.scrollTo(0, 200);
+      window.scrollTo(0, 400);
    } else if (decesion == '3') {
-      window.scrollTo(0, 500);
+      window.scrollTo(0, 800);
+   } else if (decesion == '4') {
+      window.scrollTo(0, 1100);
    }
 }
 
@@ -439,14 +438,38 @@ window.onscroll = function() {
       document.getElementById("movepage1").style.color = "#008000";
          document.getElementById("movepage2").style.color = "#5D5D5D";
          document.getElementById("movepage3").style.color = "#5D5D5D";
-   } else if ((window.scrollY > 250) && (window.scrollY < 350)) {
+         document.getElementById("movepage4").style.color = "#5D5D5D";
+         document.getElementById("movepage1").style.fontSize = "30px";
+         document.getElementById("movepage2").style.fontSize = "22px";
+         document.getElementById("movepage3").style.fontSize = "22px";
+         document.getElementById("movepage4").style.fontSize = "22px";
+   } else if ((window.scrollY > 350) && (window.scrollY < 750)) {
          document.getElementById("movepage1").style.color = "#5D5D5D";
         document.getElementById("movepage2").style.color = "#008000";
         document.getElementById("movepage3").style.color = "#5D5D5D";
-   } else if ((window.scrollY > 350) && (window.scrollY < 500)) {
+        document.getElementById("movepage4").style.color = "#5D5D5D";
+        document.getElementById("movepage1").style.fontSize = "22px";
+         document.getElementById("movepage2").style.fontSize = "30px";
+         document.getElementById("movepage3").style.fontSize = "22px";
+         document.getElementById("movepage4").style.fontSize = "22px";
+   } else if ((window.scrollY > 751) && (window.scrollY < 950)) {
          document.getElementById("movepage1").style.color = "#5D5D5D";
         document.getElementById("movepage2").style.color = "#5D5D5D";
         document.getElementById("movepage3").style.color = "#008000";
+        document.getElementById("movepage4").style.color = "#5D5D5D";
+        document.getElementById("movepage1").style.fontSize = "22px";
+         document.getElementById("movepage2").style.fontSize = "22px";
+         document.getElementById("movepage3").style.fontSize = "30px";
+         document.getElementById("movepage4").style.fontSize = "22px";
+   } else if ((window.scrollY > 951) && (window.scrollY < 1100)) {
+         document.getElementById("movepage1").style.color = "#5D5D5D";
+        document.getElementById("movepage2").style.color = "#5D5D5D";
+        document.getElementById("movepage3").style.color = "#5D5D5D";
+        document.getElementById("movepage4").style.color = "#008000";
+        document.getElementById("movepage1").style.fontSize = "22px";
+         document.getElementById("movepage2").style.fontSize = "22px";
+         document.getElementById("movepage3").style.fontSize = "22px";
+         document.getElementById("movepage4").style.fontSize = "30px";
    }
 }
    
@@ -515,7 +538,7 @@ $(document).ready(function(){
       
    if ($("#login_mode").val() == 'pieca') {
       $("#basic_info_right_update").show();
-       $("#chg_password").attr('type', 'password');
+      $("#chg_password").attr('type', 'password');
    } else if ($("#login_mode").val() == 'naver') {
        $("#chg_password").val('Naver회원은 이용 불가능 합니다.');
        $("#delete_password").val('Naver회원은 보안코드로 탈퇴 가능 합니다.');
@@ -769,8 +792,8 @@ function upSubmitChk() {
    if ((mode_email == 'enable') && (mode_phone == 'enable') &&
    (mode_pass == 'enable') && (mode_name == 'enable')) {
       $("#up_submit").removeAttr("disabled");
-      $("#up_submit").css("background-color","#2196F3");
-      $("#up_submit").css("border","2px solid #2196F3");
+      $("#up_submit").css("background-color","#008000");
+      $("#up_submit").css("border","2px solid #008000");
    } else {
       $("#up_submit").attr("disabled","disabled");
       $("#up_submit").css("background-color","#D5D5D5");
@@ -786,7 +809,7 @@ function up_pwCheck(password){
       data : {"userid":$("#userid").val(),
             "password": password },
       success:function(result){
-         if (result == true) {
+         if (result == true) { // true == 승인 상태
             $("#mode_pass").val("enable");
             $("#up_check").show(500);
          } else {
@@ -822,7 +845,7 @@ function chg_pwCheck(password){
             $("#chgpass2").css("background-color","#D5D5D5");
          }
       }
-   });   
+   });
 }
 
 function delete_pwCheck(password){
@@ -951,8 +974,8 @@ function passValid(){
    if (chgpass != "" || chgpass2 != "") {
       if ((chgpass == chgpass2)) {
          $("#pw_submit").removeAttr("disabled");
-         $("#pw_submit").css("background-color","#2196F3");
-         $("#pw_submit").css("border","2px solid #2196F3");
+         $("#pw_submit").css("background-color","#008000");
+         $("#pw_submit").css("border","2px solid #008000");
       } else if (chgpass != chgpass2) {
          $("#pw_submit").attr("disabled","disabled");
          $("#pw_submit").css("background-color","#D5D5D5");

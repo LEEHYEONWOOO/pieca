@@ -73,8 +73,8 @@ public class MvcConfig implements WebMvcConfigurer{
 		registry.addInterceptor(new BoardInterceptor())
 		.addPathPatterns("/board/write")
 		.addPathPatterns("/board/update")
-		.addPathPatterns("/board/delete");
-		//.addPathPatterns("/board/recog");		
+		.addPathPatterns("/board/delete")
+		.addPathPatterns("/admin/recog");		
 	}
 	//기본 웹파일 처리를 위한 설정
 	@Override

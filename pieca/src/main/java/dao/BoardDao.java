@@ -25,17 +25,13 @@ public class BoardDao {
 	private Map<String,Object> param = new HashMap<>();
 	private Class<BoardMapper> cls = BoardMapper.class;
 
-	public void recog(Integer num) {
-		param.clear();
-		param.put("num", num);
-		template.getMapper(cls).recog(num);
-	}
 	
 	public int maxNum() {
 		return template.getMapper(cls).maxNum();
 	}
 	public void insert(Board board) {
 		template.getMapper(cls).insert(board);
+		template.getMapper(cls).insert_Recog(board);//신고 승인을 위해 게시물 작성 시 recog 테이블에도 데이터 추가
 	}
 	public int count(String boardid, String searchtype, String searchcontent) {
 		param.clear();

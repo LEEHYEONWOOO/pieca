@@ -19,6 +19,7 @@ import dao.BoardDao;
 import dao.CarDao;
 import dao.CommentDao;
 import dao.PaymentDao;
+import dao.RecogDao;
 import dao.UserDao;
 @Service   //@Component + Service(controller 기능과 dao 기능의 중간 역할 기능) 
 public class ShopService {
@@ -32,6 +33,8 @@ public class ShopService {
    private CommentDao commDao;
    @Autowired 
    private CarDao carDao;
+   @Autowired 
+   private RecogDao recogDao;
    
    
    
@@ -65,6 +68,8 @@ public class ShopService {
     *   - sale 테이블 저장 : saleid값 구하기. 최대값+1
     *   - saleitem 테이블 저장 : Cart 데이터를 이용하여 저장     
     */
+   
+   
    public void userUpdate(User user) {
       userDao.update(user);      
    }
@@ -103,9 +108,6 @@ public class ShopService {
    }
    public Board getBoard(Integer num) {
       return boardDao.selectOne(num);  //board 레코드 조회
-   }
-   public void recog(Integer num) {
-	   boardDao.recog(num);
    }
    
    public void addReadcnt(Integer num) {
@@ -196,4 +198,14 @@ public class ShopService {
 	public Comment commSelectOne(int num, int seq) {
 		return commDao.selectOne(num,seq);
 	}
+	public List<Recog> getRecog(Integer num) {
+		return recogDao.getRecog(num);      
+	}
+	public void doRecog(Integer num, int status) {
+		recogDao.doRecog(num, status);
+	}
+	public List<Recog> getRecog() {
+		return recogDao.getRecog();
+	}
+	
 }

@@ -4,5 +4,6 @@
 <%-- /shop1/src/main/webapp/WEB-INF/view/exception.jsp --%>    
 
 <script>
+	//alert("${exception.message}") //CartEmptyException.getMessage() 메서드 호출
 	location.href="${exception.url}" // CartEmptyException.getUrl() 메서드 호출
 </script>

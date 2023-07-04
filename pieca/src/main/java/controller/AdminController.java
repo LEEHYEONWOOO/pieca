@@ -37,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 import exception.LoginException;
 import logic.Board;
 import logic.Mail;
+import logic.Recog;
 import logic.ShopService;
 import logic.User;
 import util.CipherUtil;
@@ -228,17 +229,41 @@ public class AdminController {
 	
 	@RequestMapping("recog")
 	public ModelAndView recog(Integer num) {
+		System.out.println("adminController-recog 호출");
 		ModelAndView mav = new ModelAndView("alert");
-		Board board = service.getBoard(num);
-		int recogCnt = board.getRecogCnt();
-		System.out.println(board);
-		System.out.println(recogCnt);
-		if(recogCnt==0) {
-			service.recog(num);
-			mav.addObject("message","승인 완료.");
+		List<Recog> recog = service.getRecog(num);
+		int status = 0;
+		if(recog.size()!=0) {
+			status = recog.get(0).getRecog_Status(); //num으로 가져온 recog객체의 status
+		}
+		System.out.println("recog = " + recog);
+		System.out.println("num = "+num);
+		if(status==0 || status==2) {//0이 처리대기중, 1이 승인처리, 2는 반려상태
+			service.doRecog(num,1);
 	  		mav.addObject("url","../board/detail?num="+num);
-		}else {
-			mav.addObject("message","이미 승인 완료.");
+		}else if(status==1) {
+			service.doRecog(num,0);
+	  		mav.addObject("url","../board/detail?num="+num);
+		}
+		return mav;
+	}
+	@RequestMapping("refuse")
+	public ModelAndView refuse(Integer num) {
+		ModelAndView mav = new ModelAndView("alert");
+		List<Recog> recog = service.getRecog(num);
+		int status = 0;
+		if(recog.size()!=0) {
+			status = recog.get(0).getRecog_Status(); //num으로 가져온 recog객체의 status
+		}
+		System.out.println("recog = " + recog);
+		System.out.println("num = "+num);
+		System.out.println("recog.getRecog_Status() : "+status);
+		if(status==0 || status==1) {
+			service.doRecog(num,2);
+			mav.addObject("message","거절 완료.");
+	  		mav.addObject("url","../board/detail?num="+num);
+		}else if(status==2) {
+			service.doRecog(num,0);
 	  		mav.addObject("url","../board/detail?num="+num);
 		}
 		return mav;

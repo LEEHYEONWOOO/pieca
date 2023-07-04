@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -262,17 +263,17 @@ public class ApiController {
       }
    
    @RequestMapping("getParking")   //select box 두번째 출력을 위한 api
-   public JSONArray test5(String place, HttpServletRequest request) throws Exception{
-	   String servicekey = "cIU8HoBdDJx9IAv4NEQ88GvIfz3eoVBo1LHbEfxRtMKcNlK7xaWgZQexbnedoiqNWqPVRcLQ4JeBb8YhhBW6Cw%3D%3D";
-	  // String decode = URLDecoder.decode(servicekey, "utf-8");
+   public JSONArray test5(String place, HttpServletRequest request) throws IOException, ParseException{
 	   StringBuilder urlBuilder = new StringBuilder("http://api.data.go.kr/openapi/tn_pubr_prkplce_info_api"); /*URL*/
 	   urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=VlI2nytWZUbH0w4TLDLGyzrRCkTx1nOr9%2BsF8P2L04cixYagQAejVLoT5vLbaFi7jpccSxIh%2FhGpROGmeXT46A%3D%3D"); /*Service Key*/
-       //urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") +"=" + URLDecoder.decode(servicekey, "utf-8"));
        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
-       urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*XML/JSON 여부*/
-       URL url = new URL(urlBuilder.toString());
-       
+       urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*XML/JSON 여부*/
+       urlBuilder.append("&" + URLEncoder.encode("prkplceNm","UTF-8") + "=" + URLEncoder.encode(place, "UTF-8"));
+       URL url = null;
+       System.out.println("place = "+place);
+       System.out.println(urlBuilder.toString());
+       url = new URL(urlBuilder.toString());
        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
        System.out.println("url : "+url);
        conn.setRequestMethod("GET");
@@ -291,10 +292,22 @@ public class ApiController {
        }
        rd.close();
        conn.disconnect();
-       System.out.println(sb.toString());
+       
+       JSONParser parser = new JSONParser();
+       JSONObject obj = (JSONObject)parser.parse(sb.toString());
+       System.out.println(obj);
+       JSONObject response = (JSONObject) obj.get("response");
+       System.out.println(response);
+       JSONArray items = null;
+       try {
+    	   JSONObject body = (JSONObject) response.get("body");
+           System.out.println(body);
+           items = (JSONArray) body.get("items");
+	} catch (Exception e) {
+	}
 	   
 	   
-	   return null;
+	   return items;
    }
    
    @RequestMapping("placecode")   //select box 두번째 출력을 위한 api
@@ -311,7 +324,7 @@ public class ApiController {
         urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("locatadd_nm","UTF-8") + "=" + URLEncoder.encode(placeCode, "UTF-8"));
+        //urlBuilder.append("&" + URLEncoder.encode("locatadd_nm","UTF-8") + "=" + URLEncoder.encode(placeCode, "UTF-8"));
         
         
         URL url = new URL(urlBuilder.toString());

@@ -15,7 +15,8 @@
   .lefttoptable {  height : 250px;	    border-width: 0px;
 	text-align: left;	vertical-align : top;	padding: 0px; }
 </style></head><body>
-<table class="w3-table"><tr><td colspan="2">${boardName}</td></tr>
+<table class="w3-table">
+<tr><td colspan="2">${boardName}</td></tr>
    <tr><td width="15%">글쓴이</td>
        <td width="85%" class="leftcol">${board.writer}</td></tr>
    <tr><td>제목</td><td class="leftcol">${board.title}</td></tr>
@@ -32,8 +33,19 @@
      <a href="delete?num=${board.num}">[삭제]</a>
      <a href="list?boardid=${board.boardid}">[게시물목록]</a>
      <c:if test="${board.boardid==2}">
-     	<a href="../admin/recog?num=${board.num }">[승인]</a>
+     	<c:if test="${login.userid=='admin'}">
+     		<a href="../admin/recog?num=${board.num}">[승인]</a>
+     		<a href="../admin/refuse?num=${board.num}">[반려]</a>
+     	</c:if>
      </c:if>
+     <!-- layout 수정 후 게시물 표현부분 위로 올려야할 부분임@@@@@@@@@@@@@@@@@@@ -->
+     <c:if test="${login.userid=='admin'}">
+     <c:if test="${status==0}"><font color="black">처리대기중인 게시물입니다.</font></c:if>
+     <c:if test="${status==1}"><font color="green">승인되어있는 게시물입니다.</font></c:if>
+     <c:if test="${status==2}"><font color="red">반려되어있는 게시물입니다.</font></c:if>
+     </c:if>
+     <!-- 여기까지@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+     
    </td></tr></table>
   <%-- 댓글 등록,조회,삭제 --%>
   <span id="comment"></span>

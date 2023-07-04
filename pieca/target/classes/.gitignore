@@ -1,7 +1,6 @@
 /controller/
 /logic/
 /dao/
-/exception/
-/aop/
-/interceptor/
 /config/
+/interceptor/
+/exception/
