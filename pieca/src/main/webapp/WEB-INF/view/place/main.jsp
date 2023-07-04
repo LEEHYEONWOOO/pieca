@@ -198,25 +198,25 @@ function displayPlaces(places) {
             kakao.maps.event.addListener(marker, 'mouseout', function() {
                 infowindow.close();
             });
-
             itemEl.onclick = function() {//좌측 리스트 onclick 이벤트
                 $("#placesList2 *").remove();
+            	placeinfo="";
                 //$("#placesList3 *").remove();
             	const filteredArray = places.filter(obj => obj.place_name == title);
-     params = "place=" + filteredArray[0].place_name;
-     console.log(params);
-     $.ajax({
-       url : "${path}/api/getParking",
-       type : "POST",
-       data : params,
-       success : function(arr){
-          //dosomthing
-       }
-    })
-                plcaeinfo="";
-                plcaeinfo += '<tr><td>'+filteredArray[0].place_name+'</td></tr>';
-               $("#placesList2").append(plcaeinfo)
-              // $("#placesList3").append(plcaeinfo2)
+     			params = "place=" + filteredArray[0].place_name;
+     			console.log(params);
+     			$.ajax({
+      				url : "${path}/api/getParking",
+   				    type : "POST",
+					data : params,
+       				success : function(data){
+          				placeinfo += data
+       				}
+    			})
+                console.log(placeinfo)
+                placeinfo += '<tr><td>'+filteredArray[0].place_name+'</td></tr>';
+               $("#placesList2").append(placeinfo)
+              // $("#placesList3").append(placeinfo2)
             }
             
             

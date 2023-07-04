@@ -10,7 +10,6 @@ function listpage(page) {
 	document.searchform.pageNum.value=page;
 	document.searchform.submit();
 }
-document.recog_Status=1+3;
 </script></head><body>
 <h2>${boardName}</h2>
 <table class="w3-table-all w3-border">
@@ -35,7 +34,7 @@ document.recog_Status=1+3;
       </form></tr>
     <c:if test="${listcount > 0}"> <!-- 등록된 게시물 건수 -->
      <tr><td colspan="5" class="w3-right-align">글개수:${listcount}</td></tr>
-     <tr><th  >번호${recog}</th><th>제목</th><th>글쓴이</th><th>날짜</th><th>조회수</th></tr>
+     <tr><th  >번호</th><th>제목</th><th>글쓴이</th><th>날짜</th><th>조회수</th></tr>
   <c:forEach var="board" items="${boardlist}">
       <tr><td>${boardno}</td> <%-- 화면 보여지는 게시물 번호 --%>
           <c:set var="boardno" value="${boardno - 1}" />
@@ -46,7 +45,11 @@ document.recog_Status=1+3;
       <c:forEach begin="1" end="${board.grplevel}">&nbsp;&nbsp;</c:forEach>
       <c:if test="${board.grplevel > 0}">└</c:if> <%-- ㅂ 한자--%>
    <a href="detail?num=${board.num}">${board.title}
-   ${recogCnt}
+   <c:forEach items="${recog}" var="recog">
+  		<c:if test="${recog.num == board.num}">
+    		${recog}
+  		</c:if>
+	</c:forEach>
    <c:if test="${login.userid == ('admin')}">
            		<c:if test="">
            			<span style="color: red;">[미확인]</span>
@@ -78,5 +81,9 @@ document.recog_Status=1+3;
    <c:if test="${listcount == 0}">
       <tr><td colspan="5">등록된 게시물이 없습니다.</td></tr>
    </c:if>
-   <tr><td colspan="5"><a href="write" class="w3-right">[글쓰기]</a></td></tr>
+   <c:if test="${boardid == 1}">
+   		<c:if test="${login.userid == 'admin'}">
+   			<tr><td colspan="5"><a href="write" class="w3-right">[글쓰기]</a></td></tr>
+   		</c:if>
+   </c:if>
 </table></body></html>

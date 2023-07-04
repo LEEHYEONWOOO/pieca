@@ -493,7 +493,7 @@ public class UserController {
          service.userUpdate(user);
          if(loginUser.getUserid().equals(user.getUserid()))             
             session.setAttribute("loginUser", user);
-         mav.setViewName("redirect:mypage?userid="+user.getUserid());
+         	mav.setViewName("redirect:mypage?userid="+user.getUserid());
       } catch (Exception e) {
          e.printStackTrace();
          throw new LoginException

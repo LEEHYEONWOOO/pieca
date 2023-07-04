@@ -303,6 +303,8 @@ public class ApiController {
     	   JSONObject body = (JSONObject) response.get("body");
            System.out.println(body);
            items = (JSONArray) body.get("items");
+           System.out.println("정상출력입니다@@@@@@@@@@@@");
+           System.out.println(items);
 	} catch (Exception e) {
 	}
 	   

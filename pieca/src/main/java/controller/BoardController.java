@@ -89,6 +89,7 @@ public class BoardController {
 		}
 		//session.setAttribute("recogCnt", boardid);
 		List<Recog> recog = service.getRecog();
+		session.setAttribute("login", session.getAttribute("loginUser"));
 		session.setAttribute("boardid", boardid);
 		session.setAttribute("recog", recog);
 		//System.out.println(recog);
@@ -132,6 +133,7 @@ public class BoardController {
 	}
 	@GetMapping("detail")
 	public ModelAndView detail(Integer num,HttpSession session) {
+		System.out.println(num+"번 게시물 클릭했습니다");
 		ModelAndView mav = new ModelAndView();
 		Board board = service.getBoard(num); //num 게시판 내용 조회 
 		service.addReadcnt(num);   //조회수 1 증가

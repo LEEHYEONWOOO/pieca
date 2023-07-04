@@ -104,7 +104,7 @@ a {
 }
 
 .map, .news, .card{
-   width:11%;
+   width:7%;
 }
 
 .home {
@@ -181,7 +181,7 @@ a {
                      <a href="${path}/board/list?boardid=1">공지사항</a>
                      <a href="${path}/board/list?boardid=2">신고 게시판</a>
                </div>
-            </li>
+         </li>
          
          <li class="news"><a href="${path}/news/main">News</a></li>
          <li class="card"><a href="${path}/car/list">Car</a></li>
