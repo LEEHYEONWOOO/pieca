@@ -26,6 +26,7 @@ import logic.Board;
 import logic.Comment;
 import logic.Recog;
 import logic.ShopService;
+import logic.User;
 
 @Controller
 @RequestMapping("board")
@@ -131,8 +132,9 @@ public class BoardController {
 		mav.addObject("today", today); 
 		return mav;		
 	}
+
 	@GetMapping("detail")
-	public ModelAndView detail(Integer num,HttpSession session) {
+	public ModelAndView loginCheckdetail(Integer num,String pass ,HttpSession session) {
 		System.out.println(num+"번 게시물 클릭했습니다");
 		ModelAndView mav = new ModelAndView();
 		Board board = service.getBoard(num); //num 게시판 내용 조회 

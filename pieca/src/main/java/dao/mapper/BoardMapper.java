@@ -17,9 +17,9 @@ public interface BoardMapper {
      @Select("select ifnull(max(num),0) from board")
 	int maxNum();
 
-     @Insert("insert into board (num,boardid,writer,pass,title,content,file1, regdate,"
+     @Insert("insert into board (num,boardid,writer,title,content,file1, regdate,"
 		+ "readcnt,grp,grplevel,grpstep) values (" 
-		+ "#{num},#{boardid},#{writer},#{pass},#{title},#{content},#{fileurl}, now(),"
+		+ "#{num},#{boardid},#{writer},#{title},#{content},#{fileurl}, now(),"
 		+ "0,#{grp},#{grplevel},#{grpstep})")
 	void insert(Board board);
 

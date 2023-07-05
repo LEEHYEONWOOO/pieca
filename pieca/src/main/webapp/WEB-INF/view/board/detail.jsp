@@ -39,7 +39,7 @@
      	</c:if>
      </c:if>
      <!-- layout 수정 후 게시물 표현부분 위로 올려야할 부분임@@@@@@@@@@@@@@@@@@@ -->
-     <c:if test="${login.userid=='admin'}">
+     <c:if test="${login.userid=='admin' && board.boardid==2}">
      <c:if test="${status==0}"><font color="black">처리대기중인 게시물입니다.</font></c:if>
      <c:if test="${status==1}"><font color="green">승인되어있는 게시물입니다.</font></c:if>
      <c:if test="${status==2}"><font color="red">반려되어있는 게시물입니다.</font></c:if>

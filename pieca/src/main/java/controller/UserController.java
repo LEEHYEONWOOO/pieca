@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import exception.LoginException;
+import logic.Carlike;
+import logic.Mycar;
 import logic.ShopService;
 import logic.User;
 import util.CipherUtil;
@@ -46,6 +48,8 @@ public class UserController {
    private ShopService service;
    @Autowired
    private CipherUtil util;
+   @Autowired
+   private Carlike carlike;
 //================= private  메서드
    private String passwordHash(String password) {
       try {
@@ -228,6 +232,7 @@ public class UserController {
          String email = jsondetail.get("email").toString();
          user.setEmail(this.emailEncrypt(email, userid));
          user.setChannel("naver");
+         user.setCard("n");
          service.userInsert(user);
       }
       session.setAttribute("loginUser", user);
@@ -356,6 +361,7 @@ public class UserController {
              
              String email = userEmail.toString();
              user.setChannel("kakao");
+             user.setCard("n");
              service.userInsert(user);
           }
           session.setAttribute("loginUser", user);
@@ -395,6 +401,7 @@ public class UserController {
          user.setPassword(passwordHash(user.getPassword()));
          user.setEmail(emailEncrypt(user.getEmail(),user.getUserid()));
          user.setChannel("pieca");
+         user.setCard("n");
          service.userInsert(user); //db에 insert
          mav.addObject("user",user);
       }catch(DataIntegrityViolationException e) {
@@ -453,9 +460,8 @@ public class UserController {
    @RequestMapping("mypage")
    public ModelAndView idCheckMypage(String userid,HttpSession session) {
       ModelAndView mav = new ModelAndView();
-      System.out.println("마이페이지 유저아이디 :: "+userid);
       User user = service.selectUserOne(userid);
-      System.out.println("마이페이지 User :: "+user);
+//      Mycar car = service.selectMycar(userid);
       user.setEmail(emailDecrypt(user));  //이메일 복호화
       mav.addObject("user", user); //회원정보데이터
       return mav;
@@ -493,7 +499,7 @@ public class UserController {
          service.userUpdate(user);
          if(loginUser.getUserid().equals(user.getUserid()))             
             session.setAttribute("loginUser", user);
-         	mav.setViewName("redirect:mypage?userid="+user.getUserid());
+         mav.setViewName("redirect:mypage?userid="+user.getUserid());
       } catch (Exception e) {
          e.printStackTrace();
          throw new LoginException
@@ -743,15 +749,23 @@ public class UserController {
       String result = null;
       //입력검증 정상완료.
       if(user.getUserid() != null) {
+         User loginUser = (User)session.getAttribute("loginUser");
          User dbUser = service.selectUserOne(user.getUserid());
          user.setEmail(emailEncrypt(user.getEmail(), user.getUserid()));
+         
          if (dbUser.getChannel().equals("pieca")) {
             if ((passwordHash(user.getPassword()).equals(dbUser.getPassword())) &&
                 (user.getEmail().equals(dbUser.getEmail()))) {
                service.setcard(user);
-               session.setAttribute("loginUser", user);
+               loginUser.setCard("y");
                 result = "ok";
                }
+         } else if (!dbUser.getChannel().equals("pieca")) {
+            if (user.getEmail().equals(dbUser.getEmail() ) ) {
+               service.setcard(user);
+               loginUser.setCard("y");
+                result = "ok";
+            }
          }
       }
       
@@ -760,9 +774,19 @@ public class UserController {
          mav.getModel().putAll(bresult.getModel());
          return mav;
       }
-      
       mav.addObject("result",result);
       return mav;
    }
+
+
+   
+   
+      
+//      if ((dbUser.getUserid().equals(userid)) && (dbUser.getCarno() == carno)) {
+//         check = true;
+//         return check;
+//      }
+      
+//      return check;
    
 }

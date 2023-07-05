@@ -17,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import dao.BoardDao;
 import dao.CarDao;
+import dao.CarlikeDao;
 import dao.CommentDao;
+import dao.MycarDao;
 import dao.PaymentDao;
 import dao.RecogDao;
 import dao.UserDao;
@@ -29,16 +31,18 @@ public class ShopService {
    private BoardDao boardDao;
    @Autowired
    private PaymentDao paymentDao;
-   @Autowired 
+   @Autowired
    private CommentDao commDao;
-   @Autowired 
+   @Autowired
    private CarDao carDao;
-   @Autowired 
+   @Autowired
+   private CarlikeDao carlikeDao;
+   @Autowired
+   private MycarDao mycarDao;
+   @Autowired
    private RecogDao recogDao;
    
    
-   
-
    public void uploadFileCreate(MultipartFile file, String path) {
       //file : 파일의 내용
       //path : 업로드할 폴더
@@ -56,20 +60,14 @@ public class ShopService {
       userDao.insert(user);
    }
    public User selectUserOne(String userid) {
-      System.out.println("샵서비스 유저아이디 :: "+userid);
       return userDao.selectOne(userid);
    }
-   public List<Car> carList() {
-	      return carDao.list();
-	   }
    /*
     * 1.로그인정보,장바구니정보 => sale, saleitem 테이블의 데이터 저장
     * 2.결과는 Sale 객체에 저장
     *   - sale 테이블 저장 : saleid값 구하기. 최대값+1
     *   - saleitem 테이블 저장 : Cart 데이터를 이용하여 저장     
     */
-   
-   
    public void userUpdate(User user) {
       userDao.update(user);      
    }
@@ -109,7 +107,6 @@ public class ShopService {
    public Board getBoard(Integer num) {
       return boardDao.selectOne(num);  //board 레코드 조회
    }
-   
    public void addReadcnt(Integer num) {
       boardDao.addReadcnt(num);       //조회수 증가
    }
@@ -174,7 +171,6 @@ public class ShopService {
    }
    public String getBalance(String userid) {
       return paymentDao.getBalance(userid);
-      
    }
    public List<Payment> paymentList(String userid) {
       return paymentDao.list(userid);
@@ -182,30 +178,72 @@ public class ShopService {
    public void setcard(User user) {
       userDao.setcard(user);
    }
-   //============================
+   
+   public List<Car> carList() {
+      return carDao.list();
+   }
+   
    public int commmaxseq(int num) {
-		return commDao.maxseq(num);
-	}
-	public void comminsert(Comment comm) {
-		commDao.insert(comm);		
-	}
-	public List<Comment> commentlist(Integer num) {
-		return commDao.list(num);
-	}
-	public void commdel(int num, int seq) {
-		commDao.delete(num,seq);
-	}
-	public Comment commSelectOne(int num, int seq) {
-		return commDao.selectOne(num,seq);
-	}
-	public List<Recog> getRecog(Integer num) {
-		return recogDao.getRecog(num);      
-	}
-	public void doRecog(Integer num, int status) {
-		recogDao.doRecog(num, status);
-	}
-	public List<Recog> getRecog() {
-		return recogDao.getRecog();
-	}
-	
+      return commDao.maxseq(num);
+   }
+   
+   public void comminsert(Comment comm) {
+      commDao.insert(comm);      
+   }
+   
+   public List<Comment> commentlist(Integer num) {
+      return commDao.list(num);
+   }
+   
+   public void commdel(int num, int seq) {
+      commDao.delete(num,seq);
+   }
+   
+   public Comment commSelectOne(int num, int seq) {
+      return commDao.selectOne(num,seq);
+   }
+   
+   public List<Recog> getRecog(Integer num) {
+      return recogDao.getRecog(num);      
+   }
+   public void doRecog(Integer num, int status) {
+      recogDao.doRecog(num, status);
+   }
+   public List<Recog> getRecog() {
+      return recogDao.getRecog();
+   }
+   
+   // 차 좋아요
+   public Carlike selectUserlike(Carlike carlike) {
+      return carlikeDao.select(carlike);
+   }
+   public void likeInsert(Carlike carlike) {
+      carlikeDao.insert(carlike);
+   }
+   public void likeDelete(Carlike carlike) {
+      carlikeDao.delete(carlike);
+   }
+   public int selectliketotal(Carlike carlike) {
+      return carlikeDao.selectliketotal(carlike);
+   }
+   
+   
+   
+   // 차 장바구니
+   public Mycar selectMycar(Mycar mycar) {
+      return mycarDao.select(mycar);
+   }
+   public void mycarInsert(Mycar mycar) {
+      mycarDao.insert(mycar);
+   }
+   public void mycarDelete(Mycar mycar) {
+      mycarDao.delete(mycar);
+   }
+   public void mycarUpdate(Mycar mycar) {
+      mycarDao.update(mycar);
+   }
+   
+   
+   
+   
 }

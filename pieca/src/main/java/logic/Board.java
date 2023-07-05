@@ -40,7 +40,7 @@ public class Board {
 	private String writer;
 	@NotEmpty(message="비밀번호를 입력하세요")
 	private String pass;
-	@NotEmpty(message="제목을 입력하세요")
+	@NotEmpty(message="제목을를 입력하세요")
 	private String title;
 	@NotEmpty(message="내용을 입력하세요")
 	private String content;

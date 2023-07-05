@@ -30,10 +30,25 @@ public class UserLoginAspect {
 ("execution(* controller.User*.loginCheck*(..)) && args(..,session)")
 	public Object loginCheck(ProceedingJoinPoint joinPoint,
 			HttpSession session) throws Throwable {
+		System.out.println("@@@user login aop@@@");
 	   User loginUser = (User)session.getAttribute("loginUser");	
 	   if(loginUser == null) {
 		   throw new LoginException("login");
 	   }
 	   return joinPoint.proceed();	
 	}
+	
+	@Around
+("execution(* controller.Board*.loginCheck*(*)) && args(..,session)")
+	public Object boardLoginCheck(ProceedingJoinPoint joinPoint,
+			HttpSession session) throws Throwable {
+		System.out.println("@@@Board login aop@@@");
+	   User loginUser = (User)session.getAttribute("loginUser");	
+	   if(loginUser == null) {
+		   throw new LoginException("login");
+	   }
+	   return joinPoint.proceed();	
+	}
+	
+	
 }

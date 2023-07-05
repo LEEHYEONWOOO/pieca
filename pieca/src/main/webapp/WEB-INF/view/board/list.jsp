@@ -81,9 +81,10 @@ function listpage(page) {
    <c:if test="${listcount == 0}">
       <tr><td colspan="5">등록된 게시물이 없습니다.</td></tr>
    </c:if>
-   <c:if test="${boardid == 1}">
-   		<c:if test="${login.userid == 'admin'}">
+   <c:if test="${boardid == 1 && login.userid == 'admin'}">
    			<tr><td colspan="5"><a href="write" class="w3-right">[글쓰기]</a></td></tr>
-   		</c:if>
+   </c:if>
+   <c:if test="${boardid == 2}">
+   			<tr><td colspan="5"><a href="write" class="w3-right">[글쓰기]</a></td></tr>
    </c:if>
 </table></body></html>

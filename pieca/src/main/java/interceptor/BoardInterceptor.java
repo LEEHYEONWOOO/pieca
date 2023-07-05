@@ -31,6 +31,7 @@ public class BoardInterceptor extends HandlerInterceptorAdapter {
 				throw new BoardException(msg,url);
 			}
 		}
+		/*
 		if(boardid.equals("2")) {  //recog / refuse
 			if(login == null || !login.getUserid().equals("admin")) {  //로그인 정보 확인
 				System.out.println("recog / refuse");
@@ -38,7 +39,7 @@ public class BoardInterceptor extends HandlerInterceptorAdapter {
 				String url = request.getContextPath()+ "/board/list?boardid=" + boardid;
 				throw new BoardException(msg,url);
 			}
-		}
+		}*/
 		return true; //다음 메서드 호출 가능. controller.BoardController.write() 호출
 	}
 }

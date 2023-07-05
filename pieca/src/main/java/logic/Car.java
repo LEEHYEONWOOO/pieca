@@ -1,7 +1,10 @@
 package logic;
 
 
+import org.springframework.stereotype.Component;
+
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -15,6 +18,8 @@ public class Car {
    private String car_size;
    private String car_type;
    private String release_year;
+   private String img;
+   private int imgcnt;
    private int min_price;
    private int max_price;
    private int min_range;
@@ -39,7 +44,6 @@ public class Car {
    private int overall_height;
    private int overall_width;
    private int wheelbase;
-   private String img;
-   private String channel;
+
    
 }
