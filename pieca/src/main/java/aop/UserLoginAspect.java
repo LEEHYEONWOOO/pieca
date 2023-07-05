@@ -13,6 +13,7 @@ import logic.User;
 @Component
 @Aspect
 public class UserLoginAspect {
+	
 @Around
 ("execution(* controller.User*.idCheck*(..)) && args(..,userid,session)")
 	public Object userIdCheck(ProceedingJoinPoint joinPoint,String userid,
@@ -39,13 +40,13 @@ public class UserLoginAspect {
 	}
 	
 	@Around
-("execution(* controller.Board*.loginCheck*(*)) && args(..,session)")
+	("execution(* controller.Board*.login*(..))&& args(..,session)")
 	public Object boardLoginCheck(ProceedingJoinPoint joinPoint,
 			HttpSession session) throws Throwable {
 		System.out.println("@@@Board login aop@@@");
 	   User loginUser = (User)session.getAttribute("loginUser");	
 	   if(loginUser == null) {
-		   throw new LoginException("login");
+		   throw new LoginException("../user/login");
 	   }
 	   return joinPoint.proceed();	
 	}

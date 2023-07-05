@@ -46,9 +46,15 @@ public class BoardController {
 	 * 3. 등록 성공 : list 재요청
 	 *    등록 실패 : write 재요청
 	 */
+	@GetMapping("write")  //설정되지 않은 모든 요청시 호출되는 메서드
+	public ModelAndView loginwrite(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject(new Board());
+		return mav;
+	}
 	@PostMapping("write")
 	public ModelAndView writePost(@Valid Board board, BindingResult bresult,
-			   HttpServletRequest request) {
+			   HttpServletRequest request,HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		if(bresult.hasErrors()) {
 			mav.getModel().putAll(bresult.getModel());
@@ -134,7 +140,7 @@ public class BoardController {
 	}
 
 	@GetMapping("detail")
-	public ModelAndView loginCheckdetail(Integer num,String pass ,HttpSession session) {
+	public ModelAndView Checkdetail(Integer num,String pass ,HttpSession session) {
 		System.out.println(num+"번 게시물 클릭했습니다");
 		ModelAndView mav = new ModelAndView();
 		Board board = service.getBoard(num); //num 게시판 내용 조회 

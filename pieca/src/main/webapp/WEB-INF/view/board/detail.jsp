@@ -49,11 +49,13 @@
    </td></tr></table>
   <%-- 댓글 등록,조회,삭제 --%>
   <span id="comment"></span>
+  <c:if test="${login.userid !=null }">
   <form:form modelAttribute="comment" action="comment" method="post" name="commForm">
   <form:hidden  path="num" />
+  <form:hidden  path="loginid" value="${login.userid}"/>
   <div class="w3-row">
     <div class="w3-col s2  w3-center">
-     <p><form:input path="writer" class="w3-input w3-border" placeholder="작성자"/>
+     <p><form:input readonly="true" path="writer" class="w3-input w3-border" value="${login.username}"/>
        <font color="red"><form:errors path="writer" /></font></p>
      </div>
     <div class="w3-col s2  w3-center">
@@ -67,6 +69,7 @@
      <p><button type="submit" class="w3-btn w3-border">댓글등록</button></p></div>
   </div>
   </form:form>
+  </c:if>
   <div class="w3-container">
   <table class="w3-table-all">
     <c:forEach var="c" items="${commlist}" varStatus="stat">
@@ -77,9 +80,11 @@
     <form action="commdel" method="post" name="commdel${stat.index}">
     <input type="hidden" name="num" value="${c.num}">    
     <input type="hidden" name="seq" value="${c.seq}">    
-    <input type="password" name="pass" placeholder="비밀번호">
-    <a class="w3-btn w3-border w3-blue" 
-      href="javascript:document.commdel${stat.index}.submit()">삭제</a>
+    <c:if test="${login.userid == c.loginid}">
+    	<input type="password" name="pass" placeholder="비밀번호">
+   		 <a class="w3-btn w3-border w3-blue" 
+     		 href="javascript:document.commdel${stat.index}.submit()">삭제</a>
+    </c:if>
     </form></td>
     </tr></c:forEach></table></div>
 <script type="text/javascript">

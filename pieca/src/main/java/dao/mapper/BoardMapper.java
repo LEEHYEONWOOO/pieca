@@ -18,9 +18,9 @@ public interface BoardMapper {
 	int maxNum();
 
      @Insert("insert into board (num,boardid,writer,title,content,file1, regdate,"
-		+ "readcnt,grp,grplevel,grpstep) values (" 
+		+ "readcnt,grp,grplevel,grpstep,pass) values (" 
 		+ "#{num},#{boardid},#{writer},#{title},#{content},#{fileurl}, now(),"
-		+ "0,#{grp},#{grplevel},#{grpstep})")
+		+ "0,#{grp},#{grplevel},#{grpstep},${pass})")
 	void insert(Board board);
 
     @Select({"<script>",

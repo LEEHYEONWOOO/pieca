@@ -21,4 +21,5 @@ public class Comment {
 	@NotEmpty(message="내용를 입력하세요")
 	private String content;
 	private Date regdate;
+	private String loginid;
 }

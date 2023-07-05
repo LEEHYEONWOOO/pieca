@@ -46,7 +46,7 @@ function listpage(page) {
       <c:if test="${board.grplevel > 0}">└</c:if> <%-- ㅂ 한자--%>
    <a href="detail?num=${board.num}">${board.title}
    <c:forEach items="${recog}" var="recog">
-  		<c:if test="${recog.num == board.num}">
+  		<c:if test="${recog.num == board.num && board.boardid == 2}">
     		${recog}
   		</c:if>
 	</c:forEach>
