@@ -15,5 +15,4 @@ import lombok.ToString;
 public class Mycar {
    private String userid;
    private int carno;
-
 }

@@ -34,4 +34,8 @@ public class RecogDao {
 		param.put("recog_Status", status);
 		template.getMapper(cls).update(param);
 	}
+	
+	public void delete(Integer num) {
+		template.getMapper(cls).delete(num);
+	}
 }

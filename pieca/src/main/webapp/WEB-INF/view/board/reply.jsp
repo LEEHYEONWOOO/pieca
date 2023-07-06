@@ -9,7 +9,7 @@
   <form:hidden  path="grpstep" />
   <h2>${boardName} 답글 등록</h2>
   <table class="w3-table">
-  <tr><td>글쓴이</td><td><input type="text" name="writer">
+  <tr><td>글쓴이</td><td><input type="text" name="writer" value="관리자">
     <font color="red"><form:errors path="writer" /></font></td></tr>
   <tr><td>비밀번호</td><td><form:password path="pass" />
     <font color="red"><form:errors path="pass" /></font></td></tr>

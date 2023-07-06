@@ -24,5 +24,15 @@ public interface CarlikeMapper {
    
    @Select("select count(carno) from carlike where carno=#{carno}")
    int selectliketotal(Carlike carlike);
+   
+   @Select("SELECT carno, COUNT(userid) AS cnt FROM carlike GROUP BY carno;")
+   List<Carlike> selectliketotal2();
+
+   @Select({"<script>",
+        "select * from carlike <if test='id != null'>where userid=#{userid}</if>",
+        "</script>"})
+   List<Carlike> selectLike(String userid);
+   
+
 
 }

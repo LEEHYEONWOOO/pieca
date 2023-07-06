@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+import dao.CarDao;
 import logic.Car;
 import logic.Carlike;
 import logic.Mycar;
@@ -34,7 +36,7 @@ public class CarController {
    @Autowired
    private Mycar mycar;
    @RequestMapping("list") // get,post 방식에 상관없이 호출
-   public ModelAndView list() {
+   public ModelAndView list(HttpSession session) {
       // ModelAndView : Model + view
       // view에 전송할 데이터 + view 설정
       // view 설정이 안된 경우 : url 과 동일. item/list 뷰로 설정
@@ -42,15 +44,40 @@ public class CarController {
 
       // itemList : item 테이블의 모든 정보를 Item 객체 List로 저장
       List<Car> carList = service.carList();
+      User loginUser = (User)session.getAttribute("loginUser");
       
-      int maxnum = carList.size();
-      mav.addObject("carList", carList); // 데이터 저장
-      
-      mav.addObject("maxnum", maxnum); // 데이터 저장
-      return mav;
+      if (session.getAttribute("loginUser") != null) {
+         Mycar dbUser = service.selectMycar(loginUser.getUserid());
+         
+         //ㅎㅇ
+         List<Carlike> liked_Car = service.selectUserlike(loginUser.getUserid());
+   	  	 mav.addObject("liked_Car", liked_Car);
+   	  	 System.out.println("liked_Car : "+liked_Car);
+   	  	 List<Carlike> liked_Total = service.carliketotal();
+   	  	 mav.addObject("liked_Total", liked_Total);
+   	  	 System.out.println("liked_Total : " + liked_Total);
+         //
+            
+          List<Carlike> carLikeData = service.selectLike(loginUser.getUserid());
+          //System.out.println("333 :: "+carLikeData);
+         //System.out.println(dbUser);
+         int maxnum = carList.size();
+         mav.addObject("carList", carList); // 데이터 저장
+         mav.addObject("dbUser", dbUser); // 데이터 저장
+         mav.addObject("carLikeData", carLikeData); // 데이터 저장
+         mav.addObject("maxnum", maxnum); // 데이터 저장
+
+         
+         return mav;
+      } else {
+         int maxnum = carList.size();
+         mav.addObject("carList", carList); // 데이터 저장
+         mav.addObject("maxnum", maxnum); // 데이터 저장
+         return mav;
+      }
    }
 
-   @RequestMapping("carlike")
+   @RequestMapping("carlike") //좋아요 추가/삭제
    @ResponseBody
    public Boolean carlike(int carno, String userid) {
       carlike.setCarno(carno);
@@ -73,7 +100,7 @@ public class CarController {
       return check;
    }
    
-   @RequestMapping("carlikedec")
+   @RequestMapping("carlikedec") // 좋아요 판단
    @ResponseBody
    public Boolean carlikedec(int carno, String userid) {
       carlike.setCarno(carno);
@@ -96,44 +123,37 @@ public class CarController {
       carlike.setCarno(carno);
       
       int total = service.selectliketotal(carlike);
-      
       return total;
    }
    
    @RequestMapping("mycar")
    @ResponseBody
-   public Boolean mycar(int carno, String userid) {
-      Boolean check = null;
-      mycar.setCarno(carno);
+   public int mycar(int carno, String userid) {
       mycar.setUserid(userid);
-      Mycar dbUser = service.selectMycar(mycar);
-      
-      if (dbUser == null) {
-         System.out.println("추가 했음");
-         service.mycarInsert(mycar);
-         check = false;
-         return check;
-      }
-      
+      mycar.setCarno(carno);
+      Mycar dbUser = service.selectMycar(userid);
       
       if (dbUser.getUserid().equals(userid)) {
-         System.out.println("수정 했음");
          service.mycarUpdate(mycar);
-         check = true;
-         return check;
+         return carno;
       }
       
-      /*
+      return 0;
+   }
+   
+   @RequestMapping("mycardec")
+   @ResponseBody
+   public int mycardec(int carno, String userid) {
+      mycar.setUserid(userid);
+      mycar.setCarno(carno);
+      Mycar dbUser = service.selectMycar(userid);
+      //System.out.println("dbUser mycardec ::" + dbUser.getCarno());
       
-      
-      if ((dbUser.getUserid().equals(userid)) && (dbUser.getCarno() == carno)) {
-         System.out.println("삭제 했음");
-         service.mycarDelete(mycar);
-         check = true;
-         return check;
+      if (dbUser.getUserid().equals(userid)) {
+         return dbUser.getCarno();
       }
-      */
-      return check;
+      
+      return 0;
    }
    /*
     * //http://localhost:8080/shop1/item/detail?id=1

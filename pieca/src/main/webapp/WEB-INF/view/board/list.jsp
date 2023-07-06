@@ -47,7 +47,15 @@ function listpage(page) {
    <a href="detail?num=${board.num}">${board.title}
    <c:forEach items="${recog}" var="recog">
   		<c:if test="${recog.num == board.num && board.boardid == 2}">
-    		${recog}
+    		<c:if test="${recog.recog_Status==1}">
+    			<span id="up_check" class="fa-regular fa-circle-check"></span>
+    		</c:if>
+    		<c:if test="${recog.recog_Status==0}">
+    			<span id="up_check" style="color:black;" class="fa-regular fa-circle-check"></span>
+    		</c:if>
+    		<c:if test="${recog.recog_Status==2}">
+    			<span id="up_check" style="color:red;" class="fa-regular fa-circle-check"></span>
+    		</c:if>
   		</c:if>
 	</c:forEach>
    <c:if test="${login.userid == ('admin')}">

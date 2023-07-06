@@ -27,14 +27,15 @@ public interface MycarMapper {
    int selectliketotal(Carlike carlike);
    */
    
-   @Select("select * from mycar where userid=#{userid} and carno=#{carno}")
-   Mycar select(Mycar mycar);
+   @Select("select * from mycar where userid=#{userid}")
+   Mycar select(String userid);
    
-   @Insert("insert into mycar (userid, carno) values (#{userid}, #{carno})")
-   void insert(Mycar mycar);
+   @Insert("insert into mycar (userid, carno) values (#{userid}, 0)")
+   void insert(String userid);
    
    @Delete("delete from mycar where userid=#{userid} and carno=#{carno}")
    void delete(Mycar mycar);
 
+   @Update("update mycar set userid=#{userid},carno=#{carno} where userid=#{userid}")
    void update(Mycar mycar);
 }

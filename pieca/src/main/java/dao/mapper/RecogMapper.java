@@ -3,6 +3,7 @@ package dao.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -22,6 +23,9 @@ public interface RecogMapper {
     @Update("update recog set recog_Status = #{recog_Status}" 
             + " where num = #{num}")
 	void update(Map<String, Object> param);
+    
+    @Delete("delete from recog where num = #{num}")
+	void delete(Integer num);
 
 	
 }

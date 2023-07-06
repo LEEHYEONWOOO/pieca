@@ -9,21 +9,14 @@
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-<%--
-   http://localhost:8080/shop1/user/mypage?userid=id명
-   mypage 완성하기
-   파라미터 : userid
-   salelist : userid가 주문한 전체 Sale 객체 목록.(List)
-   user     : userid에 해당하는 회원정보
- --%>
 <body>
    <div class="mypage_sidenav">
       <a onclick="movePage(1);" id="movepage1" style="cursor: pointer;">
          <span class="fa-regular fa-user"></span> 회원 정보</a>
       <a onclick="movePage(2);" id="movepage2" style="cursor: pointer;">
-         <span class="fa-solid fa-lock"></span> 비밀번호 변경</a>
+         <span class="fa-solid fa-lock"></span> PIECA CARD</a>
       <a onclick="movePage(3);" id="movepage3" style="cursor: pointer;">
-         <span class="fa-regular fa-credit-card"></span> PIECA CARD</a>
+         <span class="fa-regular fa-credit-card"></span> 비밀번호 변경</a>
       <a onclick="movePage(4);" id="movepage4" style="cursor: pointer;">
          <span class="fa-regular fa-circle-xmark"></span> 회원 탈퇴</a>         
    </div>
@@ -229,6 +222,179 @@
       <%-- basic_info_wrapper --%>
       <%-- basic_info_wrapper --%>
       <%-- basic_info_wrapper --%>
+      
+      <%-- 내 차 조회 --%>
+      <div id="mypage_car_wrapper" style="transition-duration: 0.5s; border: 1px solid #FFFFFF; border-radius: 5px; margin-bottom: 50px; margin-top: 200px; box-shadow: 0px 2px 4px 0px #1B1B1B; height: 280px;">
+         <div id="mypage_car_left_inner" style="float: left; width: 20%; height: 230px; margin: 20px 0px 0px 50px;">
+            <div id="mypage_car_left_title" style="font-size: 24px;">
+               <span><b>차량 조회</b></span>
+            </div>
+            <div id="mypage_car_left_desc" style="font-size: 15px;">
+               <p>내 차량 정보와 관심차량의 정보를 확인하세요.</p>
+            </div>
+         </div>
+         
+         <div id="mypage_car_right_inner" style="float: left; width: 55%; height: 300px; margin: 10px 0px 0px 148px;">
+            
+
+            <c:if test="${carData.carno == 0 }">
+               <div id="mypage_car_right_car_empty_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
+                  <div id="mypage_car_right_car_empty" style="display:flex; width: 420px; height: 220px; font-size:35px; border: 2px dashed #747474; border-radius: 6px; justify-content: center; align-items: center;">+</div>
+               </div>
+            </c:if>
+            
+            <c:forEach items="${carList}" var="carList">
+            <c:if test="${carData.carno > 0 }">
+               <c:if test="${carList.no == carData.carno}"> 
+                  <div id="mypage_car_right_car_box" onclick="test()" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;border: 2px solid #747474; border-radius: 6px;">
+                     <img src="../img/${carList.img }" id="mypage_car_right_car" style="float:left; width: 420px; height: 220px;">
+                     
+                     <div id="mypage_car_right_info" style="padding-left: 30px; ">
+                        <div id="mypage_car_right_name_box" style="float:left; width:70%; height:80px; font-size:32px; padding: 10px 0px 0px 0px;">
+                           ${carList.maker} ${carList.name}
+                        </div>
+                        <div id="mypage_car_right_type_box" style=" float:left; width:70%; height:40px; font-size:20px; color:#000000;">
+                           ${carList.car_size} ${carList.car_type}
+                        </div>
+                        <div id="mypage_car_right_price_box" style=" float:left; width:30%; height:40px; font-size:16px; color:#000000; padding: 3px 0px 0px 0px;">
+                           <c:if test="${carList.min_price != 0 && carList.max_price != 0}">
+                              <fmt:formatNumber value="${(carList.min_price + carList.max_price) / 2}"/>만원
+                           </c:if>
+                           <c:if test="${carList.min_price != 0 && carList.max_price == 0}">
+                              <fmt:formatNumber value="${carList.min_price}"/>만원
+                           </c:if>
+                           <c:if test="${carList.min_price == 0 && carList.max_price == 0}">
+                              미제공
+                           </c:if>
+                        </div>
+                        
+                        <div id="mypage_car_right_range1_box" style=" float:left; width:70%; height:40px; font-size:20px; color:#000000">
+                           <c:if test="${carList.min_range != 0 && item.max_range != 0}">
+                              주행거리 : ${carList.min_range} ~ ${carList.max_range}km
+                           </c:if>
+                           <c:if test="${carList.min_range != 0 && item.max_range == 0}">
+                              주행거리 : ${carList.min_range}km
+                           </c:if>
+                           <c:if test="${carList.min_range == 0 && item.max_range == 0}">
+                              주행거리 : 미제공
+                           </c:if>
+                        </div>
+                        <div id="mypage_car_right_range2_box" style=" float:left; width:30%; height:40px; font-size:16px; color:#797979; padding: 5px 0px 0px 0px;">
+                           1회 충전시
+                        </div>
+               
+                        <div id="mypage_car_right_fuel1_box" style=" float:left; width:70%; height:60px; font-size:20px; color:#000000">
+                           <c:if test="${carList.avg_min_fuel != 0 && item.avg_max_fuel != 0}">
+                              연비 : ${carList.avg_min_fuel / 10} ~ ${carList.avg_max_fuel / 10}km/kWh
+                           </c:if>
+                           <c:if test="${carList.avg_min_fuel != 0 && item.avg_max_fuel == 0}">
+                              연비 : ${carList.avg_min_fuel / 10}km/kWh
+                           </c:if>
+                           <c:if test="${carList.avg_min_fuel == 0 && item.avg_max_fuel == 0}">
+                              연비 : 미제공
+                           </c:if>
+                        </div>
+                        <div id="mypage_car_right_fuel2_box" style=" float:left; width:30%; height:60px; font-size:16px; color:#797979; padding: 5px 0px 0px 0px;">
+                           <c:if test="${carList.dt_min_fuel != 0 && item.dt_max_fuel != 0}">
+                              <p>도심 : ${(carList.dt_min_fuel + carList.dt_max_fuel) / 20}</p>
+                           </c:if>
+                           <c:if test="${carList.dt_min_fuel != 0 && item.dt_max_fuel == 0}">
+                              <p>도심 : ${carList.dt_min_fuel / 10}</p>
+                           </c:if>
+                           <c:if test="${carList.dt_min_fuel == 0 && item.dt_max_fuel == 0}">
+                              <p>도심 : 미제공</p>
+                           </c:if>
+                           <c:if test="${carList.high_min_fuel != 0 && item.high_max_fuel != 0}">
+                              <p>고속 : ${(carList.high_min_fuel + carList.high_max_fuel) / 20}</p>
+                           </c:if>
+                           <c:if test="${carList.high_min_fuel != 0 && item.high_max_fuel == 0}">
+                              <p>고속 : ${carList.high_min_fuel / 10}</p>
+                           </c:if>
+                           <c:if test="${carList.high_min_fuel == 0 && item.high_max_fuel == 0}">
+                              <p>고속 : 미제공</p>
+                           </c:if>
+                        </div>
+                        
+                     </div>
+                  </div>
+            <c:if test="${carData.carno > 0 }">
+               <div id="mypage_car_right_dropdown_box" style="width: 800px; text-align: center; position: relative; float: left;">
+                  <div id="mypage_car_right_detail_dropdown_up_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
+                     <span id="mypage_car_right_detail_dropdown_up" class="fa-solid fa-angle-down" style="color: #747474"></span>
+                  </div>
+                  <div id="mypage_car_right_detail_dropdown_down_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
+                     <span id="mypage_car_right_detail_dropdown_down" class="fa-solid fa-angle-up" style="color: #747474"></span>
+                  </div>
+               </div>
+            </c:if>
+               
+               </c:if>
+               </c:if>
+            </c:forEach>
+            
+            
+         </div>
+         <div id="mypage_car_right_orderlist_box" style="width: 800px; position: relative; float: left; margin: 0px 0px 0px 50px;">
+            <div id="mypage_car_right_orderlist">
+            <c:forEach items="${carLikeData}" var="carLikeData">
+               <c:forEach items="${carList}" var="carList">
+               <c:if test="${carLikeData.carno == carList.no}">
+                  여기여기
+               
+               </c:if>
+               </c:forEach>
+            </c:forEach>
+            
+            </div>
+         </div>
+      </div>
+      
+      
+      
+      <%-- 카드결제 --%>
+      <div id="mypage_card_wrapper" style="transition-duration: 0.5s; border: 1px solid #FFFFFF; border-radius: 5px; margin-bottom: 50px; margin-top: 200px; box-shadow: 0px 2px 4px 0px #1B1B1B; height: 280px;">
+         <div id="mypage_card_left_inner" style="float: left; width: 20%; height: 230px; margin: 20px 0px 0px 50px;">
+            <div id="mypage_card_left_title" style="font-size: 24px;">
+               <span><b>PIECA CARD</b></span>
+            </div>
+            <div id="mypage_card_left_desc" style="font-size: 15px;">
+               <p>카드로 다양한 혜택을 누리세요.</p>
+            </div><br><br>
+            <c:if test="${loginUser.card != 'y' }">
+               <button onclick="win_open('getcard')" style="width: 170px; background-color: #008000; border: 2px solid #008000; border-radius: 6px; color: #FFFFFF; cursor: pointer;">발급하기</button>
+            </c:if>
+            <c:if test="${loginUser.card == 'y' }">
+               <button onclick="win_open('payment')" style="width: 170px; background-color: #008000; border: 2px solid #008000; border-radius: 6px; color: #FFFFFF; cursor: pointer;">충전하기</button>
+            </c:if>
+         </div>
+
+         <div id="mypage_card_right_inner" style="float: left; width: 55%; height: 300px; margin: 10px 0px 0px 148px;">
+            <c:if test="${loginUser.card != 'y' }"> 
+               <div id="mypage_card_right_card_empty_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
+                  <div id="mypage_card_right_card_empty" style="display:flex; width: 420px; height: 220px; font-size:35px; border: 2px dashed #747474; border-radius: 6px; justify-content: center; align-items: center;">+</div>
+               </div>
+            </c:if>
+            
+            <c:if test="${loginUser.card == 'y' }"> 
+               <div id="mypage_card_right_card_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
+                  <img src="../img/mypage_card2.png" id="mypage_card_right_card" style="width: 420px; height: 220px; border: 2px solid #747474; border-radius: 6px;">
+               </div>
+            
+            <div id="mypage_card_right_dropdown_box" style="width: 800px; text-align: center; position: relative; float: left;">
+               <div id="mypage_card_right_detail_dropdown_up_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
+                  <span id="mypage_card_right_detail_dropdown_up" class="fa-solid fa-angle-down" style="color: #747474"></span>
+               </div>
+               <div id="mypage_card_right_detail_dropdown_down_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
+                  <span id="mypage_card_right_detail_dropdown_down" class="fa-solid fa-angle-up" style="color: #747474"></span>
+               </div>
+            </div>
+            </c:if>
+         </div>
+         <div id="mypage_card_right_orderlist_box" style="width: 800px; position: relative; float: left; margin: 0px 0px 0px 50px;">
+            <div id="mypage_card_right_orderlist"></div>
+         </div>
+      </div>
+      
       <%-- 비밀번호 수정 --%>
       <div id="basic_pass_wrapper">
 
@@ -295,50 +461,6 @@
          </div>
       </div>
       
-      <%-- 카드결제 --%>
-      <div id="mypage_card_wrapper" style="transition-duration: 0.5s; border: 1px solid #FFFFFF; border-radius: 5px; margin-bottom: 50px; margin-top: 200px; box-shadow: 0px 2px 4px 0px #1B1B1B; height: 280px;">
-         <div id="mypage_card_left_inner" style="float: left; width: 20%; height: 230px; margin: 20px 0px 0px 50px;">
-            <div id="mypage_card_left_title" style="font-size: 24px;">
-               <span><b>PIECA CARD</b></span>
-            </div>
-            <div id="mypage_card_left_desc" style="font-size: 15px;">
-               <p>카드로 다양한 혜택을 누리세요.</p>
-            </div><br><br>
-            <c:if test="${loginUser.card != 'y' }">
-               <button onclick="win_open('getcard')" style="width: 170px; background-color: #008000; border: 2px solid #008000; border-radius: 6px; color: #FFFFFF; cursor: pointer;">발급하기</button>
-            </c:if>
-            <c:if test="${loginUser.card == 'y' }">
-               <button onclick="win_open('payment')" style="width: 170px; background-color: #008000; border: 2px solid #008000; border-radius: 6px; color: #FFFFFF; cursor: pointer;">충전하기</button>
-            </c:if>
-         </div>
-
-         <div id="mypage_card_right_inner" style="float: left; width: 55%; height: 300px; margin: 10px 0px 0px 148px;">
-            <c:if test="${loginUser.card != 'y' }"> 
-               <div id="mypage_card_right_card_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
-                  <div id="mypage_card_right_card" style="display:flex; width: 420px; height: 220px; font-size:35px; border: 2px dashed #747474; border-radius: 6px; justify-content: center; align-items: center;">+</div>
-               </div>
-            </c:if>
-            
-            <c:if test="${loginUser.card == 'y' }"> 
-               <div id="mypage_card_right_card_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
-                  <img src="../img/mypage_card2.png" id="mypage_card_right_card" style="width: 420px; height: 220px; border: 2px solid #747474; border-radius: 6px;">
-               </div>
-            
-            <div id="mypage_card_right_dropdown_box" style="width: 800px; text-align: center; position: relative; float: left;">
-               <div id="mypage_card_right_detail_dropdown_up_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
-                  <span id="mypage_card_right_detail_dropdown_up" class="fa-solid fa-angle-down" style="color: #747474"></span>
-               </div>
-               <div id="mypage_card_right_detail_dropdown_down_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
-                  <span id="mypage_card_right_detail_dropdown_down" class="fa-solid fa-angle-up" style="color: #747474"></span>
-               </div>
-            </div>
-            </c:if>
-         </div>
-         <div id="mypage_card_right_orderlist_box" style="width: 800px; position: relative; float: left; margin: 0px 0px 0px 50px;">
-            <div id="mypage_card_right_orderlist"></div>
-         </div>
-      </div>
-
       <%-- 회원 탈퇴 --%>
       <div id="basic_delete_wrapper">
          <div id="basic_delete_left_inner">
@@ -409,6 +531,46 @@
       
 </div>
 <script type="text/javascript">
+var isToggled = false;
+
+function test() {
+  if (!isToggled) {
+    $("#mypage_car_right_car").animate({
+      "margin": "3% 3% 0% 5%",
+      "width": "20%",
+      "height": "20%"
+    }, {
+      "duration": 300
+    });
+    $("#mypage_car_right_name_box").delay(400).show(500);
+    $("#mypage_car_right_type_box").delay(500).show(500);
+    $("#mypage_car_right_price_box").delay(600).show(500);
+    $("#mypage_car_right_range1_box").delay(700).show(300);
+    $("#mypage_car_right_range2_box").delay(800).show(400);
+    $("#mypage_car_right_fuel1_box").delay(900).show(400);
+    $("#mypage_car_right_fuel2_box").delay(1100).show(500);
+    isToggled = true;
+  } else {
+    $("#mypage_car_right_car").animate({
+      "margin": "0% 0% 0% 0%",
+      "width": "420",
+      "height": "220"
+    }, {
+      "duration": 500
+    });
+    $("#mypage_car_right_name_box").hide(0);
+    $("#mypage_car_right_type_box").hide(0);
+    $("#mypage_car_right_price_box").hide(0);
+    $("#mypage_car_right_range1_box").hide(0);
+    $("#mypage_car_right_range2_box").hide(0);
+    $("#mypage_car_right_fuel1_box").hide(0);
+    $("#mypage_car_right_fuel2_box").hide(0);
+    isToggled = false;
+  }
+}
+
+
+
 function win_open(page) {
    var loginUser = sessionStorage.getItem("loginUser");
    if (page == 'payment') {
@@ -427,7 +589,7 @@ function movePage(decesion) {
    } else if (decesion == '2') {
       window.scrollTo(0, 400);
    } else if (decesion == '3') {
-      window.scrollTo(0, 800);
+      window.scrollTo(0, 850);
    } else if (decesion == '4') {
       window.scrollTo(0, 1100);
    }
@@ -498,7 +660,16 @@ $(document).ready(function(){
         }
      });
     
+   $("#mypage_car_right_name_box").hide();
+   $("#mypage_car_right_type_box").hide();
+   $("#mypage_car_right_price_box").hide();
+   $("#mypage_car_right_range1_box").hide();
+   $("#mypage_car_right_range2_box").hide();
+   $("#mypage_car_right_fuel1_box").hide();
+   $("#mypage_car_right_fuel2_box").hide();
+   $("#mypage_car_right_orderlist").hide();
    $("#mypage_card_right_orderlist").hide();
+   $("#mypage_car_right_detail_dropdown_down_box").hide();
    $("#mypage_card_right_detail_dropdown_down_box").hide();
    $("#username").attr("disabled","disabled");
    $("#email_original").attr("disabled","disabled");
@@ -668,6 +839,7 @@ $(document).ready(function(){
            top: height+90
          });
    });
+   
    $("#mypage_card_right_detail_dropdown_down").click(function(){
          $("#mypage_card_right_orderlist").fadeOut(100);
       const div = document.getElementById("mypage_card_right_orderlist");
@@ -678,6 +850,32 @@ $(document).ready(function(){
            $("#mypage_card_wrapper").css("height",280);
          }, 100);
          $("#mypage_card_right_dropdown_box").animate({
+           top: -1
+         });
+   });
+   
+   $("#mypage_car_right_detail_dropdown_up_box").click(function(){
+         $("#mypage_car_right_orderlist").fadeIn(1000);
+      const div = document.getElementById("mypage_car_right_orderlist");
+      const height = div.clientHeight;
+      $("#mypage_car_right_detail_dropdown_up_box").hide();
+      $("#mypage_car_right_detail_dropdown_down_box").show();
+         $("#mypage_car_wrapper").css("height",380+height);
+         $("#mypage_car_right_dropdown_box").animate({
+           top: height+90
+         });
+   });
+   
+   $("#mypage_car_right_detail_dropdown_down").click(function(){
+         $("#mypage_car_right_orderlist").fadeOut(100);
+      const div = document.getElementById("mypage_car_right_orderlist");
+      const height = div.clientHeight;
+      $("#mypage_car_right_detail_dropdown_up_box").show();
+      $("#mypage_car_right_detail_dropdown_down_box").hide();
+      setTimeout(function() {
+           $("#mypage_car_wrapper").css("height",280);
+         }, 100);
+         $("#mypage_car_right_dropdown_box").animate({
            top: -1
          });
    });

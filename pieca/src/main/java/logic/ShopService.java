@@ -132,6 +132,7 @@ public class ShopService {
    }
    public void boardDelete(Integer num) {
       boardDao.delete(num);
+      recogDao.delete(num);
    }
    public Map<String, Integer> graph1(String id) {  //게시판 종류별, 글작성자별 등록 건수
       // list : [{writer=홍길동,cnt=10},{writer=김삿갓,cnt=7}...]
@@ -213,10 +214,13 @@ public class ShopService {
       return recogDao.getRecog();
    }
    
-   // 차 좋아요
+// 차 좋아요
    public Carlike selectUserlike(Carlike carlike) {
       return carlikeDao.select(carlike);
    }
+   public List<Carlike> selectUserlike(String userid) {
+	      return carlikeDao.selectLike(userid);
+	   }
    public void likeInsert(Carlike carlike) {
       carlikeDao.insert(carlike);
    }
@@ -227,20 +231,27 @@ public class ShopService {
       return carlikeDao.selectliketotal(carlike);
    }
    
+   public List<Carlike> carliketotal(){
+	   return carlikeDao.selectliketotal();
+   }
    
    
    // 차 장바구니
-   public Mycar selectMycar(Mycar mycar) {
-      return mycarDao.select(mycar);
+   public Mycar selectMycar(String userid) {
+      return mycarDao.select(userid);
    }
-   public void mycarInsert(Mycar mycar) {
-      mycarDao.insert(mycar);
+   public void mycarInsert(String userid) {
+      mycarDao.insert(userid);
    }
    public void mycarDelete(Mycar mycar) {
       mycarDao.delete(mycar);
    }
    public void mycarUpdate(Mycar mycar) {
       mycarDao.update(mycar);
+   }
+   
+   public List<Carlike> selectLike(String userid) {
+      return carlikeDao.selectLike(userid);
    }
    
    

@@ -230,7 +230,7 @@ public class AdminController {
 	@RequestMapping("recog")
 	public ModelAndView recog(Integer num) {
 		System.out.println("adminController-recog 호출");
-		ModelAndView mav = new ModelAndView("alert");
+		ModelAndView mav = new ModelAndView();
 		List<Recog> recog = service.getRecog(num);
 		int status = 0;
 		if(recog.size()!=0) {
@@ -240,16 +240,19 @@ public class AdminController {
 		System.out.println("num = "+num);
 		if(status==0 || status==2) {//0이 처리대기중, 1이 승인처리, 2는 반려상태
 			service.doRecog(num,1);
-	  		mav.addObject("url","../board/detail?num="+num);
+	  		//mav.addObject("url","../board/detail?num="+num);
+			mav.setViewName("redirect:../board/detail?num="+num);
+			
 		}else if(status==1) {
 			service.doRecog(num,0);
-	  		mav.addObject("url","../board/detail?num="+num);
+	  		//mav.addObject("url","../board/detail?num="+num);
+			mav.setViewName("redirect:../board/detail?num="+num);
 		}
 		return mav;
 	}
 	@RequestMapping("refuse")
 	public ModelAndView refuse(Integer num) {
-		ModelAndView mav = new ModelAndView("alert");
+		ModelAndView mav = new ModelAndView();
 		List<Recog> recog = service.getRecog(num);
 		int status = 0;
 		if(recog.size()!=0) {
@@ -260,11 +263,10 @@ public class AdminController {
 		System.out.println("recog.getRecog_Status() : "+status);
 		if(status==0 || status==1) {
 			service.doRecog(num,2);
-			mav.addObject("message","거절 완료.");
-	  		mav.addObject("url","../board/detail?num="+num);
+			mav.setViewName("redirect:../board/detail?num="+num);
 		}else if(status==2) {
 			service.doRecog(num,0);
-	  		mav.addObject("url","../board/detail?num="+num);
+			mav.setViewName("redirect:../board/detail?num="+num);
 		}
 		return mav;
 	}

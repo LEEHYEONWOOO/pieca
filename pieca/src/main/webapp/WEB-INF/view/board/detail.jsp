@@ -28,9 +28,13 @@
      <a href="file/${board.fileurl}">${board.fileurl}</a>
     </c:if></td></tr>
    <tr><td colspan="2">
-     <a href="reply?num=${board.num}">[답변]</a>
-     <a href="update?num=${board.num}">[수정]</a>
-     <a href="delete?num=${board.num}">[삭제]</a>
+   <c:if test="${login.username=='관리자'}">
+     <a href="reply?num=${board.num}">[답글]</a>
+   </c:if>
+     <c:if test="${board.writer == login.username || login.username == '관리자'}">
+     	<a href="update?num=${board.num}">[수정]</a>
+     	<a href="delete?num=${board.num}">[삭제]</a>
+     </c:if>
      <a href="list?boardid=${board.boardid}">[게시물목록]</a>
      <c:if test="${board.boardid==2}">
      	<c:if test="${login.userid=='admin'}">
@@ -39,7 +43,7 @@
      	</c:if>
      </c:if>
      <!-- layout 수정 후 게시물 표현부분 위로 올려야할 부분임@@@@@@@@@@@@@@@@@@@ -->
-     <c:if test="${login.userid=='admin' && board.boardid==2}">
+     <c:if test="${board.boardid==2}">
      <c:if test="${status==0}"><font color="black">처리대기중인 게시물입니다.</font></c:if>
      <c:if test="${status==1}"><font color="green">승인되어있는 게시물입니다.</font></c:if>
      <c:if test="${status==2}"><font color="red">반려되어있는 게시물입니다.</font></c:if>
@@ -79,7 +83,11 @@
     <td class="w3-right">
     <form action="commdel" method="post" name="commdel${stat.index}">
     <input type="hidden" name="num" value="${c.num}">    
-    <input type="hidden" name="seq" value="${c.seq}">    
+    <input type="hidden" name="seq" value="${c.seq}">
+<spring:hasBindErrors name="board">
+	<font color="red"><c:forEach items="${errors.globalErrors}"
+	var="error"><spring:message code="${error.code }" /></c:forEach>
+	</font></spring:hasBindErrors>
     <c:if test="${login.userid == c.loginid}">
     	<input type="password" name="pass" placeholder="비밀번호">
    		 <a class="w3-btn w3-border w3-blue" 

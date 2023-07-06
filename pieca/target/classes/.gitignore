@@ -1,5 +1,3 @@
-/dao/
 /controller/
 /logic/
-/interceptor/
-/aop/
+/dao/

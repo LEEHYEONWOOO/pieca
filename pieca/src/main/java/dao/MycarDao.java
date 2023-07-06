@@ -40,13 +40,12 @@ public class MycarDao {
       return template.getMapper(cls).selectliketotal(carlike);
    }
 */
-   public Mycar select(Mycar mycar) {
-      return template.getMapper(cls).select(mycar);
+   public Mycar select(String userid) {
+      return template.getMapper(cls).select(userid);
    }
 
-   public void insert(Mycar mycar) {
-      template.getMapper(cls).insert(mycar);
-      
+   public void insert(String userid) {
+      template.getMapper(cls).insert(userid);
    }
 
    public void delete(Mycar mycar) {
@@ -62,6 +61,9 @@ public class MycarDao {
    public void update(Mycar mycar) {
       template.getMapper(cls).update(mycar);
    }
+
+
+   
 
 
 }

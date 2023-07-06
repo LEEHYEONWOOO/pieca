@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import exception.LoginException;
+import logic.Car;
 import logic.Carlike;
 import logic.Mycar;
 import logic.ShopService;
@@ -234,6 +235,7 @@ public class UserController {
          user.setChannel("naver");
          user.setCard("n");
          service.userInsert(user);
+         service.mycarInsert(user.getUserid());
       }
       session.setAttribute("loginUser", user);
       return "redirect:mypage?userid="+user.getUserid();
@@ -363,6 +365,7 @@ public class UserController {
              user.setChannel("kakao");
              user.setCard("n");
              service.userInsert(user);
+             service.mycarInsert(user.getUserid());
           }
           session.setAttribute("loginUser", user);
           return "redirect:mypage?userid="+user.getUserid();
@@ -403,6 +406,7 @@ public class UserController {
          user.setChannel("pieca");
          user.setCard("n");
          service.userInsert(user); //db에 insert
+         service.mycarInsert(user.getUserid());
          mav.addObject("user",user);
       }catch(DataIntegrityViolationException e) {
    //DataIntegrityViolationException : db에서 중복 key 오류시 발생되는 예외 객체
@@ -463,6 +467,18 @@ public class UserController {
       User user = service.selectUserOne(userid);
 //      Mycar car = service.selectMycar(userid);
       user.setEmail(emailDecrypt(user));  //이메일 복호화
+      List<Car> carList = service.carList();
+      System.out.println("carList :: "+carList);
+      
+      Mycar carData = service.selectMycar(user.getUserid());
+      System.out.println("carData :: "+carData);
+      
+      List<Carlike> carLikeData = service.selectLike(user.getUserid());
+      System.out.println("carLikeData :: "+carLikeData);
+      
+     mav.addObject("carList", carList); // 데이터 저장
+     mav.addObject("carData", carData); // 데이터 저장
+     mav.addObject("carLikeData", carLikeData); // 데이터 저장
       mav.addObject("user", user); //회원정보데이터
       return mav;
    }   
