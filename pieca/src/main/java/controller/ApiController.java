@@ -104,6 +104,7 @@ public class ApiController {
       //public @ResponseBody String test4(String zscode, HttpServletRequest request) throws IOException, ParseException {
        System.out.println("ecclocationApi call");
        //System.out.println("si2 = "+si2+" gu2 = "+gu2);
+       System.out.println("ecclocation에서 선택한 zscode : " + zscode);
        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552584/EvCharger/getChargerInfo"); /*URL*/
            urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=cIU8HoBdDJx9IAv4NEQ88GvIfz3eoVBo1LHbEfxRtMKcNlK7xaWgZQexbnedoiqNWqPVRcLQ4JeBb8YhhBW6Cw%3D%3D"); /*Service Key*/
            urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
@@ -318,6 +319,8 @@ public class ApiController {
       if(si2.equals("강원도")) {
     	  si2 = "강원특별자치도";
       }
+      System.out.println("@@@@@placecode@@@@@@");
+      System.out.println("si2 = "+si2 +" & gu2 = "+gu2);
       String placeCode=si2+" "+gu2;
       //System.out.println("s2 : "+si2 + "gu2 : "+gu2);
       //System.out.println("placeCode : " + placeCode);
@@ -326,7 +329,7 @@ public class ApiController {
         urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
-        //urlBuilder.append("&" + URLEncoder.encode("locatadd_nm","UTF-8") + "=" + URLEncoder.encode(placeCode, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("locatadd_nm","UTF-8") + "=" + URLEncoder.encode(placeCode, "UTF-8"));
         
         
         URL url = new URL(urlBuilder.toString());

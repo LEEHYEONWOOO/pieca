@@ -46,6 +46,11 @@ public class CarController {
       List<Car> carList = service.carList();
       User loginUser = (User)session.getAttribute("loginUser");
       
+      //ㅎㅇ
+      List<Carlike> liked_Total = service.carliketotal();
+      mav.addObject("liked_Total", liked_Total);
+      System.out.println("liked_Total : " + liked_Total);
+      //ㅎㅇ
       if (session.getAttribute("loginUser") != null) {
          Mycar dbUser = service.selectMycar(loginUser.getUserid());
          
@@ -53,9 +58,6 @@ public class CarController {
          List<Carlike> liked_Car = service.selectUserlike(loginUser.getUserid());
    	  	 mav.addObject("liked_Car", liked_Car);
    	  	 System.out.println("liked_Car : "+liked_Car);
-   	  	 List<Carlike> liked_Total = service.carliketotal();
-   	  	 mav.addObject("liked_Total", liked_Total);
-   	  	 System.out.println("liked_Total : " + liked_Total);
          //
             
           List<Carlike> carLikeData = service.selectLike(loginUser.getUserid());

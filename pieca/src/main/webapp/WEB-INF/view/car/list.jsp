@@ -48,31 +48,42 @@
                ${item.maker}&nbsp;&nbsp;${item.name}
             </div>
             <div id ="car_list_like_box" onclick="like('${item.no}','${loginUser.userid}')" style="float:left; font-size:30px;">
-               <c:forEach items="${liked_Car}" var="liked_Car">
-               		<c:if test="${loginUser.userid == liked_Car.userid && item.no == liked_Car.carno}">
-               			<c:if test="${liked_Car.carno != null}">
-               				<span id="car_list_like_ok${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
-               			</c:if>
-               			<c:if test="${liked_Car.carno == null}">
-               				<span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
-               			</c:if>
-               		</c:if>
-               		<c:if test="${loginUser.userid != null}">
-               			<!-- 없을때도 만들어야함 -->
-               		</c:if>
+
+         <c:if test="${loginUser.userid != null }">
+               <c:set var="loop_flag" value="false" />
+               <c:forEach items="${liked_Car}" var="liked_Car2">
+               <c:if test="${loop_flag == false}">
+                     <c:if test="${item.no == liked_Car2.carno}"><!-- 차객체들과 지금 도는 like차 번호가 같으면  -->
+                           <span id="car_list_like_ok${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
+                           <c:set var="loop_flag" value="true" />
+                     </c:if>
+                     
+                     <c:if test="${liked_Car2 == liked_Car.get(liked_Car.size()-1) && item.no != liked_Car2.carno}">
+                        <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
+                     </c:if>
+               </c:if>
                </c:forEach>
-               <c:forEach items="${liked_Car}" var="liked_Car">
-               		<c:if test="${loginUser.userid == null}">
-            			<span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
-               		</c:if>
-               </c:forEach>
+           </c:if>
+           <c:if test="${loginUser.userid == null }">
+                    <span id="car_list_like_no_no${item.no}" class="fa-regular fa-heart"></span>
+           </c:if>
+           
+               
+               
             </div>
             
             <div id="car_list_like_total_box" style="float:left; font-size:30px; margin-left:2%;">
-               <c:forEach items="${liked_Total}" var="liked_Total">
-               		<c:if test="${item.no == liked_Total.carno}">
-               			<span id ="car_list_like_total${item.no}">${liked_Total.cnt}</span>
-               		</c:if>
+            <c:set var="loop_flag2" value="false" />
+               <c:forEach items="${liked_Total}" var="liked_Total2">
+                  <c:if test="${loop_flag2 == false}">
+                     <c:if test="${item.no == liked_Total2.carno}">
+                        <span id ="car_list_like_total${item.no}">${liked_Total2.cnt}</span>
+                        <c:set var="loop_flag2" value="true" />
+                     </c:if>
+                     <c:if test="${item.no != liked_Total2.carno && liked_Total2== liked_Total.get(liked_Total.size()-1)}">
+                        <span id ="car_list_like_total${item.no}">0</span>
+                     </c:if>
+                  </c:if>
                </c:forEach>
             </div>
             
@@ -225,7 +236,7 @@
    <%-- center --%>
    <%-- center --%>
    <%-- center --%>
-   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 13% 1%;">
+   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 11% 0%;">
       <c:forEach items="${carList}" var="item">
       <c:if test="${item.no%2==0}">
          <div id="car_list_in_container${item.no}" onload="test(${item.no})" onmouseover="zoom('${item.no}')"style="float:left; width:90%; cursor:pointer; border: 0px solid #747474; border-radius:6px; margin: 0% 0% 10% 10%; box-shadow: -2px 2px 5px 2px #747474;">
@@ -237,7 +248,7 @@
                </div>
                
                <c:if test="${item.imgcnt == 4}">
-                  <div id="car_list_left_btn" onclick="imgLeft('${item.no}')" style=" float:left; width:6%; height:247px;; padding: 16.5% 0% 0% 1%;">
+                  <div id="car_list_left_btn" onclick="imgLeft('${item.no}')" style=" float:left; width:6%; height:247px;; padding: 16.5% 0% 0% 2%;">
                      <span class="fa-solid fa-chevron-left" style="font-size:35px;"></span>
                   </div>
                   <img src="../img/${item.img.substring(0, item.img.length() - 5)}${Math.round(Math.random() * 3) + 1}.png" id="car_list_title${item.no}" onclick="show('${item.no}')" style=" width:85%; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
@@ -257,12 +268,43 @@
                ${item.maker}&nbsp;&nbsp;${item.name}
             </div>
             <div id ="car_list_like_box" onclick="like('${item.no}','${loginUser.userid}')" style="float:left; font-size:30px;">
-               <span id="car_list_like_ok${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
-               <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
+
+         <c:if test="${loginUser.userid != null }">
+               <c:set var="loop_flag" value="false" />
+               <c:forEach items="${liked_Car}" var="liked_Car2">
+               <c:if test="${loop_flag == false}">
+                     <c:if test="${item.no == liked_Car2.carno}"><!-- 차객체들과 지금 도는 like차 번호가 같으면  -->
+                           <span id="car_list_like_ok${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
+                           <c:set var="loop_flag" value="true" />
+                     </c:if>
+                     
+                     <c:if test="${liked_Car2 == liked_Car.get(liked_Car.size()-1) && item.no != liked_Car2.carno}">
+                        <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
+                     </c:if>
+               </c:if>
+               </c:forEach>
+           </c:if>
+           <c:if test="${loginUser.userid == null }">
+                    <span id="car_list_like_no_no${item.no}" class="fa-regular fa-heart"></span>
+           </c:if>
+           
+               
+               
             </div>
             
             <div id="car_list_like_total_box" style="float:left; font-size:30px; margin-left:2%;">
-               <span id ="car_list_like_total${item.no}"></span>
+            <c:set var="loop_flag2" value="false" />
+               <c:forEach items="${liked_Total}" var="liked_Total2">
+                  <c:if test="${loop_flag2 == false}">
+                     <c:if test="${item.no == liked_Total2.carno}">
+                        <span id ="car_list_like_total${item.no}">${liked_Total2.cnt}</span>
+                        <c:set var="loop_flag2" value="true" />
+                     </c:if>
+                     <c:if test="${item.no != liked_Total2.carno && liked_Total2== liked_Total.get(liked_Total.size()-1)}">
+                        <span id ="car_list_like_total${item.no}">0</span>
+                     </c:if>
+                  </c:if>
+               </c:forEach>
             </div>
             
             <div id ="car_list_description" onclick="show('${item.no}')" style="width:100%; height:230px;">
@@ -409,7 +451,7 @@
             </div>
          </div> <%-- main --%>
       </c:if>
-</c:forEach>
+      </c:forEach>
    </div>
    
    
@@ -524,14 +566,14 @@ function like(carno,userid){
                "userid": userid},
          success:function(result){
             //console.log(result)
-            /*
+            
             if (result == true) {
                $("#car_list_like_ok"+carno).hide();
                $("#car_list_like_no"+carno).show();
             } else if (result == false){
                $("#car_list_like_ok"+carno).show();
                $("#car_list_like_no"+carno).hide();
-            }*/
+            }
             //liketotal(carno)
             $("#car_list_like_ok"+carno).css("opacity", 0);
             $("#car_list_like_ok"+carno).animate({
@@ -545,7 +587,7 @@ function like(carno,userid){
       });
    }
 }
-
+/*
 function likedec(carno,userid){
    if (userid == '') {
       $("#car_list_like_ok"+carno).hide();
@@ -569,7 +611,7 @@ function likedec(carno,userid){
          });
    }
 }
-
+*/
 function liketotal(carno){
    $.ajax({
       type : "POST",
