@@ -75,6 +75,7 @@ body * {
 }
 
 #join_submit, #join_reset {
+   color: #FFFFFF;
    width: 232px;
    height: 40px;
    border-radius: 6px;
@@ -201,7 +202,7 @@ body * {
 #up_submit {transition-duration: 0.5s; border:2px solid #D5D5D5; border-radius: 6px; font-size:18px; width:60px; height:28px; color:#FFFFFF;}
 #basic_info_right_password_cancel {float:left; margin: -11px 0px 0px -5px}
 #update_cancel {background-color:#FFBB00; border:2px solid #FFBB00; border-radius: 6px; font-size:18px; width:60px; height:28px; color:#FFFFFF;}
-#basic_pass_wrapper {border:1px solid #FFFFFF; border-radius: 5px; margin-bottom:50px; margin-top:120px; box-shadow: 0px 2px 4px 0px #1B1B1B;height:240px; }
+#basic_pass_wrapper {border:1px solid #FFFFFF; border-radius: 5px; margin-bottom:50px; margin-top:200px; box-shadow: 0px 2px 4px 0px #1B1B1B;height:240px; }
 #basic_pass_left_inner {float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; }
 #basic_pass_left_title {font-size:24px;}
 #basic_pass_left_desc {font-size:15px;}
@@ -222,7 +223,7 @@ body * {
 #chgpass2 {transition-duration: 0.5s; width:355px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
 #change_pass_right_button {float:left; margin: -35px 0px 0px -5px}
 #pw_submit {transition-duration: 0.5s; border:2px solid #747474; border-radius: 6px; font-size:18px; width:60px; height:60px; color:#FFFFFF;}
-#basic_delete_wrapper {transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:120px 0px 0px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:160px; }
+#basic_delete_wrapper {transition-duration: 0.5s; border:1px solid #FFFFFF; border-radius: 5px; margin:200px 0px 200px 0px; box-shadow: 0px 2px 4px 0px #1B1B1B; height:160px; }
 #basic_delete_left_inner {float:left; width:20%; height:230px; margin: 20px 0px 0px 50px; }
 #basic_delete_left_title {font-size:24px;}
 #basic_delete_left_desc {font-size:15px;}
@@ -237,7 +238,7 @@ body * {
 #basic_delete_right_password_security_show {float:left; margin:5px 10px 0px -162px;}
 #security_code {transition-duration: 0.5s; width:208px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}
 #basic_delete_right_password_check_logo {position:relative; float:left; margin: 12px 0px 0px -60px; font-size:35px;}
-#delete_check {color:#2196F3;}
+#delete_check {color:#008000;}
 #basic_delete_right_password_security2 {width:110px; position:relative; float:left; margin: 0px 0px 0px 10px;}
 #basic_delete_right_password_security_input {float:left; margin:5px 10px 0px -123px;}
 #security_code2 {transition-duration: 0.5s; width:205px; border:2px solid #747474; border-radius: 6px; background-color: #FFFFFF; color: #000000; font-size:23px; height:60px; padding:18px 0px 0px 15px;}

@@ -8,7 +8,9 @@
 <meta charset="UTF-8">
 <title>차량 목록</title>
 <style>
-
+span {
+  draggable="false"
+}
 </style>
 </head>
 <body>
@@ -52,10 +54,10 @@
          <c:if test="${loginUser.userid != null }">
                <c:set var="loop_flag" value="false" />
                <c:forEach items="${liked_Car}" var="liked_Car2">
-               <c:if test="${loop_flag == false}">
-                     <c:if test="${item.no == liked_Car2.carno}"><!-- 차객체들과 지금 도는 like차 번호가 같으면  -->
-                           <span id="car_list_like_ok${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
-                           <c:set var="loop_flag" value="true" />
+               <c:if test="${loop_flag == false}">	<!-- 기본 flag값=false일때 forEach돈다 -->
+                     <c:if test="${item.no == liked_Car2.carno}">	<!-- 현재 카개게츠이 번호와 과 지금 도는 liked의 차 번호가 같으면  -->
+                           <span id="car_list_like_no${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
+                           <c:set var="loop_flag" value="true" />	<!-- 빨간하트 출력 시 flag값 true로 줘서 forEach 종료 -->
                      </c:if>
                      
                      <c:if test="${liked_Car2 == liked_Car.get(liked_Car.size()-1) && item.no != liked_Car2.carno}">
@@ -457,7 +459,6 @@
    
 </div>
 
-
 <script>
 function test() {
    alert('test 함수 동작')
@@ -568,11 +569,24 @@ function like(carno,userid){
             //console.log(result)
             
             if (result == true) {
-               $("#car_list_like_ok"+carno).hide();
-               $("#car_list_like_no"+carno).show();
+               //$("#car_list_like_ok"+carno).hide();
+               //$("#car_list_like_no"+carno).show();
+               
             } else if (result == false){
-               $("#car_list_like_ok"+carno).show();
-               $("#car_list_like_no"+carno).hide();
+              // $("#car_list_like_ok"+carno).show();
+              // $("#car_list_like_no"+carno).hide();
+            }
+            var class_status = document.getElementById("car_list_like_no"+carno).className
+            console.log("객체의 total : "+document.getElementById("car_list_like_total"+carno).innerHTML)
+            var now_like_cnt = document.getElementById("car_list_like_total"+carno).innerHTML;
+            if(class_status == "fa-solid fa-heart"){
+            	document.getElementById("car_list_like_no"+carno).className = "fa-regular fa-heart";
+            	document.getElementById("car_list_like_no"+carno).style.color = "black";
+            	document.getElementById("car_list_like_total"+carno).innerHTML =Number(now_like_cnt)-1;
+            }else{
+            	document.getElementById("car_list_like_no"+carno).className = "fa-solid fa-heart";
+            	document.getElementById("car_list_like_no"+carno).style.color = "#F15F5F";
+            	document.getElementById("car_list_like_total"+carno).innerHTML = Number(now_like_cnt)+1;
             }
             //liketotal(carno)
             $("#car_list_like_ok"+carno).css("opacity", 0);
