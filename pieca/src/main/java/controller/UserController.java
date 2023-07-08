@@ -467,7 +467,8 @@ public class UserController {
       User user = service.selectUserOne(userid);
 //      Mycar car = service.selectMycar(userid);
       user.setEmail(emailDecrypt(user));  //이메일 복호화
-      List<Car> carList = service.carList();
+      Car car = new Car();
+      List<Car> carList = service.carList(car);
       System.out.println("carList :: "+carList);
       
       Mycar carData = service.selectMycar(user.getUserid());

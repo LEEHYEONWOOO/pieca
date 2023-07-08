@@ -20,8 +20,13 @@ public class CarDao {
    private Map<String, Object> param = new HashMap<>();
    private final Class<CarMapper> cls = CarMapper.class;
 
-   public List<Car> list() {
-      return template.getMapper(cls).select(null); //item 테이블의 전체 내용을 Item 객체의 목록 리턴 
+   public List<Car> list(Car car) {
+	   param.clear();
+	   param.put("maker",  car.getMaker());
+	   param.put("car_size",  car.getCar_size());
+	   param.put("car_type",  car.getCar_type());
+	   System.out.println("이곳은 carDao"+car.getMaker()+"/"+car.getCar_size()+"/"+car.getCar_type());
+      return template.getMapper(cls).select(param); //item 테이블의 전체 내용을 Item 객체의 목록 리턴 
    }
 
 

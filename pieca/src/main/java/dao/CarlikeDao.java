@@ -45,6 +45,19 @@ public class CarlikeDao {
       return template.getMapper(cls).selectLike(userid);
    }
 
+   public List<Carlike> select_rank5() {
+	   return template.getMapper(cls).select_rank5();
+   }
+
+public List<Car> getMakers() {
+	return template.getMapper(cls).getMakers();
+}
+public List<Car> getSizes() {
+	return template.getMapper(cls).getSizes();
+}
+public List<Car> getTypes() {
+	return template.getMapper(cls).getTypes();
+}
    
 
 
