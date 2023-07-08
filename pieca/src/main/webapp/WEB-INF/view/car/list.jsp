@@ -36,7 +36,7 @@ span {
 		<option value="${car_size_selected}">${car_size_selected}</option>
 	</c:if>
 	<c:if test="${car_size_selected==null}">
-		<option value=>브랜드 선택</option>
+		<option value=>크기 선택</option>
 	</c:if>
   <c:forEach items="${car_sizes}" var="car_size_option">
     <c:if test="${car_size_selected ne car_size_option.car_size}">
@@ -50,7 +50,7 @@ span {
 		<option value="${car_type_selected}">${car_type_selected}</option>
 	</c:if>
 	<c:if test="${car_type_selected==null}">
-		<option value=>브랜드 선택</option>
+		<option value=>차종 선택</option>
 	</c:if>
   <c:forEach items="${car_types}" var="car_type_option">
     <c:if test="${car_type_selected ne car_type_option.car_type}">
@@ -65,12 +65,12 @@ span {
 <c:set var="loop_index" value="1" />
 
 <c:forEach items="${carList}" var="item">
-	<div style="float:left; margin:5% 0% 0% 10%;">
+<div style="float:left; margin:5% 0% 0% 10%;">
 <c:if test="${loop_index == 1 }">
    <input type="hidden" id="car_list_userid" value="${loginUser.userid}">
    <input type="hidden" id="car_list_carno" value="${dbUser.carno}">
    
-   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 11% 0%;">
+   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 11% 0%; background-color: black;">
          <div id="car_list_in_container${item.no}" onload="test(${item.no})" onmouseover="zoom('${item.no}')"style="float:left; width:90%; cursor:pointer; border: 0px solid #747474; border-radius:6px; margin: 0% 0% 10% 10%; box-shadow: -2px 2px 5px 2px #747474;">
             <div id="car_list_title_box" >
                
@@ -282,11 +282,10 @@ span {
    </div>
    <c:set var="loop_index" value="2" /> 
 </c:if>
-   </div>
    <%-- center --%>
    <%-- center --%>
    <%-- center --%>
-   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 11% 0%;">
+   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 11% 0%; background-color: yellow;">
 <c:if test="${loop_index == 2 }">
          <div id="car_list_in_container${item.no}" onload="test(${item.no})" onmouseover="zoom('${item.no}')"style="float:left; width:90%; cursor:pointer; border: 0px solid #747474; border-radius:6px; margin: 0% 0% 10% 10%; box-shadow: -2px 2px 5px 2px #747474;">
             <div id="car_list_title_box" >
@@ -501,6 +500,7 @@ span {
          </div> <%-- main --%>
    <c:set var="loop_index" value="1" /> 
 </c:if>
+</div>
 </div>
    
 </c:forEach>
