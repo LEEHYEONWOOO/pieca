@@ -79,4 +79,7 @@ public class UserDao {
    public void setcard(User user) {
       template.getMapper(cls).setcard(user);
    }
+   public List<User> select_all() {
+	   return template.getMapper(cls).select_all();
+   }
 }

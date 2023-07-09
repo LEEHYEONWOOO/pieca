@@ -8,22 +8,21 @@
 <meta charset="UTF-8">
 <title>차량 목록</title>
 <style>
-span {
-  draggable="false"
-} 
+
+
 </style>
 </head>
 <body>
-
+<input type="hidden" value="${mycar.carno}" id="mycar">
 <form action="list" method="post">
-
 <select name="maker">
-	<c:if test="${maker_selected!=null}">
-		<option value="${maker_selected}">${maker_selected}</option>
-	</c:if>
-	<c:if test="${maker_selected==null}">
-		<option value=>브랜드 선택</option>
-	</c:if>
+   <c:if test="${maker_selected!=null}">
+      <option value="${maker_selected}">${maker_selected}</option>
+      <option value="">브랜드 선택 없음</option>
+   </c:if>
+   <c:if test="${maker_selected==null}">
+      <option value=>브랜드 선택</option>
+   </c:if>
   <c:forEach items="${makers}" var="maker_option">
     <c:if test="${maker_selected ne maker_option.maker}">
       <option value="${maker_option.maker}">${maker_option.maker}</option>
@@ -32,12 +31,13 @@ span {
 </select>
 
 <select name="car_size">
-  	<c:if test="${car_size_selected!=null}">
-		<option value="${car_size_selected}">${car_size_selected}</option>
-	</c:if>
-	<c:if test="${car_size_selected==null}">
-		<option value=>크기 선택</option>
-	</c:if>
+     <c:if test="${car_size_selected!=null}">
+      <option value="${car_size_selected}">${car_size_selected}</option>
+      <option value="">크기 선택없음</option>
+   </c:if>
+   <c:if test="${car_size_selected==null}">
+      <option value=>크기 선택</option>
+   </c:if>
   <c:forEach items="${car_sizes}" var="car_size_option">
     <c:if test="${car_size_selected ne car_size_option.car_size}">
       <option value="${car_size_option.car_size}">${car_size_option.car_size}</option>
@@ -46,31 +46,40 @@ span {
 </select>
 
 <select name="car_type">
-    	<c:if test="${car_type_selected!=null}">
-		<option value="${car_type_selected}">${car_type_selected}</option>
-	</c:if>
-	<c:if test="${car_type_selected==null}">
-		<option value=>차종 선택</option>
-	</c:if>
+       <c:if test="${car_type_selected!=null}">
+      <option value="${car_type_selected}">${car_type_selected}</option>
+      <option value="">차종 선택없음</option>
+   </c:if>
+   <c:if test="${car_type_selected==null}">
+      <option value=>차종 선택</option>
+   </c:if>
   <c:forEach items="${car_types}" var="car_type_option">
     <c:if test="${car_type_selected ne car_type_option.car_type}">
       <option value="${car_type_option.car_type}">${car_type_option.car_type}</option>
     </c:if>
   </c:forEach>
 </select>
-<input type="submit" value="Submit" />
+<input type="submit" value="조회" />
+</form>
+<form action="list" method="post">
+	<input type="hidden" value="" name="maker">
+	<input type="hidden" value="" name="car_size">
+	<input type="hidden" value="" name="car_type">
+	<input type="submit" value="전체조회">
 </form>
 
 
 <c:set var="loop_index" value="1" />
 
-<c:forEach items="${carList}" var="item">
-<div style="float:left; margin:5% 0% 0% 10%;">
-<c:if test="${loop_index == 1 }">
-   <input type="hidden" id="car_list_userid" value="${loginUser.userid}">
-   <input type="hidden" id="car_list_carno" value="${dbUser.carno}">
+<div id="big_div" style="float:left; margin:5% 0% 0% 10%;">
+<input type="hidden" id="car_list_userid" value="${loginUser.userid}">
+<input type="hidden" id="car_list_carno" value="${dbUser.carno}">
    
-   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 11% 0%; background-color: black;">
+<c:set var="loop_flag" value="true"/>
+
+   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 0% 0%;">
+   <div id="car_list_in_containerz"  style="float:left; width:746.48px; cursor:pointer; border: 0px solid #747474; border-radius:6px; margin: 0% 0% 10% 10%;"></div>
+   		<c:forEach items="${carList1}" var="item">
          <div id="car_list_in_container${item.no}" onload="test(${item.no})" onmouseover="zoom('${item.no}')"style="float:left; width:90%; cursor:pointer; border: 0px solid #747474; border-radius:6px; margin: 0% 0% 10% 10%; box-shadow: -2px 2px 5px 2px #747474;">
             <div id="car_list_title_box" >
                
@@ -102,7 +111,6 @@ span {
             
             <div id ="car_list_like_box" onclick="like('${item.no}','${loginUser.userid}')" style="float:left; font-size:30px;">
          <c:if test="${loginUser.userid != null }">
-               <c:set var="loop_flag" value="false" />
                <c:forEach items="${liked_Car}" var="liked_Car2">
                <c:if test="${loop_flag == false}">   <!-- 기본 flag값=false일때 forEach돈다 -->
                      <c:if test="${item.no == liked_Car2.carno}">   <!-- 현재 카개게츠이 번호와 과 지금 도는 liked의 차 번호가 같으면  -->
@@ -279,14 +287,16 @@ span {
                </div>
             </div>
          </div> <%-- main --%>
+   <c:set var="loop_index" value="${loop_index+1}" /> 
+   <c:set var="loop_flag" value="false" /> 
+   </c:forEach>
    </div>
-   <c:set var="loop_index" value="2" /> 
-</c:if>
    <%-- center --%>
    <%-- center --%>
    <%-- center --%>
-   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 11% 0%; background-color: yellow;">
-<c:if test="${loop_index == 2 }">
+   <div id="car_list_out_container" style="float:left; width:40%; margin: 0% 0% 0% 0%;">
+   <div id="car_list_in_containerz" style="float:left; width:746.48px; cursor:pointer; border: 0px solid #747474; border-radius:6px; margin: 0% 0% 10% 10%;"></div>
+   	<c:forEach items="${carList2}" var="item">
          <div id="car_list_in_container${item.no}" onload="test(${item.no})" onmouseover="zoom('${item.no}')"style="float:left; width:90%; cursor:pointer; border: 0px solid #747474; border-radius:6px; margin: 0% 0% 10% 10%; box-shadow: -2px 2px 5px 2px #747474;">
             <div id="car_list_title_box" >
                
@@ -498,15 +508,35 @@ span {
                </div>
             </div>
          </div> <%-- main --%>
-   <c:set var="loop_index" value="1" /> 
-</c:if>
+   <c:set var="loop_index" value="${loop_index+1}" /> 
+   <c:set var="loop_flag" value="false" /> 
+   </c:forEach>
+   </div>
 </div>
-</div>
-   
-</c:forEach>
 
 
 <script>
+
+
+window.onload = function() {
+	mycardec();
+}
+function mycardec(){
+	carno_max = Number('${maxnum}');
+	carno = document.getElementById("mycar").value;
+     console.log("초기 mycar : "+carno)
+     console.log(carno_max+"carno_max")
+	for (var i = 0; i <= 45; i++) {
+        $("#car_list_mycar"+i).hide()
+        $("#car_list_mycar_add"+i).show()
+        $("#car_list_in_container"+i).css("box-shadow","-2px 2px 5px 2px #747474")
+     }
+     $("#car_list_mycar"+carno).show()
+     $("#car_list_mycar_add"+carno).hide()
+     $("#car_list_in_container"+carno).css("box-shadow","-2px 2px 5px 2px #F15F5F")
+     //$("#car_list_in_container"+carno).css("opacity", 0);
+}
+
 function showSlides(n) {
    }
    
@@ -575,7 +605,7 @@ $(document).ready(function(){
       console.log(carno)
       carno_max = Number('${maxnum}'); // 45
       
-      mycardec(carno,userid)
+      //mycardec(carno,userid)
       
    })
 
@@ -602,8 +632,12 @@ $(document).ready(function(){
       var div_etc = document.getElementById("car_list_etc" + no);
       if (div_etc.style.display == "block") {
          div_etc.style.display = "none";
+         document.getElementById("car_list_out_container_t").style.height = "700px";
+         //document.getElementById("big_div").style.height = "11120px";
       } else {
          div_etc.style.display = "block";
+         document.getElementById("car_list_out_container_t").style.height = "520px";
+         //document.getElementById("big_div").style.height = "11120px";
       }
    }
 
@@ -770,25 +804,6 @@ $(document).ready(function(){
                }, 500);
             }
          });
-      }
-   }
-
-   function mycardec(carno,userid){
-      if (userid == '') {
-         for (var i = 0; i <= carno_max; i++) {
-            $("#car_list_mycar"+i).hide()
-            $("#car_list_mycar_add"+i).show()
-            $("#car_list_in_container"+i).css("box-shadow","-2px 2px 5px 2px #747474")
-         }
-      } else {
-         for (var i = 0; i <= carno_max; i++) {
-            $("#car_list_mycar"+i).hide()
-            $("#car_list_mycar_add"+i).show()
-            $("#car_list_in_container"+i).css("box-shadow","-2px 2px 5px 2px #747474")
-         }
-         $("#car_list_mycar"+carno).show()
-         $("#car_list_mycar_add"+carno).hide()
-         $("#car_list_in_container"+carno).css("box-shadow","-2px 2px 5px 2px #F15F5F")
       }
    }
    </script>   

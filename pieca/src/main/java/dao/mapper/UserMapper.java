@@ -25,6 +25,11 @@ public interface UserMapper {
         + "</foreach></if>",
         "</script>"})
    List<User> select(Map<String,Object> param);
+   
+   @Select({"<script>",
+	   "select * from usersecurity ",
+		"</script>"})
+   List<User> select_all();
 
    @Update("update usersecurity set username=#{username},"
          + "birthday=#{birthday},phoneno=#{phoneno},"

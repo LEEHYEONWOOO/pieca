@@ -71,6 +71,19 @@ public class CarController {
       car.setCar_size(car_size);
       car.setCar_type(car_type);
       List<Car> carList = service.carList(car);
+      System.out.println(carList);
+      
+      List<Car> carList1 = new ArrayList<>();
+      List<Car> carList2 = new ArrayList<>();
+      for(int i=0; i<carList.size(); i++) {
+    	  if(i%2 ==0) {
+    		  carList1.add(carList.get(i));
+    	  }else if(i%2 == 1) {
+    		  carList2.add(carList.get(i));
+    	  }
+      }
+      mav.addObject("carList1",carList1);
+      mav.addObject("carList2",carList2);
       
       mav.addObject("maker_selected",maker);
       mav.addObject("car_size_selected",car_size);
@@ -119,6 +132,9 @@ public class CarController {
          mav.addObject("dbUser", dbUser); // 데이터 저장
          mav.addObject("carLikeData", carLikeData); // 데이터 저장
          mav.addObject("maxnum", maxnum); // 데이터 저장
+         Mycar mycar = service.selectMycar(loginUser.getUserid());
+         mav.addObject("mycar",mycar);
+         System.out.println(mycar+"이게 아이디값으로 검색한 mycar");
          return mav;
       } else {
          int maxnum = carList.size();

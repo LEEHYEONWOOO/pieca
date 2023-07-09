@@ -13,11 +13,22 @@
    <div class="mypage_sidenav">
       <a onclick="movePage(1);" id="movepage1" style="cursor: pointer;">
          <span class="fa-regular fa-user"></span> 회원 정보</a>
+         
       <a onclick="movePage(2);" id="movepage2" style="cursor: pointer;">
-         <span class="fa-solid fa-lock"></span> PIECA CARD</a>
+      <span class="fa-solid fa-car"></span>
+      	<c:if test="${login.username == '관리자' }">
+      		회원 관리
+      	</c:if>
+      	<c:if test="${login.username != '관리자' }">
+      		차량 조회
+      	</c:if>
+      	</a>
+         
       <a onclick="movePage(3);" id="movepage3" style="cursor: pointer;">
-         <span class="fa-regular fa-credit-card"></span> 비밀번호 변경</a>
+         <span class="fa-regular fa-credit-card"></span> PIECA CARD</a>
       <a onclick="movePage(4);" id="movepage4" style="cursor: pointer;">
+         <span class="fa-solid fa-lock"></span> 비밀번호 변경</a>
+      <a onclick="movePage(5);" id="movepage5" style="cursor: pointer;">
          <span class="fa-regular fa-circle-xmark"></span> 회원 탈퇴</a>         
    </div>
 
@@ -224,6 +235,45 @@
       <%-- basic_info_wrapper --%>
       
       <%-- 내 차 조회 --%>
+	<c:if test="${login.username == '관리자' }">
+	<div id="basic_info_wrapper2">
+		<div id="basic_info_left_inner2">
+			<span style="font-size:30px;">회원 관리</span>
+		</div>
+		<div style="font-size: 16px; width:90%; margin:0px 0px 40px 5%">
+			<table class="w3-table-all" style="text-align: center">
+			<tr>
+				<th width="100px;">가입유형</th>
+				<th width="70px;">이름</th>
+				<th width="100px;">전화번호</th>
+				<th width="140px;">생일</th>
+				<th width="100px">이메일</th>
+			</tr>
+		<c:forEach items="${list}" var="user">
+			<tr>
+				<td colspan="4"></td>
+				<td>
+					<a href="../user/update?userid=${user.userid}">[수정]</a>
+					<a href="../user/delete?userid=${user.userid}">[강제탈퇴]</a>
+					<a href="../user/mypage?userid=${user.userid}">[회원정보]</a>
+				</td>
+			</tr>
+			<tr>
+				<td>${user.channel}</td>
+				<td>${user.username}</td>
+				<td>${user.phoneno}</td>
+				<td><fmt:formatDate value="${user.birthday}" pattern="MM-dd" /></td>
+				<td>${user.email}</td>
+			</tr>
+		</c:forEach>
+		</table>
+		</div>
+		</div>
+			
+			
+			
+      	</c:if>
+      	<c:if test="${login.username != '관리자' }">
       <div id="mypage_car_wrapper" style="transition-duration: 0.5s; border: 1px solid #FFFFFF; border-radius: 5px; margin-bottom: 50px; margin-top: 200px; box-shadow: 0px 2px 4px 0px #1B1B1B; height: 280px;">
          <div id="mypage_car_left_inner" style="float: left; width: 20%; height: 230px; margin: 20px 0px 0px 50px;">
             <div id="mypage_car_left_title" style="font-size: 24px;">
@@ -239,7 +289,7 @@
 
             <c:if test="${carData.carno == 0 }">
                <div id="mypage_car_right_car_empty_box" style="width: 430px; position: relative; float: left; margin: 10px 0px 0px 0px;">
-                  <div id="mypage_car_right_car_empty" style="display:flex; width: 420px; height: 220px; font-size:35px; border: 2px dashed #747474; border-radius: 6px; justify-content: center; align-items: center;">+</div>
+                  <div id="mypage_car_right_car_empty" onclick="window.location.href='../car/list'" style="display:flex; width: 420px; height: 220px; font-size:35px; border: 2px dashed #747474; border-radius: 6px; justify-content: center; align-items: center; cursor: pointer;">+</div>
                </div>
             </c:if>
             
@@ -250,7 +300,7 @@
                      <img src="../img/${carList.img }" id="mypage_car_right_car" style="float:left; width: 420px; height: 220px;">
                      
                      <div id="mypage_car_right_info" style="padding-left: 30px; ">
-                        <div id="mypage_car_right_name_box" style="float:left; width:70%; height:80px; font-size:32px; padding: 10px 0px 0px 0px;">
+                        <div id="mypage_car_right_name_box" style="float:left; width:70%; height:80px; font-size:28px; padding: 10px 0px 0px 0px;">
                            ${carList.maker} ${carList.name}
                         </div>
                         <div id="mypage_car_right_type_box" style=" float:left; width:70%; height:40px; font-size:20px; color:#000000;">
@@ -269,13 +319,13 @@
                         </div>
                         
                         <div id="mypage_car_right_range1_box" style=" float:left; width:70%; height:40px; font-size:20px; color:#000000">
-                           <c:if test="${carList.min_range != 0 && item.max_range != 0}">
+                           <c:if test="${carList.min_range != 0 && carList.max_range != 0}">
                               주행거리 : ${carList.min_range} ~ ${carList.max_range}km
                            </c:if>
-                           <c:if test="${carList.min_range != 0 && item.max_range == 0}">
+                           <c:if test="${carList.min_range != 0 && carList.max_range == 0}">
                               주행거리 : ${carList.min_range}km
                            </c:if>
-                           <c:if test="${carList.min_range == 0 && item.max_range == 0}">
+                           <c:if test="${carList.min_range == 0 && carList.max_range == 0}">
                               주행거리 : 미제공
                            </c:if>
                         </div>
@@ -284,40 +334,40 @@
                         </div>
                
                         <div id="mypage_car_right_fuel1_box" style=" float:left; width:70%; height:60px; font-size:20px; color:#000000">
-                           <c:if test="${carList.avg_min_fuel != 0 && item.avg_max_fuel != 0}">
+                           <c:if test="${carList.avg_min_fuel != 0 && carList.avg_max_fuel != 0}">
                               연비 : ${carList.avg_min_fuel / 10} ~ ${carList.avg_max_fuel / 10}km/kWh
                            </c:if>
-                           <c:if test="${carList.avg_min_fuel != 0 && item.avg_max_fuel == 0}">
+                           <c:if test="${carList.avg_min_fuel != 0 && carList.avg_max_fuel == 0}">
                               연비 : ${carList.avg_min_fuel / 10}km/kWh
                            </c:if>
-                           <c:if test="${carList.avg_min_fuel == 0 && item.avg_max_fuel == 0}">
+                           <c:if test="${carList.avg_min_fuel == 0 && carList.avg_max_fuel == 0}">
                               연비 : 미제공
                            </c:if>
                         </div>
                         <div id="mypage_car_right_fuel2_box" style=" float:left; width:30%; height:60px; font-size:16px; color:#797979; padding: 5px 0px 0px 0px;">
-                           <c:if test="${carList.dt_min_fuel != 0 && item.dt_max_fuel != 0}">
+                           <c:if test="${carList.dt_min_fuel != 0 && carList.dt_max_fuel != 0}">
                               <p>도심 : ${(carList.dt_min_fuel + carList.dt_max_fuel) / 20}</p>
                            </c:if>
-                           <c:if test="${carList.dt_min_fuel != 0 && item.dt_max_fuel == 0}">
+                           <c:if test="${carList.dt_min_fuel != 0 && carList.dt_max_fuel == 0}">
                               <p>도심 : ${carList.dt_min_fuel / 10}</p>
                            </c:if>
-                           <c:if test="${carList.dt_min_fuel == 0 && item.dt_max_fuel == 0}">
+                           <c:if test="${carList.dt_min_fuel == 0 && carList.dt_max_fuel == 0}">
                               <p>도심 : 미제공</p>
                            </c:if>
-                           <c:if test="${carList.high_min_fuel != 0 && item.high_max_fuel != 0}">
+                           <c:if test="${carList.high_min_fuel != 0 && carList.high_max_fuel != 0}">
                               <p>고속 : ${(carList.high_min_fuel + carList.high_max_fuel) / 20}</p>
                            </c:if>
-                           <c:if test="${carList.high_min_fuel != 0 && item.high_max_fuel == 0}">
+                           <c:if test="${carList.high_min_fuel != 0 && carList.high_max_fuel == 0}">
                               <p>고속 : ${carList.high_min_fuel / 10}</p>
                            </c:if>
-                           <c:if test="${carList.high_min_fuel == 0 && item.high_max_fuel == 0}">
+                           <c:if test="${carList.high_min_fuel == 0 && carList.high_max_fuel == 0}">
                               <p>고속 : 미제공</p>
                            </c:if>
                         </div>
                         
                      </div>
                   </div>
-            <c:if test="${carData.carno > 0 }">
+            <c:if test="${carLikeData != '[]'}">
                <div id="mypage_car_right_dropdown_box" style="width: 800px; text-align: center; position: relative; float: left;">
                   <div id="mypage_car_right_detail_dropdown_up_box" style="width: 50px; position: relative; float: left; padding-top: 5px;">
                      <span id="mypage_car_right_detail_dropdown_up" class="fa-solid fa-angle-down" style="color: #747474"></span>
@@ -336,11 +386,60 @@
          </div>
          <div id="mypage_car_right_orderlist_box" style="width: 800px; position: relative; float: left; margin: 0px 0px 0px 50px;">
             <div id="mypage_car_right_orderlist">
+            <table>
+               <tr style="text-align:left; font-size:18px; color: #747474;">
+                  <th width="100px;"></th>
+                  <th width="170px;">명칭</th>
+                  <th width="130px;">차종</th>
+                  <th width="160px;">가격</th>
+                  <th width="130px;">주행거리</th>
+                  <th width="150px;">연비</th>
+               </tr>
+            </table>
             <c:forEach items="${carLikeData}" var="carLikeData">
                <c:forEach items="${carList}" var="carList">
                <c:if test="${carLikeData.carno == carList.no}">
-                  여기여기
-               
+                  <table>
+                     <tr style="text-align:left; font-size:15px;">
+                        <td width=100px;><img src="../img/${carList.img }" id="mypage_car_right_car" style="width:80%"> </td>
+                        <td width="170px;"> ${carList.maker} ${carList.name}</td>
+                        <td width="130px;">${carList.car_size} ${carList.car_type}</td>
+                        <td width="160px;">
+                           <c:if test="${carList.min_price != 0 && carList.max_price != 0}">
+                              <fmt:formatNumber value="${carList.min_price}"/> ~ <fmt:formatNumber value="${carList.max_price}"/>
+                           </c:if>
+                           <c:if test="${carList.min_price != 0 && carList.max_price == 0}">
+                              <fmt:formatNumber value="${carList.min_price}"/>
+                           </c:if>
+                           <c:if test="${carList.min_price == 0 && carList.max_price == 0}">
+                              미제공
+                           </c:if>
+                        </td>
+                        <td width="130px;">
+                           <c:if test="${carList.min_range != 0 && carList.max_range != 0}">
+                              ${carList.min_range} ~ ${carList.max_range}
+                           </c:if>
+                           <c:if test="${carList.min_range != 0 && carList.max_range == 0}">
+                              ${carList.min_range}
+                           </c:if>
+                           <c:if test="${carList.min_range == 0 && carList.max_range == 0}">
+                              미제공
+                           </c:if>
+                        </td>
+                        <td width="150px;">
+                           <c:if test="${carList.avg_min_fuel != 0 && carList.avg_max_fuel != 0}">
+                              ${carList.avg_min_fuel / 10} ~ ${carList.avg_max_fuel / 10}
+                           </c:if>
+                           <c:if test="${carList.avg_min_fuel != 0 && carList.avg_max_fuel == 0}">
+                              ${carList.avg_min_fuel / 10}
+                           </c:if>
+                           <c:if test="${carList.avg_min_fuel == 0 && carList.avg_max_fuel == 0}">
+                              미제공
+                           </c:if>                        
+                        </td>
+                        
+                     </tr>
+                  </table>
                </c:if>
                </c:forEach>
             </c:forEach>
@@ -348,7 +447,7 @@
             </div>
          </div>
       </div>
-      
+      </c:if>
       
       
       <%-- 카드결제 --%>
@@ -531,9 +630,10 @@
       
 </div>
 <script type="text/javascript">
-var isToggled = false;
 
+var isToggled = false;
 function test() {
+   $("#mypage_car_right_dropdown_box").hide()
   if (!isToggled) {
     $("#mypage_car_right_car").animate({
       "margin": "3% 3% 0% 5%",
@@ -567,9 +667,8 @@ function test() {
     $("#mypage_car_right_fuel2_box").hide(0);
     isToggled = false;
   }
+   $("#mypage_car_right_dropdown_box").show(2500)
 }
-
-
 
 function win_open(page) {
    var loginUser = sessionStorage.getItem("loginUser");
@@ -591,7 +690,9 @@ function movePage(decesion) {
    } else if (decesion == '3') {
       window.scrollTo(0, 850);
    } else if (decesion == '4') {
-      window.scrollTo(0, 1100);
+      window.scrollTo(0, 1200);
+   } else if (decesion == '5') {
+      window.scrollTo(0, 1600);
    }
 }
 
@@ -601,38 +702,58 @@ window.onscroll = function() {
          document.getElementById("movepage2").style.color = "#5D5D5D";
          document.getElementById("movepage3").style.color = "#5D5D5D";
          document.getElementById("movepage4").style.color = "#5D5D5D";
+         document.getElementById("movepage5").style.color = "#5D5D5D";
          document.getElementById("movepage1").style.fontSize = "30px";
          document.getElementById("movepage2").style.fontSize = "22px";
          document.getElementById("movepage3").style.fontSize = "22px";
          document.getElementById("movepage4").style.fontSize = "22px";
+         document.getElementById("movepage5").style.fontSize = "22px";
    } else if ((window.scrollY > 350) && (window.scrollY < 750)) {
          document.getElementById("movepage1").style.color = "#5D5D5D";
         document.getElementById("movepage2").style.color = "#008000";
         document.getElementById("movepage3").style.color = "#5D5D5D";
         document.getElementById("movepage4").style.color = "#5D5D5D";
+        document.getElementById("movepage5").style.color = "#5D5D5D";
         document.getElementById("movepage1").style.fontSize = "22px";
          document.getElementById("movepage2").style.fontSize = "30px";
          document.getElementById("movepage3").style.fontSize = "22px";
          document.getElementById("movepage4").style.fontSize = "22px";
+         document.getElementById("movepage5").style.fontSize = "22px";
    } else if ((window.scrollY > 751) && (window.scrollY < 950)) {
          document.getElementById("movepage1").style.color = "#5D5D5D";
         document.getElementById("movepage2").style.color = "#5D5D5D";
         document.getElementById("movepage3").style.color = "#008000";
         document.getElementById("movepage4").style.color = "#5D5D5D";
+        document.getElementById("movepage5").style.color = "#5D5D5D";
         document.getElementById("movepage1").style.fontSize = "22px";
          document.getElementById("movepage2").style.fontSize = "22px";
          document.getElementById("movepage3").style.fontSize = "30px";
          document.getElementById("movepage4").style.fontSize = "22px";
-   } else if ((window.scrollY > 951) && (window.scrollY < 1100)) {
+         document.getElementById("movepage5").style.fontSize = "22px";
+   } else if ((window.scrollY > 951) && (window.scrollY < 1300)) {
          document.getElementById("movepage1").style.color = "#5D5D5D";
         document.getElementById("movepage2").style.color = "#5D5D5D";
         document.getElementById("movepage3").style.color = "#5D5D5D";
         document.getElementById("movepage4").style.color = "#008000";
+        document.getElementById("movepage5").style.color = "#5D5D5D";
         document.getElementById("movepage1").style.fontSize = "22px";
          document.getElementById("movepage2").style.fontSize = "22px";
          document.getElementById("movepage3").style.fontSize = "22px";
          document.getElementById("movepage4").style.fontSize = "30px";
+         document.getElementById("movepage5").style.fontSize = "22px";
+   } else if ((window.scrollY > 1301) && (window.scrollY < 1600)) {
+         document.getElementById("movepage1").style.color = "#5D5D5D";
+        document.getElementById("movepage2").style.color = "#5D5D5D";
+        document.getElementById("movepage3").style.color = "#5D5D5D";
+        document.getElementById("movepage4").style.color = "#5D5D5D";
+        document.getElementById("movepage5").style.color = "#008000";
+        document.getElementById("movepage1").style.fontSize = "22px";
+         document.getElementById("movepage2").style.fontSize = "22px";
+         document.getElementById("movepage3").style.fontSize = "22px";
+         document.getElementById("movepage4").style.fontSize = "22px";
+         document.getElementById("movepage5").style.fontSize = "30px";
    }
+   
 }
    
 $(document).ready(function(){
@@ -641,7 +762,7 @@ $(document).ready(function(){
         url: "../payment/getOrderList",
         data : {"userid" : $("#userid").val()},
         success:function(result){100000 // 100,000
-           let html = "<tr style='text-align:left; font-size:18px;'><th width='300px;'>주문 번호</th><th width='150px'>결제 금액</th><th width='150px'>결제 수단</th><th width='300px'>결제 일시</th></tr>"
+           let html = "<tr style='text-align:left; font-size:18px; color:#747474;'><th width='300px;'>주문 번호</th><th width='150px'>결제 금액</th><th width='150px'>결제 수단</th><th width='300px'>결제 일시</th></tr>"
            $.each(result,function(i,item){
               html += "<tr style='text-align:left; font-size:15px;'><td>"+result[i].orderno+"</td><td>"+result[i].amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"</td>"
               html += "<td>"+result[i].type+"</td>"

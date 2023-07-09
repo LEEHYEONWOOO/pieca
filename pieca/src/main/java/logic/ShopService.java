@@ -266,6 +266,9 @@ public List<Car> getSizes() {
 public List<Car> getTypes() {
 	return carlikeDao.getTypes();
 }
+public List<User> select_all() {
+	return userDao.select_all();
+}
    
    
    
