@@ -273,6 +273,14 @@ public void carUpdate(@Valid Car car) {
 	carDao.carUpdate(car);
 	
 }
+public void carDelete(@Valid Car car) {
+	carDao.carDelete(car);
+	
+}
+public void carInsert(@Valid Car car) {
+	carDao.carInsert(car);
+	
+}
    
    
    

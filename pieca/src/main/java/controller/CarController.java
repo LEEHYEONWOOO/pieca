@@ -53,6 +53,26 @@ public class CarController {
 	   return mav;
    }
    
+   @GetMapping("insert") // get,post 방식에 상관없이 호출
+   public ModelAndView getinsert(HttpSession session) {
+	   ModelAndView mav = new ModelAndView();
+	   Car car = new Car();
+	   mav.addObject("car",car);
+	   return mav;
+   }
+   @PostMapping("insert") // get,post 방식에 상관없이 호출
+   public ModelAndView postinsert(@Valid Car car, HttpSession session) {
+	   ModelAndView mav = new ModelAndView();
+	   Car carlist = new Car();
+	   List<Car> cars = service.carList(carlist);
+	   int max_no = cars.get(cars.size()-1).getNo()+1;
+	   System.out.println(max_no + " = 최대 no");
+	   car.setNo(max_no);
+	   service.carInsert(car);
+	   mav.setViewName("redirect:list");
+	   return mav;
+   }
+   
    @PostMapping("updateForm") // get,post 방식에 상관없이 호출
    public ModelAndView update(@Valid Car car, BindingResult bresult, HttpSession session) {
 	   ModelAndView mav = new ModelAndView();
@@ -64,6 +84,16 @@ public class CarController {
 	   System.out.println(car+"차량 정보 수정 진행");
 	   System.out.println(car);
 	   service.carUpdate(car);
+	   mav.setViewName("redirect:list");
+	   return mav;
+   }
+   
+   @PostMapping("delete") // get,post 방식에 상관없이 호출
+   public ModelAndView delete(@Valid Car car, HttpSession session) {
+	   ModelAndView mav = new ModelAndView();
+	   System.out.println("차량 정보 삭제 진행");
+	   System.out.println(car);
+	   service.carDelete(car);
 	   mav.setViewName("redirect:list");
 	   return mav;
    }

@@ -39,6 +39,22 @@ public void carUpdate(Car car) {
 	
 }
 
+public void carDelete(@Valid Car car) {
+	System.out.println("CarDao.carUpdate 접속 : "+car);
+	param.clear();
+	param.put("car",  car);
+	template.getMapper(cls).carDelete(car);
+	
+}
+
+
+	public void carInsert(@Valid Car car) {
+		System.out.println("CarDao.insert 접속 : "+car);
+		param.clear();
+		param.put("car",  car);
+		template.getMapper(cls).carInsert(car);
+}
+
 
 
 

@@ -142,8 +142,12 @@
       </button>
    </form>
 </div>
-
-
+<c:if test="${loginUser.userid=='admin'}">
+<div style="float:left; height:45px; font-size:20px; margin:10% 0% 0% 0.4%;">
+   <button onclick="window.location.href='insert'" style="font-size:22px; height:45px; background-color: #F15F5F; border:none; border-radius:6px; padding:3px 0px 0px 0px">
+   		&nbsp;차량추가&nbsp;</button>
+</div>
+</c:if>
 
 
 <c:set var="loop_index" value="1" />
