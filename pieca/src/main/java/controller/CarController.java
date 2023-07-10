@@ -38,13 +38,36 @@ public class CarController {
    @Autowired
    private Mycar mycar;
    
-   @RequestMapping("test") // get,post 방식에 상관없이 호출
-   public ModelAndView test(HttpSession session) {
+   @GetMapping("updateForm") // get,post 방식에 상관없이 호출
+   public ModelAndView updateForm(int carno,HttpSession session) {
 	   ModelAndView mav = new ModelAndView();
-	   List<Integer> list = Arrays.asList(1, 2, 3);
-	   mav.addObject("list",list);
+	   System.out.println(carno+"차량 정보 수정");
+	   Car car = new Car();
+	   List<Car> carList = service.carList(car);
+	   for(int i=0; i<carList.size(); i++) {
+		   if(carList.get(i).getNo()==carno) {
+			   car = carList.get(i);
+		   }
+	   }
+	   mav.addObject("car",car);
 	   return mav;
    }
+   
+   @PostMapping("updateForm") // get,post 방식에 상관없이 호출
+   public ModelAndView update(@Valid Car car, BindingResult bresult, HttpSession session) {
+	   ModelAndView mav = new ModelAndView();
+		if(bresult.hasErrors()) {
+			mav.getModel().putAll(bresult.getModel());
+			mav.addObject("carno",car.getNo());
+			return mav;
+		}
+	   System.out.println(car+"차량 정보 수정 진행");
+	   System.out.println(car);
+	   service.carUpdate(car);
+	   mav.setViewName("redirect:list");
+	   return mav;
+   }
+   
    @RequestMapping("list") // get,post 방식에 상관없이 호출
    public ModelAndView list(String maker,String car_size,String car_type, HttpSession session) {
       // ModelAndView : Model + view
@@ -57,13 +80,13 @@ public class CarController {
       //if(car_size != null) car_size2 = car_size.substring(1);
       //if(car_type != null) car_type2 = car_type.substring(1);
       if(maker==null || maker.equals("")) {
-    	  maker = null;
+         maker = null;
       }
       if(car_size==null || car_size.equals("")) {
-    	  car_size = null;
+         car_size = null;
       }
       if(car_type==null || car_type.equals("")) {
-    	  car_type = null;
+         car_type = null;
       }
       
       Car car = new Car();
@@ -72,15 +95,17 @@ public class CarController {
       car.setCar_type(car_type);
       List<Car> carList = service.carList(car);
       System.out.println(carList);
-      
+      Car car_all = new Car(); 
+      List<Car> carList_all = service.carList(car_all);
+      mav.addObject("carList_all",carList_all);
       List<Car> carList1 = new ArrayList<>();
       List<Car> carList2 = new ArrayList<>();
       for(int i=0; i<carList.size(); i++) {
-    	  if(i%2 ==0) {
-    		  carList1.add(carList.get(i));
-    	  }else if(i%2 == 1) {
-    		  carList2.add(carList.get(i));
-    	  }
+         if(i%2 ==0) {
+            carList1.add(carList.get(i));
+         }else if(i%2 == 1) {
+            carList2.add(carList.get(i));
+         }
       }
       mav.addObject("carList1",carList1);
       mav.addObject("carList2",carList2);
@@ -90,9 +115,9 @@ public class CarController {
       mav.addObject("car_type_selected",car_type);
       if(carList.size()==0) { // carList를 가져오지 못했을때,
       }else{
-    	  //mav.addObject("maker_selected",maker.substring(1));
-    	  //mav.addObject("car_size_selected",car_size.substring(1));
-    	  //mav.addObject("car_type_selected",car_type.substring(1));
+         //mav.addObject("maker_selected",maker.substring(1));
+         //mav.addObject("car_size_selected",car_size.substring(1));
+         //mav.addObject("car_type_selected",car_type.substring(1));
       }
       
       
@@ -122,8 +147,8 @@ public class CarController {
       if (session.getAttribute("loginUser") != null) {
          Mycar dbUser = service.selectMycar(loginUser.getUserid());
          List<Carlike> liked_Car = service.selectUserlike(loginUser.getUserid());
-   	  	 mav.addObject("liked_Car", liked_Car);
-   	  	 System.out.println("liked_Car : "+liked_Car);
+            mav.addObject("liked_Car", liked_Car);
+            System.out.println("liked_Car : "+liked_Car);
          List<Carlike> carLikeData = service.selectLike(loginUser.getUserid());
           //System.out.println("333 :: "+carLikeData);
          //System.out.println(dbUser);

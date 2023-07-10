@@ -269,6 +269,10 @@ public List<Car> getTypes() {
 public List<User> select_all() {
 	return userDao.select_all();
 }
+public void carUpdate(@Valid Car car) {
+	carDao.carUpdate(car);
+	
+}
    
    
    

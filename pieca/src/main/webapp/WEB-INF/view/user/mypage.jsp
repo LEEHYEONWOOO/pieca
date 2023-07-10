@@ -868,7 +868,7 @@ $(document).ready(function(){
          $("#start_email").val($("#email_original").val());
          $("#start_email_be").val($("#input_email").val());
       
-      $("#year").val(birthday.substring(0, 4))
+      	$("#year").val(birthday.substring(0, 4))
          $("#month").val(birthday.substring(5, 7))
          $("#day").val(birthday.substring(8, 10))
       

@@ -1,6 +1,8 @@
 package logic;
 
 
+import javax.validation.constraints.NotEmpty;
+
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
@@ -13,10 +15,15 @@ import lombok.ToString;
 @ToString
 public class Car {
    private int no;
+   @NotEmpty(message="브랜드를 입력하세요")
    private String maker;
+   @NotEmpty(message="차이름을 입력하세요")
    private String name;
+   @NotEmpty(message="차 크기를 입력하세요")
    private String car_size;
+   @NotEmpty(message="차종을 입력하세요")
    private String car_type;
+   
    private String release_year;
    private String img;
    private int imgcnt;

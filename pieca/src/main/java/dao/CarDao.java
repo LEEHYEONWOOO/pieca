@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,6 +30,14 @@ public class CarDao {
 	   System.out.println("이곳은 carDao"+car.getMaker()+"/"+car.getCar_size()+"/"+car.getCar_type());
       return template.getMapper(cls).select(param); //item 테이블의 전체 내용을 Item 객체의 목록 리턴 
    }
+
+public void carUpdate(Car car) {
+	System.out.println("CarDao.carUpdate 접속 : "+car);
+	param.clear();
+	param.put("car",  car);
+	template.getMapper(cls).carUpdate(car);
+	
+}
 
 
 
