@@ -51,6 +51,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> <!-- locash메소드 -->
 </head>
 <body>
+<div id="map_loading" style="position: absolute; z-index:100; margin:10% 0% 0% 38%; text-align: center;">
+   <img src="../img/map_loading.gif" style="width:50%">
+   <p style="font-size:40px; color:#F15F5F">최적화 진행중입니다.</p>
+</div>
+   
+   
+   <div id="map_content" style="opacity: 0.2;">
    <div class="w3-container">
       <div>
          <table id="place" class="w3-table-all" style="width: 30%;">
@@ -117,17 +124,29 @@
       </div>
       
    </div>
-   <div id="bottom_openclose_box" onclick="test()" style="opacity:0.7; position: absolute; z-index: 50;  margin:510px 0px 0px 20px; width:50px; height:256px; float:left;">
+   <div id="bottom_openclose_box" onclick="show_detail()" style="opacity:0.7; position: absolute; z-index: 50;  margin:510px 0px 0px 20px; width:50px; height:256px; float:left;">
       <button id="bottom_close_btn" style="opacity:1; background-color:#FFFFFF; width:400px; height:50px; border-radius: 0px 0px 10px 10px; border:0px; font-size:20px;">목록 조회</button>
+   </div>
    </div>
    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02d94db8e10d97b2ae5cfd31f23e9c4c&libraries=services"></script>
 <script>
+window.onload = function() {
+   $("#map_content").attr("disabled","disabled");
+   document.querySelector("select[name=si2]").disabled = true;
+   document.querySelector("select[name=gu2]").disabled = true;
+   setTimeout(function() {
+      document.getElementById("map_loading").style.display = "none";
+      document.querySelector("select[name=si2]").disabled = false;
+      document.querySelector("select[name=gu2]").disabled = false;
+      document.getElementById("map_content").style.opacity = 1;
+    }, 2500);
+};
 $("select[name=si2]").change(function(){
    $("#pagination *").remove();
    $("#placesList *").remove();
    $("#placesList2 *").remove();
     $("#placesList3 *").remove();
-   test();
+   show_detail();
 });
    
 $("select[name=gu2]").change(function(){
@@ -135,13 +154,13 @@ $("select[name=gu2]").change(function(){
    $("#placesList *").remove();
    $("#placesList2 *").remove();
     $("#placesList3 *").remove();
-   test();
+   show_detail();
 });   
 
 $("#menu_wrap2").hide();
 $("#bottom_openclose_box").hide();
 
-function test() {
+function show_detail() {
    $("#menu_wrap2").fadeOut(500)
     $("#bottom_openclose_box").fadeOut(500)
     

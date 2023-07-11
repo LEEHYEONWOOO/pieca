@@ -15,14 +15,15 @@
          <span class="fa-regular fa-user"></span> 회원 정보</a>
          
       <a onclick="movePage(2);" id="movepage2" style="cursor: pointer;">
-      <span class="fa-solid fa-car"></span>
-      	<c:if test="${login.username == '관리자' }">
-      		회원 관리
-      	</c:if>
-      	<c:if test="${login.username != '관리자' }">
-      		차량 조회
-      	</c:if>
-      	</a>
+         <c:if test="${login.username == '관리자' }">
+            <span class="fa-solid fa-user-plus"></span>
+            회원 관리
+         </c:if>
+         <c:if test="${login.username != '관리자' }">
+            <span class="fa-solid fa-car"></span>
+            차량 조회
+         </c:if>
+         </a>
          
       <a onclick="movePage(3);" id="movepage3" style="cursor: pointer;">
          <span class="fa-regular fa-credit-card"></span> PIECA CARD</a>
@@ -235,45 +236,99 @@
       <%-- basic_info_wrapper --%>
       
       <%-- 내 차 조회 --%>
-	<c:if test="${login.username == '관리자' }">
-	<div id="basic_info_wrapper2">
-		<div id="basic_info_left_inner2">
-			<span style="font-size:30px;">회원 관리</span>
-		</div>
-		<div style="font-size: 16px; width:90%; margin:0px 0px 40px 5%">
-			<table class="w3-table-all" style="text-align: center">
-			<tr>
-				<th width="100px;">가입유형</th>
-				<th width="70px;">이름</th>
-				<th width="100px;">전화번호</th>
-				<th width="140px;">생일</th>
-				<th width="100px">이메일</th>
-			</tr>
-		<c:forEach items="${list}" var="user">
-			<tr>
-				<td colspan="4"></td>
-				<td>
-					<a href="../user/update?userid=${user.userid}">[수정]</a>
-					<a href="../user/delete?userid=${user.userid}">[강제탈퇴]</a>
-					<a href="../user/mypage?userid=${user.userid}">[회원정보]</a>
-				</td>
-			</tr>
-			<tr>
-				<td>${user.channel}</td>
-				<td>${user.username}</td>
-				<td>${user.phoneno}</td>
-				<td><fmt:formatDate value="${user.birthday}" pattern="MM-dd" /></td>
-				<td>${user.email}</td>
-			</tr>
-		</c:forEach>
-		</table>
-		</div>
-		</div>
-			
-			
-			
-      	</c:if>
-      	<c:if test="${login.username != '관리자' }">
+   <c:if test="${login.username == '관리자' }">
+   <div id="basic_info_wrapper2">
+      <div id="basic_info_left_inner2">
+         <span style="font-size:30px;">회원 관리</span>
+      </div>
+      <div style="font-size: 16px; width:90%; margin:0px 0px 40px 5%;">
+         <table class="w3-table"  style="width:100%; text-align: center; border:2px solid #D5D5D5">
+         <tr style="border:2px solid #D5D5D5;">
+         <th width="20%" style="background-color:red; font-size:18px; color:#F15F5F">회원 이름</th>
+            <th width="25%" style="background-color:orange; font-size:18px; color:#F15F5F">전화번호</th>
+            <th width="20%" style="background-color:yellow; font-size:18px; color:#F15F5F; padding-left: 18px;">생년월일</th>
+            <th width="35%" style="background-color:green; font-size:18px; color:#F15F5F">이메일</th>
+            <th width="15%" style="background-color:blue; text-align:center; font-size:18px; color:#F15F5F">수정</th>
+      </tr>
+      
+      <c:set var="userCnt" value="1" /> 
+      
+        <c:forEach items="${list}" var="user">
+            
+      <form:form modelAttribute="user" method="post" action="updateAdmin">
+        <tr style=" border:2px solid #D5D5D5;">
+            <td>
+               <c:if test="${user.channel eq 'pieca' }">
+                  <img src="../img/mypage_P2.png" style="width:25px;">
+                  <form:input path="username" id="adminUsername${userCnt}" value="${user.username}" style="width:65%; background-color:#FFFFFF; border:none; color:#000000; padding-left: 3px; font-size:16px; height:35px;"/>
+               </c:if>
+               <c:if test="${user.channel eq 'kakao' }">
+                  <img src="../img/mypage_K.png" style="width:25px;">
+                  <input type="text" value="${user.username}" readonly="readonly" style="width:65%; padding: 0px; font-size:16px; height:35px; border:none; padding-left: 3px;"/>
+               </c:if>
+               <c:if test="${user.channel eq 'naver' }">
+                  <img src="../img/mypage_N.png" style="width:25px;">
+                  <input type="text" value="${user.username}" readonly="readonly" style="width:65%; padding: 0px; font-size:16px; height:35px; border:none; padding-left: 3px;"/>
+               </c:if>
+            </td>
+            <td>
+               <c:if test="${user.channel eq 'pieca' }">
+                  <form:input path="phoneno" id="adminPhoneno${userCnt}" value="${user.phoneno}" style="width:95%; background-color:#FFFFFF; border:none; color:#000000; padding-left: 3px; font-size:16px; height:35px;"/>
+               </c:if>
+               <c:if test="${user.channel ne 'pieca' }">
+                  <input type="text" value="${user.phoneno}" readonly="readonly"style="width:90%; padding: 0px; font-size:16px; height:35px; border:none; padding-left: 3px;"/>
+                  
+               </c:if>
+            </td>
+            <td>
+               <c:if test="${user.channel eq 'pieca'}">
+                  <fmt:formatDate value="${user.birthday}" var="adminBirth" type="date" pattern="yyyy-MM-dd" />
+                  <form:input path="birthday" id="adminBirthday${userCnt}" value="${adminBirth}" style="width:100%; background-color:#FFFFFF; border:none; color:#000000; padding-left: 3px; font-size:16px; height:35px;"/>
+               </c:if>
+               <c:if test="${user.channel ne 'pieca'}">
+                  <fmt:formatDate value="${user.birthday}" var="adminBirth" type="date" pattern="****-MM-dd" />
+                  <input type="text" readonly="readonly" value="${adminBirth}" style="width:95%; padding: 0px; height:35px; font-size:16px; border:none; padding-left: 12px;"/>
+               </c:if>
+            </td>
+            <td>
+               <c:if test="${user.channel eq 'pieca'}">
+                  <form:input path="email" value="${user.email}" id="adminEmail${userCnt}" style="width:105%; background-color:#FFFFFF; border:none; color:#000000; padding-left: 3px; font-size:16px; height:35px;"/>
+               </c:if>
+               <c:if test="${user.channel ne 'pieca'}">
+                  <input type="text" value="${user.email}" readonly="readonly" style="width:105%; padding: 0px; height:35px; font-size:16px; border: none; padding-left: 3px;"/>
+               </c:if>
+            </td>
+            <td>
+            <input type="button" id="admin_fix${userCnt}" value="수정" onclick="showUserId('${userCnt}')" style="width:50px; height: 35px; background-color: #008000; border:none; color:#FFFFFF; border-radius: 6px;">
+            <c:if test="${user.channel eq 'pieca'}">
+               <input type="submit" id="admin_submit${userCnt}" value="저장" style="width:50px; height: 35px; background-color: #00B6EF;; border:none; color:#FFFFFF; border-radius: 6px;">
+                  </c:if>   
+            </td>
+         </tr>
+         <tr id="AdminUserIdBox${userCnt}">
+            <td colspan="4" >
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-share fa-flip-vertical"></i> 아이디 : <form:input path="userid" id="adminUserid" value="${user.userid}" readonly="true" style="width:550px; padding:3px; border:none; height:35px; font-size:16px;"/>
+            </td>
+         
+      </form:form>
+      <c:set var="userCnt" value="${userCnt+1}" />
+            <td colspan="1">
+               <form method="post" action="deleteAdmin" name="deleteForm">
+                     <input type="hidden" name="userid" value="${user.userid}">
+                     <input type="hidden" name="channel" value="${user.channel}">
+                  <input type="submit" id="admin_delete${userCnt}" value="탈퇴" style="width:50px; height: 35px; background-color: #00B6EF;; border:none; color:#FFFFFF; border-radius: 6px;">
+               </form>
+            </td>
+      </c:forEach>
+      <c:set var="userCntMax" value="${userCnt}" />
+      </table>
+      <input type="hidden" id="userCntMax" value="${userCntMax}">
+      </div>
+      </div>
+         </c:if>
+         
+         
+         <c:if test="${login.username != '관리자' }">
       <div id="mypage_car_wrapper" style="transition-duration: 0.5s; border: 1px solid #FFFFFF; border-radius: 5px; margin-bottom: 50px; margin-top: 200px; box-shadow: 0px 2px 4px 0px #1B1B1B; height: 280px;">
          <div id="mypage_car_left_inner" style="float: left; width: 20%; height: 230px; margin: 20px 0px 0px 50px;">
             <div id="mypage_car_left_title" style="font-size: 24px;">
@@ -630,6 +685,15 @@
       
 </div>
 <script type="text/javascript">
+function showUserId(cnt) {
+   $("#AdminUserIdBox"+cnt).show()
+   $("#admin_fix"+cnt).hide()
+   $("#admin_submit"+cnt).show()
+   $("#adminUsername"+cnt).removeAttr("disabled").css("border","1px solid #000000").css("border-radius","6px").css("padding-left","2px");
+   $("#adminPhoneno"+cnt).removeAttr("disabled").css("border","1px solid #000000").css("border-radius","6px").css("padding-left","2px");
+   $("#adminBirthday"+cnt).removeAttr("disabled").css("border","1px solid #000000").css("border-radius","6px").css("padding-left","2px");
+   $("#adminEmail"+cnt).removeAttr("disabled").css("border","1px solid #000000").css("border-radius","6px").css("padding-left","2px");
+}
 
 var isToggled = false;
 function test() {
@@ -781,6 +845,16 @@ $(document).ready(function(){
         }
      });
     
+let max = $("#userCntMax").val();
+for (let i=1; i<=max; i++ ) {
+   $("#AdminUserIdBox"+i).hide()
+   $("#admin_submit"+i).hide()
+   $("#adminUsername"+i).attr("disabled","disabled");
+   $("#adminPhoneno"+i).attr("disabled","disabled");
+   $("#adminBirthday"+i).attr("disabled","disabled");
+   $("#adminEmail"+i).attr("disabled","disabled");
+}
+      
    $("#mypage_car_right_name_box").hide();
    $("#mypage_car_right_type_box").hide();
    $("#mypage_car_right_price_box").hide();
@@ -868,7 +942,7 @@ $(document).ready(function(){
          $("#start_email").val($("#email_original").val());
          $("#start_email_be").val($("#input_email").val());
       
-      	$("#year").val(birthday.substring(0, 4))
+      $("#year").val(birthday.substring(0, 4))
          $("#month").val(birthday.substring(5, 7))
          $("#day").val(birthday.substring(8, 10))
       

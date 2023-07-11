@@ -142,12 +142,12 @@
       </button>
    </form>
 </div>
-<c:if test="${loginUser.userid=='admin'}">
-<div style="float:left; height:45px; font-size:20px; margin:10% 0% 0% 0.4%;">
-   <button onclick="window.location.href='insert'" style="font-size:22px; height:45px; background-color: #F15F5F; border:none; border-radius:6px; padding:3px 0px 0px 0px">
-   		&nbsp;차량추가&nbsp;</button>
-</div>
+<div style="float:left; height:45px; font-size:20px; margin:7.5% 0% 0% -7.9%;">
+   <c:if test="${loginUser.userid=='admin'}">
+   <button onclick="window.location.href='insert'" style="font-size:22px; width:152px; height:45px; background-color: #00B6EF; border:none; border-radius:6px; padding:3px 0px 0px 0px">
+         &nbsp;차량추가&nbsp;</button>
 </c:if>
+</div>
 
 
 <c:set var="loop_index" value="1" />
@@ -183,7 +183,7 @@
                   <div id="car_list_left_btn" onclick="imgLeft('${item.no}')" style=" float:left; width:6%; height:247px;; padding: 16.5% 0% 0% 2%;">
                      <span class="fa-solid fa-chevron-left" style="font-size:35px;"></span>
                   </div>
-                  <img src="../img/${item.img.substring(0, item.img.length() - 5)}${Math.round(Math.random() * 3) + 1}.png" id="car_list_title${item.no}" onclick="show('${item.no}')" style=" width:85%; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
+                  <img src="../img/${item.img.substring(0, item.img.length() - 5)}${Math.round(Math.random() * 3) + 1}.png" id="car_list_title${item.no}" onclick="show('${item.no}')" style="width:505px; height:236px; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
                   <div id="car_list_right_btn" onclick="imgRight('${item.no}')" style=" float:right; width:6%; height:247px; padding: 16.5% 0% 0% 0%;">
                      <span class="fa-solid fa-chevron-right" style="font-size:35px;"></span>
                   </div>
@@ -191,15 +191,21 @@
                <c:if test="${item.imgcnt != 4}">
                   <div id="car_list_left_btn" style="float:left; width:6%; height:187px; padding: 16.5% 0% 0% 1%;">
                   </div>
-                  <img src="../img/${item.img}" id="car_list_title${item.no}" onclick="show('${item.no}')" style="width:85%; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
+                  <img src="../img/${item.img}" id="car_list_title${item.no}" onclick="show('${item.no}')" style="width:505px; height:236px; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
                   <div id="car_list_right_btn" style="float:right; width:6%; height:187px;padding: 16.5% 0% 0% 0%;">
                   </div>
                </c:if>
             </div>
-            <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 9%;">
-               ${item.maker}&nbsp;&nbsp;${item.name}
-            </div>
-            
+            <c:if test="${item.imgcnt == 4}">
+               <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 9%;">
+                     ${item.maker}&nbsp;&nbsp;${item.name}
+               </div>
+            </c:if>
+            <c:if test="${item.imgcnt != 4}">
+               <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 15%;">
+                     ${item.maker}&nbsp;&nbsp;${item.name}
+               </div>
+            </c:if>
             <div id ="car_list_like_box" onclick="like('${item.no}','${loginUser.userid}')" style="float:left; font-size:30px;">
          <c:if test="${loginUser.userid != null }">
                <c:forEach items="${liked_Car}" var="liked_Car2">
@@ -411,7 +417,7 @@
                   <div id="car_list_left_btn" onclick="imgLeft('${item.no}')" style=" float:left; width:6%; height:247px;; padding: 16.5% 0% 0% 2%;">
                      <span class="fa-solid fa-chevron-left" style="font-size:35px;"></span>
                   </div>
-                  <img src="../img/${item.img.substring(0, item.img.length() - 5)}${Math.round(Math.random() * 3) + 1}.png" id="car_list_title${item.no}" onclick="show('${item.no}')" style=" width:85%; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
+                  <img src="../img/${item.img.substring(0, item.img.length() - 5)}${Math.round(Math.random() * 3) + 1}.png" id="car_list_title${item.no}" onclick="show('${item.no}')" style="width:505px; height:236px; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
                   <div id="car_list_right_btn" onclick="imgRight('${item.no}')" style=" float:right; width:6%; height:247px; padding: 16.5% 0% 0% 0%;">
                      <span class="fa-solid fa-chevron-right" style="font-size:35px;"></span>
                   </div>
@@ -419,14 +425,21 @@
                <c:if test="${item.imgcnt != 4}">
                   <div id="car_list_left_btn" style="float:left; width:6%; height:187px; padding: 16.5% 0% 0% 1%;">
                   </div>
-                  <img src="../img/${item.img}" id="car_list_title${item.no}" onclick="show('${item.no}')" style="width:85%; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
+                  <img src="../img/${item.img}" id="car_list_title${item.no}" onclick="show('${item.no}')" style="width:505px; height:236px; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
                   <div id="car_list_right_btn" style="float:right; width:6%; height:187px;padding: 16.5% 0% 0% 0%;">
                   </div>
                </c:if>
             </div>
-            <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 9%;">
-               ${item.maker}&nbsp;&nbsp;${item.name}
-            </div>
+            <c:if test="${item.imgcnt == 4}">
+               <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 9%;">
+                     ${item.maker}&nbsp;&nbsp;${item.name}
+               </div>
+            </c:if>
+            <c:if test="${item.imgcnt != 4}">
+               <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 15%;">
+                     ${item.maker}&nbsp;&nbsp;${item.name}
+               </div>
+            </c:if>
             <div id ="car_list_like_box" onclick="like('${item.no}','${loginUser.userid}')" style="float:left; font-size:30px;">
 
          <c:if test="${loginUser.userid != null }">
@@ -618,41 +631,6 @@
 
 
 <script>
-/*  
-function colorReset(kind) {
-   if (kind == "maker") {
-      $("#maker").css("color","#000000")
-   } else if (kind == "car_size") {
-      $("#car_size").css("color","#000000")
-   } else if (kind == "car_type") {
-      $("#car_type").css("color","#000000")
-   }
-}
-
-$("select[name=maker]").change(function(){
-   $("#maker").css("color","#F15F5F")
-   
-   if ($("#maker").val() == '') {
-      colorReset("maker");
-   }
-});
-
-$("select[name=car_size]").change(function(){
-   $("#car_size").css("color","#F15F5F")
-   
-   if ($("#car_size").val() == '') {
-      colorReset("car_size");
-   }
-});
-
-$("select[name=car_type]").change(function(){
-   $("#car_type").css("color","#F15F5F")
-   
-   if ($("#car_type").val() == '') {
-      colorReset("car_type");
-   }
-});
-*/
 window.onload = function() {
    mycardec();
    $(".mySlideDiv").not(".active").hide();
@@ -792,7 +770,7 @@ $(document).ready(function(){
 
    function zoom(no) {
       var div_title = document.getElementById("car_list_title" + no);
-      div_title.style.transform = "scale(1.05)";
+      div_title.style.transform = "scale(1.07)";
       
       car_list_in_container = document.getElementById("car_list_in_container" + no);
       car_list_in_container.addEventListener("mouseleave", function() {
@@ -885,31 +863,7 @@ $(document).ready(function(){
          });
       }
    }
-   /*
-   function likedec(carno,userid){
-      if (userid == '') {
-         $("#car_list_like_ok"+carno).hide();
-      } else {
-         $.ajax({
-               type:"POST",
-               url: "../car/carlikedec",
-               data : {"carno":carno,
-                     "userid": userid},
-               success:function(result){
-                  console.log(carno+'//'+result)
-                  
-                  if (result == false) {
-                     $("#car_list_like_ok"+carno).hide();
-                     $("#car_list_like_no"+carno).show();
-                  } else if (result == true){
-                     $("#car_list_like_ok"+carno).show();
-                     $("#car_list_like_no"+carno).hide();
-                  }
-               }
-            });
-      }
-   }
-   */
+   
    function liketotal(carno){
       $.ajax({
          type : "POST",
@@ -942,7 +896,6 @@ $(document).ready(function(){
                   $("#car_list_mycar"+i).hide()
                   $("#car_list_mycar_add"+i).show()
                   $("#car_list_in_container"+i).css("box-shadow","-2px 2px 5px 2px #747474")
-                  
                }
                $("#car_list_mycar"+carno).show()
                $("#car_list_mycar_add"+carno).hide()

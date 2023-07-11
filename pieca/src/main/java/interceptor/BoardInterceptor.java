@@ -21,8 +21,12 @@ public class BoardInterceptor extends HandlerInterceptorAdapter {
 		User login = (User)session.getAttribute("loginUser");
 		System.out.println("boardid = "+boardid);
 		System.out.println("login  = "+login);
-		System.out.println("boardid == null 밑에 결과");
 		System.out.println(boardid==null);
+		if(login==null) {
+			String msg = "로그인 유저만 가능합니다.";
+			String url = request.getContextPath()+ "/user/login";
+			throw new BoardException(msg,url);
+		}
 		//System.out.println(boardid.equals("1")+"    =    boardid.equals(\"1\")");
 		if(boardid == null || boardid.equals("1")) {  //공지사항 글작성
 			if(login == null || !login.getUserid().equals("admin")) {  //로그인 정보 확인

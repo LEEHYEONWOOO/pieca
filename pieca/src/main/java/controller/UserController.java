@@ -477,13 +477,13 @@ public class UserController {
       List<Carlike> carLikeData = service.selectLike(user.getUserid());
       System.out.println("carLikeData :: "+carLikeData);
       mav.addObject("login",session.getAttribute("loginUser"));
-     mav.addObject("carList", carList); // 데이터 저장
-     mav.addObject("carData", carData); // 데이터 저장
-     mav.addObject("carLikeData", carLikeData); // 데이터 저장
+      mav.addObject("carList", carList); // 데이터 저장
+      mav.addObject("carData", carData); // 데이터 저장
+      mav.addObject("carLikeData", carLikeData); // 데이터 저장
       mav.addObject("user", user); //회원정보데이터
       List<User> list = service.select_all();
       for(int i=0;i<list.size();i++) {
-    	  list.get(i).setEmail(emailDecrypt(list.get(i)));
+         list.get(i).setEmail(emailDecrypt(list.get(i)));
       }
       mav.addObject("list",list);
       return mav;
@@ -499,6 +499,7 @@ public class UserController {
    
    @PostMapping("update")
    public ModelAndView idCheckUpdate(@Valid User user,BindingResult bresult,String userid,HttpSession session) {
+      System.out.println("도착");
       ModelAndView mav = new ModelAndView();
       //입력값 검증
       if(bresult.hasErrors()) {
@@ -518,6 +519,35 @@ public class UserController {
       try {
          user.setEmail(this.emailEncrypt(user.getEmail(), user.getUserid()));
          user.setPassword(passwordHash(user.getPassword()));
+         service.userUpdate(user);
+         if(loginUser.getUserid().equals(user.getUserid()))             
+            session.setAttribute("loginUser", user);
+         mav.setViewName("redirect:mypage?userid="+user.getUserid());
+      } catch (Exception e) {
+         e.printStackTrace();
+         throw new LoginException
+         ("update?userid="+user.getUserid());
+      }
+      return mav;
+   }
+   
+   @PostMapping("updateAdmin")
+   public ModelAndView idCheckUpdateAdmin(@Valid User user,BindingResult bresult,String userid,HttpSession session) {
+      System.out.println("도착");
+      ModelAndView mav = new ModelAndView();
+      //입력값 검증
+      if(bresult.hasErrors()) {
+         mav.getModel().putAll(bresult.getModel());
+         bresult.reject("error.update.user");
+         mav.setViewName("user/mypage?userid="+user.getUserid());
+         return mav;
+      }
+      //비밀번호 검증
+      System.out.println("user ::"+user);
+      User loginUser = (User)session.getAttribute("loginUser");
+      //비밀번호 일치 => 데이터 수정
+      try {
+         user.setEmail(this.emailEncrypt(user.getEmail(), user.getUserid()));
          service.userUpdate(user);
          if(loginUser.getUserid().equals(user.getUserid()))             
             session.setAttribute("loginUser", user);
@@ -600,6 +630,64 @@ public class UserController {
       //탈퇴 성공 : 회원정보를 제거 된 상태
       if(loginUser.getUserid().equals("admin")) {  //관리자가 강제 탈퇴
          return "redirect:../admin/list";
+      } else {           //본인 탈퇴. 
+         session.invalidate();
+         return "redirect:login";
+      }   
+   }
+   
+   @PostMapping("deleteAdmin")
+   public String  idCheckdeleteAdmin(String userid,HttpSession session) {
+      // 관리자 탈퇴 불가
+      if(userid.equals("admin"))
+         throw new LoginException
+                  ("mypage?userid="+userid);
+      //비밀번호 검증 : 로그인된 정보
+      User loginUser = (User)session.getAttribute("loginUser");
+      //password : 입력된 비밀번호
+      //loginUser.getPassword() : 로그인 사용자의 비밀번호
+      if(loginUser.getChannel().equals("naver")) {
+         try {
+            service.userDelete(userid);
+            service.carDelete(userid);
+            session.invalidate();
+            return "redirect:login";
+         } catch(DataIntegrityViolationException e) {
+            throw new LoginException ("mypage?userid="+userid);
+         } catch(Exception e) {
+            e.printStackTrace();
+            throw new LoginException ("delete?userid="+userid);
+         }
+      }
+      if(loginUser.getChannel().equals("kakao")) {
+          try {
+             service.userDelete(userid);
+             service.carDelete(userid);
+             session.invalidate();
+             return "redirect:login";
+          } catch(DataIntegrityViolationException e) {
+             throw new LoginException ("mypage?userid="+userid);
+          } catch(Exception e) {
+             e.printStackTrace();
+             throw new LoginException ("delete?userid="+userid);
+          }
+       }
+      if(loginUser.getChannel().equals("pieca")) {
+         //비밀번호 일치 : 고객정보 제거
+         try {
+            service.userDelete(userid);
+            service.carDelete(userid);
+         } catch(DataIntegrityViolationException e) {
+            throw new LoginException ("mypage?userid="+userid);
+         } catch(Exception e) {
+            e.printStackTrace();
+            throw new LoginException ("delete?userid="+userid);
+         }
+      }
+      
+      //탈퇴 성공 : 회원정보를 제거 된 상태
+      if(loginUser.getUserid().equals("admin")) {  //관리자가 강제 탈퇴
+         return "redirect:../user/mypage?userid="+loginUser.getUserid();
       } else {           //본인 탈퇴. 
          session.invalidate();
          return "redirect:login";

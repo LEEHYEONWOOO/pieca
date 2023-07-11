@@ -71,40 +71,41 @@ nav ul li {
    position: relative;
 }
 
-.map-menu, .user-menu {
+.board-menu {
    font-color: #1B1B1B;
    padding: 16px;
    font-size: 16px;
    cursor: pointer;
 }
 
-.map-content, .user-content {
+.board-content {
    display: none;
    position: absolute;
+   margin-left: 25px;
    background-color: #f9f9f9;
-   border : 1px solid #FFFFFF;
-   border-radius: 5px;
-   width: 80px;
+   border : 1px solid #747474;
+   border-radius: 6px;
+   width: 100px;
    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
 a {
    text-decoration: none; 
 }
-.map-content a {
+.board-content a {
    color: black;
    padding: 12px 16px;
    display: block;
-   text-align:left;
+   text-align:center;
 }
 
-.home, .map-menu, .news, .card, .login, .mypage, .logout{
+.home, .map, .board-menu, .news, .car, .login, .mypage, .logout{
    text-align:center;
    font-size: 22px;
 }
 
-.map, .news, .card{
-   width:7%;
+.map, .board, .news, .car{
+   width:8%;
 }
 
 .home {
@@ -119,7 +120,7 @@ a {
 
 
 /* map-menu 에는 hover 적용이 안됨 */
-.map:hover .map-content {
+.board:hover .board-content {
    display: block;
 }
 
@@ -132,28 +133,29 @@ a {
    display: table;
    clear: both;
 }
+
+#layout_top_btn, #layout_bottom_btn {
+  position: fixed;
+  width:40px;
+  height:40px;
+  top: 400px;
+  right: 30px;
+  background-color: #FFFFFF;
+  color: #000000;
+  padding: 2px;
+  border-radius: 100px;
+  font-size:30px;
+  cursor: pointer;
+}
+
+#layout_bottom_btn {
+  top: 460px;
+  
+}
 </style>
 
 </head>
 <body>
-
-<!-- Top container -->
-<!-- 
-<div class="navbar">
-   <div class="top_logo" style="margin:-20px 0px 0px 50px;">
-      <a href="${path}/main/home" style="width:70px; height:70px;">
-         <img src="${path}/img/pngwing.com.png" style="width:70px; height:70px;">
-      </a>
-   </div>
-   <div class="top_select">
-      <span>Map</span>
-      <a href="${path}/place/main">충전소</a>
-      <a href="${path}/place/main">주차장</a>
-        <a href="${path}/place/location">Pay</a>
-        
-     </div>
-</div>
- -->
  <div class="navbar">
    <nav>
       <ul>
@@ -163,28 +165,20 @@ a {
             </a>
          </li>
          
-         <li class="map">
-            <div class="map-menu">
-               <span>Map</span>
-            </div>
-            <div class="map-content">
-               <a href="${path}/place/location">충전소</a>
-               <a href="${path}/place/main">주차장</a>
-            </div>
-         </li>
+         <li class="map"><a href="${path}/place/location">Station</a></li>
          
-         <li class="map">
-               <div class="map-menu">
+         <li class="board">
+               <div class="board-menu">
                      <span>Board</span>
                </div>
-               <div class="map-content">
-                     <a href="${path}/board/list?boardid=1">공지사항</a>
-                     <a href="${path}/board/list?boardid=2">신고 게시판</a>
+               <div class="board-content">
+                     <a href="${path}/board/list?boardid=1">공지 사항</a>
+                     <a href="${path}/board/list?boardid=2">정보 공유</a>
                </div>
-         </li>
+            </li>
          
          <li class="news"><a href="${path}/news/main">News</a></li>
-         <li class="card"><a href="${path}/car/list">Car</a></li>
+         <li class="car"><a href="${path}/car/list">Car</a></li>
          <c:if test="${empty sessionScope.loginUser}">
             <li class="login"><a class="fa-regular fa-user" href="${path}/user/login"></a></li>
          </c:if>
@@ -200,61 +194,142 @@ a {
       </ul>
    </nav>
 </div>
-<div class="contents">
+<div class="contents" style="height:auto; padding-bottom:150px;">
+   <button id="layout_top_btn" class="fa-solid fa-caret-up"></button>
+   <button id="layout_bottom_btn" class="fa-solid fa-caret-down"></button>
    <sitemesh:write property="body"/>
 </div>
   
   <!-- Footer -->
-  <footer class="w3-container w3-padding-16 w3-light-grey">
-    <h4>FOOTER</h4>
-    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-      <hr>
-      <div>
-      </div> 
-  </footer>
+<footer>
+   <div style="width:105%; height:180px; background-color: #D5D5D5; box-shadow: 0px 0px 5px 4px #1B1B1B;">
+      <div style="float:left; width:20%; margin: 1% 0% 0% 12% ">
+         <p style="font-size:25px;">구디 아카데미</p>
+          <p style="font-size:20px;">GDJ 62기 <span style="color:#F15F5F">이현우</span></p>
+          <p style="font-size:18px;">dlgusdn16@naver.com</p>
+          <p style="font-size:18px;">010-2316-8678</p>
+       </div>
+       <div style="float:left; width:20%; margin: 1% 0% 0% 0% ">
+         <p style="font-size:25px;">구디 아카데미</p>
+          <p style="font-size:20px;">GDJ 62기 <span style="color:#F15F5F">김도훈</span></p>
+          <p style="font-size:18px;">guardian010@naver.com</p>
+          <p style="font-size:18px;">010-8850-4119</p>
+       </div>
+       <div style="float:left; width:20%; margin: 1% 0% 0% 0% ">
+         <p style="font-size:25px;"><i class="fa-solid fa-hands-clapping"></i> Thanks to</p>
+         <p style="font-size:15px;">카카오맵 API
+             <a href="https://apis.map.kakao.com/" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+         <p style="font-size:15px;">카카오 로그인 API
+             <a href="https://developers.kakao.com/product/kakaoLogin" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+         <p style="font-size:15px;">네이버 로그인 API
+             <a href="https://developers.naver.com/products/login/api/api.md" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+         <p style="font-size:15px;">Port one API (결제)
+             <a href="https://portone.io/korea/ko?utm_source=google&utm_medium=google_sa&utm_campaign=pf_conversion_2302_kr&utm_content=homepage&gclid=CjwKCAjw-7OlBhB8EiwAnoOEk9Hc-Vjo-7FGcazTuuPqnhOcj21aya637yAIwGQaRzdSNCmTX1imfRoCBeQQAvD_BwE" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+          <p style="font-size:15px;">한국전력 API (지역정보) 
+             <a href="https://bigdata.kepco.co.kr/cmsmain.do?scode=S01&pcode=000493&pstate=L&redirect=Y" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+       </div>
+       <div style="float:left; width:20%; margin: 2% 0% 0% 0% ">
+          <p style="font-size:15px;">Pixlr X
+             <a href="https://pixlr.com/kr/x/" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+          <p style="font-size:15px;">Freepik
+             <a href="https://www.freepik.com/" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+          <p style="font-size:15px;">Noonnu
+             <a href="https://noonnu.cc/" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+          <p style="font-size:15px;">Font-awesome 
+             <a href="https://fontawesome.com/search" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+          <p style="font-size:15px;">공공데이터 API (충전소 정보)
+             <a href="https://www.data.go.kr/data/15076352/openapi.do" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+          <p style="font-size:15px;">공공데이터 API (행정표준코드)
+             <a href="https://www.data.go.kr/data/15077871/openapi.do" target="_blank" style="color:#F15F5F">&nbsp;바로가기</a>
+          </p>
+       </div>
+       
+      </div>
+</footer> 
   <!-- End page content -->
 
 <script>
-var loc = document.location.href.split("pieca/");
+document.getElementById("layout_top_btn").addEventListener("click", function() {
+   window.scrollTo(0, 0);
+   this.style.transform = "scale(1.3)";
+   setTimeout(() => this.style.transform = "scale(1)", 200);
+});
+
+document.getElementById("layout_bottom_btn").addEventListener("click", function() {
+   window.scrollTo(0, document.body.scrollHeight);
+   this.style.transform = "scale(1.3)";
+   setTimeout(() => this.style.transform = "scale(1)", 200);
+});
+
+loc = document.location.href.split("pieca/");
 
 if (loc[1] == "main/home") {
-$(window).on('load',function() {
-   $("ul").css('background-color', '#1B1B1B');
-   $(".map span").css('color', '#FFFFFF');
-   $(".news").css('color', '#FFFFFF');
-   $(".card").css('color', '#FFFFFF');
-   $(".home").css('color', '#FFFFFF');
-   $(".login").css('color', '#FFFFFF');
-   $(".mypage").css('color', '#FFFFFF');
-   $(".logout").css('color', '#FFFFFF');
-   
-  });
+   $(window).on('load',function() {
+      $("ul").css('background-color', '#1B1B1B');
+      $(".home").css('color', '#FFFFFF');
+      $(".map").css('color', '#FFFFFF');
+      $(".board span").css('color', '#FFFFFF');
+      $(".news").css('color', '#FFFFFF');
+      $(".car").css('color', '#FFFFFF');
+      $(".login").css('color', '#FFFFFF');
+      $(".mypage").css('color', '#FFFFFF');
+      $(".logout").css('color', '#FFFFFF');
+   });
 }
 
+
+
 $(window).scroll(function() {
+   if ((loc[1] == "main/home") && ($(window).scrollTop() > 700)) {
+      $("#layout_top_btn").fadeIn(600);
+       $("#layout_bottom_btn").fadeIn(600);         
+   }
+
+   if ((loc[1] == "main/home") && ($(window).scrollTop() <= 700)) {
+      $("#layout_top_btn").fadeOut(600);
+       $("#layout_bottom_btn").fadeOut(600);         
+   }
+   
    if ($(window).scrollTop() > 1) {
        $("ul").css('background-color', '#FFFFFF');
-       $(".map span").css('color', '#1B1B1B');
-       $(".news").css('color', '#1B1B1B');
-       $(".card").css('color', '#1B1B1B');
        $(".home").css('color', '#1B1B1B');
+       $(".map").css('color', '#1B1B1B');
+       $(".board span").css('color', '#1B1B1B');
+       $(".news").css('color', '#1B1B1B');
+       $(".car").css('color', '#1B1B1B');
        $(".login").css('color', '#1B1B1B');
        $(".mypage").css('color', '#1B1B1B');
        $(".logout").css('color', '#1B1B1B');
    }
+   
    if ($(window).scrollTop() == 0) {
       if (loc[1] == "main/home") {
          $("ul").css('background-color', '#1B1B1B');
-         $(".map span").css('color', '#FFFFFF');
-         $(".news").css('color', '#FFFFFF');
-         $(".card").css('color', '#FFFFFF');
          $(".home").css('color', '#FFFFFF');
-         $(".login").css('color', '#FFFFFF');
-         $(".mypage").css('color', '#FFFFFF');
-         $(".logout").css('color', '#FFFFFF');
+          $(".map").css('color', '#FFFFFF');
+          $(".board span").css('color', '#FFFFFF');
+          $(".news").css('color', '#FFFFFF');
+          $(".car").css('color', '#FFFFFF');
+          $(".login").css('color', '#FFFFFF');
+          $(".mypage").css('color', '#FFFFFF');
+          $(".logout").css('color', '#FFFFFF');
       }
    }
 });
+function openInNewTab(url) {
+     var win = window.open(url, '_blank');
+     win.focus();
+   }
 </script>  
   
 

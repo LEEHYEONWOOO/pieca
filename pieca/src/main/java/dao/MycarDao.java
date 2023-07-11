@@ -62,8 +62,9 @@ public class MycarDao {
       template.getMapper(cls).update(mycar);
    }
 
-
-   
-
-
+   public void delete(String userid) {
+       param.clear();
+       param.put("userid", userid);
+        template.getMapper(cls).adminDelete(param);
+   }
 }

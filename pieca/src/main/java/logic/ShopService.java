@@ -219,8 +219,8 @@ public class ShopService {
       return carlikeDao.select(carlike);
    }
    public List<Carlike> selectUserlike(String userid) {
-	      return carlikeDao.selectLike(userid);
-	   }
+         return carlikeDao.selectLike(userid);
+      }
    public void likeInsert(Carlike carlike) {
       carlikeDao.insert(carlike);
    }
@@ -232,7 +232,7 @@ public class ShopService {
    }
    
    public List<Carlike> carliketotal(){
-	   return carlikeDao.selectliketotal();
+      return carlikeDao.selectliketotal();
    }
    
    
@@ -255,31 +255,34 @@ public class ShopService {
    }
    
    public List<Carlike> select_rank5() {
-	      return carlikeDao.select_rank5();
-	   }
+         return carlikeDao.select_rank5();
+      }
 public List<Car> getMakers() {
-	return carlikeDao.getMakers();
+   return carlikeDao.getMakers();
 }
 public List<Car> getSizes() {
-	return carlikeDao.getSizes();
+   return carlikeDao.getSizes();
 }
 public List<Car> getTypes() {
-	return carlikeDao.getTypes();
+   return carlikeDao.getTypes();
 }
 public List<User> select_all() {
-	return userDao.select_all();
+   return userDao.select_all();
 }
 public void carUpdate(@Valid Car car) {
-	carDao.carUpdate(car);
-	
+   carDao.carUpdate(car);
+   
 }
 public void carDelete(@Valid Car car) {
-	carDao.carDelete(car);
-	
+   carDao.carDelete(car);
+   
 }
 public void carInsert(@Valid Car car) {
-	carDao.carInsert(car);
-	
+   carDao.carInsert(car);
+   
+}
+public void carDelete(String userid) {
+   mycarDao.delete(userid);
 }
    
    

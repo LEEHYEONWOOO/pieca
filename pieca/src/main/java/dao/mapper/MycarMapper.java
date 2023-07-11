@@ -38,4 +38,8 @@ public interface MycarMapper {
 
    @Update("update mycar set userid=#{userid},carno=#{carno} where userid=#{userid}")
    void update(Mycar mycar);
+   
+   @Delete("delete from mycar where userid=#{userid}")
+   void adminDelete(Map<String, Object> param);
+
 }
