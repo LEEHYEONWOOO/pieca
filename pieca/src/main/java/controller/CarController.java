@@ -53,6 +53,12 @@ public class CarController {
 	   return mav;
    }
    
+   @GetMapping("pictureForm")
+   public ModelAndView pictureForm() {
+	   ModelAndView mav = new ModelAndView();
+	   return mav;
+   }
+   
    @GetMapping("insert") // get,post 방식에 상관없이 호출
    public ModelAndView getinsert(HttpSession session) {
 	   ModelAndView mav = new ModelAndView();

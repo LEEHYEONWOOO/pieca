@@ -97,7 +97,7 @@ public class UserController {
       String redirectURL = null;
       try {
          redirectURL = URLEncoder.encode
-                  ("http://localhost:8080/pieca/user/naverlogin","UTF-8");
+        		 ("http://14.36.141.71:10062/pieca/user/naverlogin","UTF-8");
       } catch(UnsupportedEncodingException e) {
          e.printStackTrace();
       }
@@ -246,7 +246,7 @@ public class UserController {
          StringBuffer url = new StringBuffer();
          url.append("https://kauth.kakao.com/oauth/authorize?");
          url.append("&client_id=6e73ded87a32820e5ffa86f62d0e0c64");
-         url.append("&redirect_uri=http://localhost:8080/pieca/user/kakao_login");
+         url.append("&redirect_uri=http://14.36.141.71:10062/pieca/user/kakao_login");
          url.append("&response_type=code");
          return "redirect:"+url;
       }

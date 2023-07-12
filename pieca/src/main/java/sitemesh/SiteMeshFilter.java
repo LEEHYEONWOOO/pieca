@@ -40,6 +40,7 @@ public class SiteMeshFilter extends ConfigurableSiteMeshFilter{
       .addExcludedPath("/user/payment")
       .addExcludedPath("/user/getcard")
       .addExcludedPath("/board/imgupload*")
+      .addExcludedPath("/car/pictureForm")
       .addExcludedPath("/ajax/*");
    }
 

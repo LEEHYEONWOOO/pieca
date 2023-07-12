@@ -11,6 +11,12 @@ input {
   border-radius: 5px;
 }
 </style>
+<script type="text/javascript">
+function win_upload() {
+	var op = "width=500, height=500, left=50,top=150";
+	open("pictureForm", "", op);
+}
+</script>
 </head>
 <body>
 <div style="width:70%; background-color:yellow; margin:5% 0% 0% 7%; align-content: center; justify-content: center; align-items: center;">
@@ -41,6 +47,10 @@ input {
                   <div id="car_list_right_btn" style="float:right; width:6%; height:187px;padding: 16.5% 0% 0% 0%;">
                   </div>
                </c:if>
+                  <div id="insert_pic" style=" float:right; width:90%; height:247px; padding: 16.5% 0% 0% 0%;">
+                     <img src="" id="pic"><br>
+                  </div>
+                  <font size="5"><a href="javascript:win_upload()">사진등록</a></font>
             </div>
             <div id="car_list_maker_name"  style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 15%;">
                <form:input path="maker" placeholder="브랜드명" style="width:160px;"/>
@@ -118,5 +128,6 @@ input {
 	</div>
 </form:form>
 </div>	
+
 </body>
 </html>

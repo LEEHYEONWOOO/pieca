@@ -7,12 +7,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-    <style>
-.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'KIMM_Bold'; font-size:15px;}
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
-.map_wrap {position:relative;width:100%;height:500px;}
-#menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+.map_wrap {position:relative;width:100%;height:880px; margin-top: 0px;}
+#menu_wrap {position:absolute;top:0;left:0;bottom:0;width:400px; height:80%; margin:150px 0 30px 20px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px 10px 0px 0px;}
+#menu_wrap2 {position:absolute;top:0;left:0;bottom:0;width:400px; height:256px; margin:585px 0 30px 20px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px; border-radius: 10px;}
 .bg_white {background:#fff;}
 #menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
 #menu_wrap .option{text-align: center;}
@@ -45,192 +46,130 @@
 #pagination {margin:10px auto;text-align: center;}
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
-</style>
 
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> <!-- locash메소드 -->
 </head>
 <body>
-	<div
-		class="Panel-ehfjit-0 StationFilter__MainPanel-sc-14wjmpx-8 khhuJT bSAyYK"
-		style="opacity: 1;">
-		<div
-			class="Gap__Wrap-sc-6wxgzv-0 jLtVZX StationFilter___StyledGap-sc-14wjmpx-0 kZtwiJ">
-			<div class="GapItem__Wrap-t2c6w5-0 ekcVWR">
-				<div
-					class="Gap__Wrap-sc-6wxgzv-0 jLtVZX StationFilter___StyledGap2-sc-14wjmpx-1 gLymuG">
-					<div
-						class="GapItem__Wrap-t2c6w5-0 ekcVWR StationFilter___StyledGapItem-sc-14wjmpx-2 jzalOe">
-						<div class="Field__Wrap-sc-8puks1-0 cyQjfO">
-							<label class="Label-sc-14am6ji-0 kyobLm">시/도</label>
-							<div class="NativeSelect__Wrap-sc-15rujpg-0 bhhjDP">
-								<button type="button"
-									class="SelectButton__Wrap-sc-2rca4l-0 hZiOFD">
-									<div class="SelectButton__Main-sc-2rca4l-2 kRyohN">
-										<div class="SelectButton__Placeholder-sc-2rca4l-5 iFAbym">시/도</div>
-									</div>
-									<div class="SelectButton__ArrowHolder-sc-2rca4l-1 gPykFU">
-										<div size="1" class="Arrow__Wrap-k2t4l7-1 hyAXyd">
-											<svg xmlns="http://www.w3.org/2000/svg" width="1rem"
-												height="1rem" viewBox="0 0 31 31" stroke-width="5"
-												stroke="#3ec2ea"
-												class="Arrow___StyledArrowIcon-k2t4l7-0 fTJXGw">
-												<g id="\uADF8\uB8F9_126" data-name="\uADF8\uB8F9 126"
-													transform="translate(-35 -1331)">
-												<path id="\uD328\uC2A4_285" data-name="\uD328\uC2A4 285"
-													d="M4585,798.272l12.845,12.845L4585,823.961"
-													transform="translate(-4540.5 535.228)" fill="none"></path></g></svg>
-										</div>
-									</div>
-								</button>
-								<select class="NativeSelect__SelectInput-sc-15rujpg-1 eoSZvI"><option
-										value="">시/도</option>
-									<option value="11">서울특별시</option>
-									<option value="26">부산광역시</option>
-									<option value="27">대구광역시</option>
-									<option value="28">인천광역시</option>
-									<option value="29">광주광역시</option>
-									<option value="30">대전광역시</option>
-									<option value="31">울산광역시</option>
-									<option value="36">세종특별자치시</option>
-									<option value="41">경기도</option>
-									<option value="42">강원도</option>
-									<option value="43">충청북도</option>
-									<option value="44">충청남도</option>
-									<option value="45">전라북도</option>
-									<option value="46">전라남도</option>
-									<option value="47">경상북도</option>
-									<option value="48">경상남도</option>
-									<option value="50">제주특별자치도</option></select>
-							</div>
-						</div>
-					</div>
-					<div
-						class="GapItem__Wrap-t2c6w5-0 ekcVWR StationFilter___StyledGapItem2-sc-14wjmpx-3 fwZDnt">
-						<div class="Field__Wrap-sc-8puks1-0 cyQjfO">
-							<label class="Label-sc-14am6ji-0 kyobLm">시/군</label>
-							<div class="NativeSelect__Wrap-sc-15rujpg-0 bhhjDP">
-								<button type="button"
-									class="SelectButton__Wrap-sc-2rca4l-0 hZiOFD">
-									<div class="SelectButton__Main-sc-2rca4l-2 kRyohN">
-										<div class="SelectButton__Placeholder-sc-2rca4l-5 iFAbym">시/군</div>
-									</div>
-									<div class="SelectButton__ArrowHolder-sc-2rca4l-1 gPykFU">
-										<div size="1" class="Arrow__Wrap-k2t4l7-1 hyAXyd">
-											<svg xmlns="http://www.w3.org/2000/svg" width="1rem"
-												height="1rem" viewBox="0 0 31 31" stroke-width="5"
-												stroke="#3ec2ea"
-												class="Arrow___StyledArrowIcon-k2t4l7-0 fTJXGw">
-												<g id="\uADF8\uB8F9_126" data-name="\uADF8\uB8F9 126"
-													transform="translate(-35 -1331)">
-												<path id="\uD328\uC2A4_285" data-name="\uD328\uC2A4 285"
-													d="M4585,798.272l12.845,12.845L4585,823.961"
-													transform="translate(-4540.5 535.228)" fill="none"></path></g></svg>
-										</div>
-									</div>
-								</button>
-								<select class="NativeSelect__SelectInput-sc-15rujpg-1 eoSZvI"><option
-										value="">시/군</option></select>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="GapItem__Wrap-t2c6w5-0 ekcVWR">
-				<div class="Field__Wrap-sc-8puks1-0 cyQjfO">
-					<label class="Label-sc-14am6ji-0 kyobLm">충전소 구분</label>
-					<div
-						class="Gap__Wrap-sc-6wxgzv-0 iSJHqC StationFilter__CheckGroup-sc-14wjmpx-5 eqPsOL">
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">공공시설</div>
-							</button>
-						</div>
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">주차시설</div>
-							</button>
-						</div>
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">휴게시설</div>
-							</button>
-						</div>
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">관광시설</div>
-							</button>
-						</div>
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">상업시설</div>
-							</button>
-						</div>
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">차량정비시설</div>
-							</button>
-						</div>
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">기타시설</div>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="GapItem__Wrap-t2c6w5-0 ekcVWR">
-				<div class="Field__Wrap-sc-8puks1-0 cyQjfO">
-					<label class="Label-sc-14am6ji-0 kyobLm">충전기 타입</label>
-					<div
-						class="Gap__Wrap-sc-6wxgzv-0 iSJHqC StationFilter__CheckGroup-sc-14wjmpx-5 eqPsOL">
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">완속</div>
-							</button>
-						</div>
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">DC차데모</div>
-							</button>
-						</div>
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">DC콤보</div>
-							</button>
-						</div>
-						<div
-							class="GapItem__Wrap-t2c6w5-0 gGSbss StationFilter__CheckItem-sc-14wjmpx-6 irfnge">
-							<button type="button" class="CheckInput__Wrap-vrlmqq-0 efKOOI">
-								<div class="CheckInput__Button-vrlmqq-1 gMiGIk"></div>
-								<div class="CheckInput__Label-vrlmqq-2 jhJzbU">AC3상</div>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02d94db8e10d97b2ae5cfd31f23e9c4c&libraries=services"></script>
+<div id="map_loading" style="position: absolute; z-index:100; margin:10% 0% 0% 38%; text-align: center;">
+   <img src="../img/map_loading.gif" style="width:50%">
+   <p style="font-size:40px; color:#F15F5F">최적화 진행중입니다.</p>
+</div>
+   
+   
+   <div id="map_content" style="opacity: 0.2;">
+   <div class="w3-container">
+      <div>
+         <table id="place" class="w3-table-all" style="width: 30%;">
+
+         </table>
+      </div>
+   </div>
+   
+   <div style="position: absolute; z-index: 50; margin: 20px 0px 0px 20px;">
+      <span id="si2" style="">
+         <select name="si2" onchange="getText2('si2')" style="width:275px; height:50px; border-radius: 6px; padding-left:10px;">
+            <option value="">시/도 선택</option>
+         </select>
+      </span>
+   </div>
+
+   <div style="position: absolute; z-index: 50; margin: 80px 0px 0px 20px;">
+      <span id="gu2">
+         <select name="gu2" onchange="getText2('gu2')" style="width:275px; height:50px; border-radius: 6px; padding-left:10px;">
+            <option value="">구/군 선택</option>
+         </select>
+      </span>
+   </div>
+   
+   
+   <div style="position: absolute; z-index: 50; margin: 20px 0px 0px 310px;">
+      <input type="button" id='location_querybutton' value="조회" onclick="ecclocationApi()" disabled="true" 
+         style=" width: 110px; height: 110px; border-radius: 6px; color:white; font-size:30px;"/>
+   </div>
+
+
+   <input type='hidden' value="" name="zscode" id="zscode">
+
+
+   <div class="w3-container">
+      <div>
+         <table id="placetable" class="w3-table-all">
+
+         </table>
+      </div>
+   </div>
+
+   <div class="map_wrap" style="float:left;">
+      <div id="map"
+         style="width: 100%; height: 100%; position: relative; overflow: hidden;">
+      </div>
+
+      <div id="menu_wrap" class="bg_white">
+         <div class="option"></div>
+         <ul id="placesList"></ul>
+         <div id="pagination"></div>
+      </div>
+      
+      <div id="menu_wrap2" class="bg_white">
+      
+         <div>
+            <table id="placesList3" style="font-size: 20px;"></table> <%-- 지번 위에 까지 --%>
+         </div>
+         
+         <div>
+            <table id="placesList2"></table> <%-- 충전기 상태부터 끝까지 --%>
+         </div>
+         
+      </div>
+      
+   </div>
+   <div id="bottom_openclose_box" onclick="show_detail()" style="opacity:0.7; position: absolute; z-index: 50;  margin:510px 0px 0px 20px; width:50px; height:256px; float:left;">
+      <button id="bottom_close_btn" style="opacity:1; background-color:#FFFFFF; width:400px; height:50px; border-radius: 0px 0px 10px 10px; border:0px; font-size:20px;">목록 조회</button>
+   </div>
+   </div>
+   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02d94db8e10d97b2ae5cfd31f23e9c4c&libraries=services"></script>
 <script>
+window.onload = function() {
+   $("#map_content").attr("disabled","disabled");
+   document.querySelector("select[name=si2]").disabled = true;
+   document.querySelector("select[name=gu2]").disabled = true;
+   setTimeout(function() {
+      document.getElementById("map_loading").style.display = "none";
+      document.querySelector("select[name=si2]").disabled = false;
+      document.querySelector("select[name=gu2]").disabled = false;
+      document.getElementById("map_content").style.opacity = 1;
+    }, 2500);
+};
+$("select[name=si2]").change(function(){
+   $("#pagination *").remove();
+   $("#placesList *").remove();
+   $("#placesList2 *").remove();
+    $("#placesList3 *").remove();
+   show_detail();
+});
+   
+$("select[name=gu2]").change(function(){
+   $("#pagination *").remove();
+   $("#placesList *").remove();
+   $("#placesList2 *").remove();
+    $("#placesList3 *").remove();
+   show_detail();
+});   
+
+$("#menu_wrap2").hide();
+$("#bottom_openclose_box").hide();
+
+function show_detail() {
+   $("#menu_wrap2").fadeOut(500)
+    $("#bottom_openclose_box").fadeOut(500)
+    
+    setTimeout(function() {
+       $("#menu_wrap").animate({
+          height: "80%"
+          }, 750);
+     }, 200);
+}
 var mark_index=0;
 // 마커를 담을 배열입니다
 var markers = [];
@@ -249,72 +188,123 @@ const ps = new kakao.maps.services.Places();
 
 // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
 var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+var maxCallCnt = 0;
+var runCnt = 0;
+//dataIndexArr=[]
+kakaoPlaceData = []
+function searchInMethod (data2 ,status, pagination) {
+   //console.log(runCnt+'=========================')
+   //console.log(dataIndexArr?.[runCnt]?.addr+'로검색했다. =>'+dataIndexArr?.[runCnt]?.statNm+'은 장소명이다')
+   runCnt++; //placeSearch 메서드의 콜백인데 for문안에서 앞메서드가 돌아서..비동기식이면 배열에 값이 누락됨 그래서 Cnt값으로
+            //몇번 돌았는지 체크해줘야함
+            //runCnt
+   //console.log('keywordSearch의 콜백 데이터')
+   //console.log(data2)
+   if (status === kakao.maps.services.Status.OK) {//키워드 검색결과 정상일때,
+      let add_flag = 0;
+      // convert object
+      for(const dataObj of data2){
+         if(dataObj?.category_name === '교통,수송 > 자동차 > 전기자동차 충전소' || _.isEmpty(dataObj?.category_name)) {//옵셔널체이닝
+            //console.log("_.isEmpty(dataObj?.category_name : ", _.isEmpty(dataObj?.category_name));
+            searchArr[runCnt] = dataObj; //testt
+            //console.log(runCnt+'번째에 searcharr 넣음') 
+            //console.log(dataIndexArr[runCnt])
+            //console.log(searchArr.length+'는 searcharr의 길이')
+            //console.log(dataIndexArr.length+'는 dataindexarr의 길이')
+              add_flag = 1;
+            break;
+         }
+      }
+      
+      if(add_flag == 0) {
+         searchArr[runCnt] = data2[0];
+      } 
+   } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+       dataIndexArr.splice(runCnt-1,1);
+       //console.log('검색결과없음')
+       //console.log('searchArr.length2:'+searchArr.length)
+      //console.log('dataIndexArr.length:'+dataIndexArr.length)
+       return;
+      //검색결과없음
+   } else if (status === kakao.maps.services.Status.ERROR) {
+      dataIndexArr.splice(runCnt-1,1);
+       //console.log('에러가 있음')
+   //에러발생했음
+   return;
+   }
+      if(maxCallCnt === runCnt) { // searchInMethod가 다 돌고 나서
+        for(let i=0; i<searchArr.length; i++){
+           //console.log(_.isEmpty(searchArr[i])+" == "+i+"_.isEmpty(searchArr[i])")
+           if(_.isEmpty(searchArr[i])){
+              //console.log('비었다 이거##########'+runCnt)
+              searchArr.splice(i,1)
+              //dataIndexArr.splice(i,1)
+              i = i-1;
+           }
+        }
+         //console.log("searchArr 제대로 나와야함. : ", searchArr);
+         displayPlaces(searchArr,curPage); // 화면에 리스트 출력
+         displayPagination(searchArr); // 페이징 처리 호출 
+         //console.log(runCnt+'runCnt')
+         runCnt = 0;//Cnt 초기화
+         maxPage = Math.floor((searchArr.length+14)/15)//최대 페이지num 입력 페이징시 활용
+       } 
+}
+
 
 // 키워드로 장소를 검색합니다
-//searchPlaces();
-
+searchArr = [];
+//dataIndexArr = [];
 // 키워드 검색을 요청하는 함수입니다
-function searchPlaces(placeslist) {
-   alert("searchPlaces(placeslist) 호출됨")
-
+function searchPlaces(data) {
+   //console.log("search places 1111111111111111");
+    maxCallCnt = data.length;
+   //console.log(data)
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-    for ( var i=0; i<placeslist.length; i++ ) {
-       ps.keywordSearch(placeslist[i], placesSearchCB); 
-    }
-}
-
-// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
-function placesSearchCB(data, status, pagination) {
-    if (status === kakao.maps.services.Status.OK) {
-
-        // 정상적으로 검색이 완료됐으면
-        // 검색 목록과 마커를 표출합니다
-        
-        displayPlaces(data);
-        console.log(data)
-        
-        // 페이지 번호를 표출합니다
-        displayPagination(pagination);
-
-    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
-        alert('검색 결과가 존재하지 않습니다.');
-        return;
-
-    } else if (status === kakao.maps.services.Status.ERROR) {
-
-        alert('검색 결과 중 오류가 발생했습니다.');
-        return;
-
-    }
-}
-
+    for (let i=0; i<data.length; i++ ) {
+       // searchInMethod
+      //if(si22==data[i].addr.slice(0,2) ){
+             //dataIndexArr.push(data[i])//전기차 자료 검증(지역이 동일하면 넣었음)
+             dataIndexArr[i] = data[i]//전기차 자료 검증(지역이 동일하면 넣었음)
+             // ps.keywordSearch(data[i].addr, searchInMethod)
+             // searchInMethod (data2 ,status, pagination)
+             ps.keywordSearch(data[i].addr, (a, b, c) => searchInMethod(a, b, c))
+      //}else{
+      //   console.log('검색한 정보는 : '+data[i].addr.slice(0,2)+'지역입니다. 잘못된 데이터에요.')
+      //}
+   } // for
+   //console.log('dataIndexArr = keywordSearch에 넣은순,'+dataIndexArr.length+'만큼 돕니다.')
+   //console.log(dataIndexArr)
+   //console.log("search places Done 222222");
+} // searchPlaces
+      
+    
+curPage = 1; //페이징처리하기위한 현재페이지 1로 초기화
 // 검색 결과 목록과 마커를 표출하는 함수입니다
-function displayPlaces(places) {
-
-    var listEl = document.getElementById('placesList'), 
+function displayPlaces(places,curPage) { //places == searchArr
+   
+   //console.log('displayPlaces call===')
+   //console.log(places.length);
+   var listEl = document.getElementById('placesList'), 
     menuEl = document.getElementById('menu_wrap'),
     fragment = document.createDocumentFragment(), 
     bounds = new kakao.maps.LatLngBounds(), 
-    listStr = '';
-    
+   maxPage = Math.floor((searchArr.length+14)/15) 
     // 검색 결과 목록에 추가된 항목들을 제거합니다
-    //removeAllChildNods(listEl);
-
+    removeAllChildNods(listEl);
     // 지도에 표시되고 있는 마커를 제거합니다
-    //removeMarker();
-    
-    for ( var i=0; i<1; i++ ) {
-
+    removeMarker();
+    maxCur=15*curPage; //페이징 처리시 1페이지면 15가 max, 2페이지면 30이 max
+    if(curPage==maxPage){maxCur = places.length} //페이징 처리시 현재페이지가 maxpage면 data의 length가 max
+    for ( var i=15*(curPage-1);i<maxCur;  i++ ) {
         // 마커를 생성하고 지도에 표시합니다
         var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-            marker = addMarker(placePosition, mark_index), 
-            itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+            marker = addMarker(placePosition, i-15*(curPage-1)), 
+            itemEl = getListItem(i-15*(curPage-1), places[i]); // 검색 결과 항목 Element를 생성합니다
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
         bounds.extend(placePosition);
-
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
@@ -322,52 +312,205 @@ function displayPlaces(places) {
             kakao.maps.event.addListener(marker, 'mouseover', function() {
                 displayInfowindow(marker, title);
             });
-
+         
             kakao.maps.event.addListener(marker, 'mouseout', function() {
                 infowindow.close();
             });
+            
+            kakao.maps.event.addListener(marker, 'click', function() {
+            const filteredArray = searchArr.filter(obj => obj.place_name == title);//title이 searchArr에서 가져온거라 ==로 비교 가능
+            const dataIndex = searchArr.findIndex(obj => obj.place_name == title);
+            const filteredArray2 = [dataIndexArr[dataIndex]];
+            $("#menu_wrap").animate({
+                 height: "41%"
+               }, 250);
+            
+              $("#menu_wrap2").fadeIn(500)
+              $("#bottom_openclose_box").fadeIn(500)
+            
+            $("#placesList2 *").remove();
+            $("#placesList3 *").remove();
+           //console.log(title)
+           //console.log('dataIndexArr.length: '+dataIndexArr.length)
+           //console.log('searchArr.length: '+searchArr.length)//filteredArr
+            //console.log('dataindex = '+dataIndex)
+           //console.log('dataindexArr  ==  행안부 title로 장소명 필터')
+           //console.log(dataIndexArr)
+           //console.log('searcharr ==  카카오api title로 장소명 필터')
+           //console.log(searchArr)
+          //////////onclick 시 카카오맵 api 정보 // 마커에서 클릭
+           plcaeinfo2 = "<tr><td>장소명111 : "+filteredArray[0].place_name+"</td></tr>"
+           plcaeinfo2 += '<tr><td>주소 : '+filteredArray[0].address_name+'</td></tr>'
+           if(filteredArray[0].phone!=null && filteredArray[0].phone!=''){
+              plcaeinfo2 += '<tr><td>연락처 : '+filteredArray[0].phone+'</td></tr>'
+           }
+           if(filteredArray[0].road_address_name!=null && filteredArray[0].road_address_name!=''){
+              plcaeinfo2 += '<tr><td>지번 : '+filteredArray[0].road_address_name+'</td></tr>'
+           }
+           
+           /////////onclick 시 행안부API 정보
+           //let plcaeinfo = '<tr><td>충전소명 : '+filteredArray2[0].statNm+'</td></tr>'
+           let chgerStat = '';
+           if(filteredArray2[0].stat==='1') {
+              chgerStat = '통신이상'
+           }else if(filteredArray2[0].stat==='2') {
+              chgerStat = '충전대기완속'
+           }else if(filteredArray2[0].stat==='3'){
+              chgerStat = '충전중'
+           }else if(filteredArray2[0].stat==='4'){
+              chgerStat = '운영중지'
+           }else if(filteredArray2[0].stat==='5'){
+              chgerStat = '점검중'
+           }else if(filteredArray2[0].stat==='9'){
+              chgerStat = '상태미확인'
+           }
+           plcaeinfo = '<tr><td>충전기 상태 : '+chgerStat+'</td></tr>'
+           //plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].stat+'</td></tr>'
+           //plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].addr+'</td></tr>'
+           plcaeinfo += '<tr><td>이용가능시간 : '+filteredArray2[0].useTime+'</td></tr>'
+           //plcaeinfo += '<tr><td>운영기관 : '+filteredArray2[0].busiNm+'&nbsp/&nbsp('+filteredArray2[0].busiCall+')</td></tr>'
+           plcaeinfo += '<tr><td>최근 상태조회 시간 : '+filteredArray2[0].statUpdDt.substr(2,2)+'년&nbsp'
+         +filteredArray2[0].statUpdDt.substr(4,2)+'월&nbsp'
+         +filteredArray2[0].statUpdDt.substr(6,2)+'일&nbsp'
+         +filteredArray2[0].statUpdDt.substr(8,2)+':'+filteredArray2[0].statUpdDt.substr(10,2)+'</td></tr>'
+           plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+filteredArray2[0].lastTsdt.substr(2,2)+'년&nbsp'
+                    +filteredArray2[0].lastTsdt.substr(4,2)+'월&nbsp'
+                    +filteredArray2[0].lastTsdt.substr(6,2)+'일&nbsp'
+                    +filteredArray2[0].lastTsdt.substr(8,2)+':'+filteredArray2[0].lastTsdt.substr(10,2)+'</td></tr>'
+           if(filteredArray2[0].parkingFree=='N'){
+              plcaeinfo += '<tr><td>주차료 : 무료</td></tr>'
+           }else if(filteredArray2[0].parkingFree=='Y'){
+              plcaeinfo += '<tr><td>주차료 : 유료</td></tr>'
+           }else{
+              plcaeinfo += '<tr><td>주차료 : 현장확인 필요</td></tr>'
+           }
+           if(filteredArray2[0].limitYn=='Y'){
+              plcaeinfo += '<tr><td>이용제한 : '+filteredArray2[0].limitDetail+'</td></tr>'
+           }
+           $("#placesList2").append(plcaeinfo)
+           
+           $("#placesList3").append(plcaeinfo2)
+            });
+            
 
             itemEl.onmouseover =  function () {
                 displayInfowindow(marker, title);
             };
+            
+            itemEl.onclick = function() {//좌측 리스트 onclick 이벤트
+                const filteredArray = searchArr.filter(obj => obj.place_name == title);//title이 searchArr에서 가져온거라 ==로 비교 가능
+                const dataIndex = searchArr.findIndex(obj => obj.place_name == title);
+                const filteredArray2 = [dataIndexArr[dataIndex]];
+                $("#menu_wrap").animate({
+                   height: "41%"
+                 }, 250);
+              
+                $("#menu_wrap2").fadeIn(500)
+                $("#bottom_openclose_box").fadeIn(500)
+              
+              
+                $("#placesList2 *").remove();
+                $("#placesList3 *").remove();
+               //console.log(title)
+               //console.log('dataIndexArr.length: '+dataIndexArr.length)
+               //console.log('searchArr.length: '+searchArr.length)//filteredArr
+                //console.log('dataindex = '+dataIndex)
+               //console.log('dataindexArr  ==  행안부 title로 장소명 필터')
+               //console.log(dataIndexArr)
+               //console.log('searcharr ==  카카오api title로 장소명 필터')
+               //console.log(searchArr)
+               console.log(marker)
+               console.log(title)
+              //////////onclick 시 카카오맵 api 정보 // 왼쪽 리스트에서 클릭
+               plcaeinfo2 = '<tr><td>장소명 : '+filteredArray[0].place_name+'</td></tr>'
+               //plcaeinfo2 += '<tr><td>장소분류 : '+filteredArray[0].category_name+'</td></tr>'
+               plcaeinfo2 += '<tr><td>주소 : '+filteredArray[0].address_name+'</td></tr>'
+               if(filteredArray[0].phone!=null && filteredArray[0].phone!=''){
+                  plcaeinfo2 += '<tr><td>연락처 : '+filteredArray[0].phone+'</td></tr>'
+               }
+               if(filteredArray[0].road_address_name!=null && filteredArray[0].road_address_name!=''){
+                  plcaeinfo2 += '<tr><td>지번 : '+filteredArray[0].road_address_name+'</td></tr>'
+               }
+               
+               /////////onclick 시 행안부API 정보
+               //let plcaeinfo = '<tr><td>충전소명 : '+filteredArray2[0].statNm+'</td></tr>'
+               let chgerStat = '';
+               if(filteredArray2[0].stat==='1') {
+                  chgerStat = '통신이상'
+               }else if(filteredArray2[0].stat==='2') {
+                  chgerStat = '충전대기완속'
+               }else if(filteredArray2[0].stat==='3'){
+                  chgerStat = '충전중'
+               }else if(filteredArray2[0].stat==='4'){
+                  chgerStat = '운영중지'
+               }else if(filteredArray2[0].stat==='5'){
+                  chgerStat = '점검중'
+               }else if(filteredArray2[0].stat==='9'){
+                  chgerStat = '상태미확인'
+               }
+               plcaeinfo = '<tr><td>충전기 상태 : '+chgerStat+'</td></tr>'
+               //plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].stat+'</td></tr>'
+               //plcaeinfo += '<tr><td>realreal : '+filteredArray2[0].addr+'</td></tr>'
+               plcaeinfo += '<tr><td>이용가능시간 : '+filteredArray2[0].useTime+'</td></tr>'
+               //plcaeinfo += '<tr><td>운영기관 : '+filteredArray2[0].busiNm+'&nbsp/&nbsp('+filteredArray2[0].busiCall+')</td></tr>'
+               plcaeinfo += '<tr><td>최근 상태조회 시간 : '+filteredArray2[0].statUpdDt.substr(2,2)+'년&nbsp'
+             +filteredArray2[0].statUpdDt.substr(4,2)+'월&nbsp'
+             +filteredArray2[0].statUpdDt.substr(6,2)+'일&nbsp'
+             +filteredArray2[0].statUpdDt.substr(8,2)+':'+filteredArray2[0].statUpdDt.substr(10,2)+'</td></tr>'
+               plcaeinfo += '<tr><td>마지막 충전 시작시간 : '+filteredArray2[0].lastTsdt.substr(2,2)+'년&nbsp'
+                        +filteredArray2[0].lastTsdt.substr(4,2)+'월&nbsp'
+                        +filteredArray2[0].lastTsdt.substr(6,2)+'일&nbsp'
+                        +filteredArray2[0].lastTsdt.substr(8,2)+':'+filteredArray2[0].lastTsdt.substr(10,2)+'</td></tr>'
+               if(filteredArray2[0].parkingFree=='N'){
+                  plcaeinfo += '<tr><td>주차료 : 무료</td></tr>'
+               }else if(filteredArray2[0].parkingFree=='Y'){
+                  plcaeinfo += '<tr><td>주차료 : 유료</td></tr>'
+               }else{
+                  plcaeinfo += '<tr><td>주차료 : 현장확인 필요</td></tr>'
+               }
+               if(filteredArray2[0].limitYn=='Y'){
+                  plcaeinfo += '<tr><td>이용제한 : '+filteredArray2[0].limitDetail+'</td></tr>'
+               }
+               $("#placesList2").append(plcaeinfo)
+               
+               $("#placesList3").append(plcaeinfo2)
+            };
 
+            
             itemEl.onmouseout =  function () {
-                infowindow.close();
+            infowindow.close();
             };
         })(marker, places[i].place_name);
 
         fragment.appendChild(itemEl);
+        //console.log('displayPlaces Done')
     }
 
     // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
     listEl.appendChild(fragment);
     menuEl.scrollTop = 0;
-
     // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
     map.setBounds(bounds);
 }
+
 
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
    mark_index++
     var el = document.createElement('li'),
-    itemStr = '<span class="markerbg marker_' + (mark_index) + '"></span>' +
+    itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
                 '<div class="info">' +
                 '   <h5>' + places.place_name + '</h5>';
 
     if (places.road_address_name) {
-        itemStr += '    <span>' + places.road_address_name + '</span>' +
-                    '   <span class="jibun gray">' +  places.address_name  + '</span>';
+        itemStr += '<span>' + places.road_address_name + '</span>' +
+                    '<span class="jibun gray">' +  places.address_name  + '</span>';
     } else {
-        itemStr += '    <span>' +  places.address_name  + '</span>'; 
+        itemStr += '<span>' +  places.address_name  + '</span>'; 
     }
-                 
-      itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                '</div>';           
-
+   itemStr += '<span class="tel">' + places.phone  + '</span>' +'</div>';           
     el.innerHTML = itemStr;
     el.className = 'item';
-
     return el;
 }
 
@@ -385,7 +528,6 @@ function addMarker(position, idx, title) {
             position: position, // 마커의 위치
             image: markerImage 
         });
-
     marker.setMap(map); // 지도 위에 마커를 표출합니다
     markers.push(marker);  // 배열에 생성된 마커를 추가합니다
 
@@ -401,42 +543,42 @@ function removeMarker() {
 }
 
 // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
-function displayPagination(pagination) {
-    var paginationEl = document.getElementById('pagination'),
+function displayPagination(searchArr) {
+    //console.log('displayPagination(pagination) 호출')
+   var paginationEl = document.getElementById('pagination'),
         fragment = document.createDocumentFragment(),
-        i; 
-
+        i;
     // 기존에 추가된 페이지번호를 삭제합니다
     while (paginationEl.hasChildNodes()) {
         paginationEl.removeChild (paginationEl.lastChild);
     }
-
-    for (i=1; i<=pagination.last; i++) {
+   //maxPage = Math.floor(searchArr.length/15)+1
+   maxPage = Math.floor((searchArr.length+14)/15)
+    for (i=1; i<=maxPage; i++) {
         var el = document.createElement('a');
         el.href = "#";
         el.innerHTML = i;
 
-        if (i===pagination.current) {
-            el.className = 'on';
-        } else {
+       
             el.onclick = (function(i) {
                 return function() {
-                    pagination.gotoPage(i);
+                    //pagination.gotoPage(i);
+                    curPage=i;
+                    //console.log(curPage+"현재페이지num")
+                    displayPlaces(searchArr,i)
                 }
             })(i);
-        }
-
         fragment.appendChild(el);
     }
     paginationEl.appendChild(fragment);
+   // console.log('displayPagination(pagination) Done')
 }
 
 // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
 // 인포윈도우에 장소명을 표시합니다
 function displayInfowindow(marker, title) {
     var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-
-    infowindow.setContent(content);
+    infowindow.setContent(content); //infowindow 에 표시할 내용
     infowindow.open(map, marker);
 }
 
@@ -453,58 +595,44 @@ function removeAllChildNods(el) {
 })
  
  function ecclocationApi() {
-    params = "zscode=" + document.getElementById('zscode').value;
+	console.log("ecclocationApi 실행")
+    dataIndexArr = [];
+   searchArr = [];
+   //console.log('ecclocationApi 호출')
+   params = "zscode=" + document.getElementById('zscode').value;
     $("#placetable *").remove();
     removeAllChildNods(document.getElementById('placesList'));
     removeMarker();
+    $("#placesList2 *").remove();
+    $("#placesList3 *").remove();
     mark_index = 0;
-    var placeslist = []
-         $.ajax({
-            url : "${path}/api/ecclocationApi",
-            type : "POST",
-            data : params,
-         success : function(data) {
-            console.log(data)
-              let table = '<caption>'+$("select[name=si2]").val()+' '+$("select[name=gu2]").val()+'</caption><tr><td>충전소명</td><td>충전기타입</td><td>주소</td><td>이용가능시간</td><td>운영기관연락처</td></tr>';
-              var redun_num = 0;
-              $.each(data, function(i){
-                 if(i==0 || data[i].statNm!=data[i-1].statNm){	//json데이터[i]의 장소명이 바로 전 장소명과 같지 않아야한다.
-                    placeslist[i-redun_num] = data[i].statNm; 
-                 }else{
-                    redun_num += 1;		//json데이터[i]의 장소명이 바로 전 장소명과 같으면 placeslist 배열에 저장되는 인덱스를 redun_num cnt값으로 shift해준다
-                 }
-                 console.log(placeslist)
-                  let chgerType = data[i].chgerType.replace(/(01|02|03|04|05|06|07|89)/g, function(ex){
-                      switch(ex){
-                       case "01" : return "DC차데모";
-                       case "02" : return "AC완속";
-                       case "03" : return "DC차데모+AC3상";
-                       case "04" : return "DC콤보";
-                       case "05" : return "DC차데모+DC콤보";
-                       case "06" : return "DC차데모+AC3상+DC콤보";
-                       case "07" : return "AC3상";
-                       case "89" : return "H2";
-                      }
-                })
-                
-                 table += '<tr><td>'+data[i].statNm+'</td><td>'+chgerType+'</td><td>'+data[i].addr+'</td><td>'+data[i].useTime+'</td><td>'+data[i].busiCall+'</td></tr>';
-              });
-              $("#placetable").append(table)
-              alert(placeslist)// 이게 전기차 검색시의 모든 결과 목록 뽑은건데
-              searchPlaces(placeslist)
-              alert("searchPlaces(placeslist) 호출함")
-           },
-           error : function(e) {
-              alert("충전소 찾다가 에러발생 : "+e.status)
-           }
+    //var placeslist = []
+   $.ajax({
+      url : "${path}/api/ecclocationApi",
+      type : "POST",
+      data : params,
+      success : function(data) {
+    	console.log("ecclocation data 출력 :")
+    	console.log(data)
+      //lodash 메서드를 임포트 후 uniqBy를 사용하여 data에서 특정 부분에 유일성을 줬음
+       data = _.uniqBy(data,'statNm')
+      data = _.uniqBy(data,'addr')
+      data1=data
+       $.each(data, function(i){
+      //placeslist[i] = data[i].addr;
+   });
+   searchPlaces(data)
+      },
+      error : function(e) {
+         alert("충전소 찾다가 에러발생 : "+e.status)
+      }
         })
-     }
+        console.log('ecclocationApi Done')
+}
  
  function cityCode() {
      $.ajax("${path}/api/cityCodeApi",{ // Map로 데이터 수신
         success : function(data) {
-           console.log(data)
-             
           },
           error : function(e) {
              alert("place 조회시 서버 오류 발생 : "+e.status)
@@ -519,7 +647,6 @@ function removeAllChildNods(el) {
       $.ajax({
          url : "${path}/api/select",
          success : function(data){
-            console.log(data)
             let arr = data.substring(data.indexOf('[')+1,data.indexOf(']')).split(",");
             $.each(arr,function(i,item){
                // i : 인덱스. 첨자. 0부터 시작
@@ -533,10 +660,13 @@ function removeAllChildNods(el) {
    }
  
    function getText2(name){
+      $("#location_querybutton").css("background-color","#D5D5D5");
+      $("#location_querybutton").css("border","2px solid #D5D5D5");
+      $("#location_querybutton").attr("disabled","disabled");
       let city = $("select[name='si2']").val();
       let gu = $("select[name='gu2']").val();
       let disname;
-      let toptext="구군을 선택하세요";
+      let toptext="구/군 선택";
       let params="";
       if(name == "si2"){
          params = "si2="+city.trim();
@@ -548,13 +678,13 @@ function removeAllChildNods(el) {
       } else{
          return;
       }
-      alert(params)
       $.ajax({
          url : "${path}/api/selectText",
          type : "POST",
          data : params,
          success : function(arr){
             $("select[name="+disname+"] option").remove();
+            
             $("select[name="+disname+"]").append(function(){
                return "<option value=''>"+toptext+"</option>"
             })
@@ -563,8 +693,8 @@ function removeAllChildNods(el) {
                   return "<option>"+item+"</option>"
                })
             })
-            if(city!=null && gu!=null && city!="" && gu!= ""){ 
-               placecode(si2,gu2)
+            if(city!=null && gu!=null && city!="" && gu!= ""){
+                  placecode(si2,gu2)
             }
          }
       })
@@ -579,9 +709,15 @@ function removeAllChildNods(el) {
             data : params,
             type : "POST",
             success : function(data){
-               console.log(data)
-               console.log(data[1].row[0].region_cd.substr(0,5));
+               console.log('#######################'+city)
+               console.log('#######################'+gu)
+               
                $('input[name=zscode]').attr('value',data[1].row[0].region_cd.substr(0,5))
+               $("#location_querybutton").css("background-color","#008000");
+               $("#location_querybutton").css("border","2px solid #008000");
+               $("#location_querybutton").removeAttr("disabled");
+               
+               //document.getElementById("location_querybutton").disabled = false;
             }
          })
       }
