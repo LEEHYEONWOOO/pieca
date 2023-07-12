@@ -9,43 +9,87 @@
 <title>게시판 답글 쓰기</title>
 </head>
 <body>
+<div style="width:1920px; height:750px; display: flex; justify-content: center; align-items: center;">
    <form:form modelAttribute="board" action="reply" method="post" name="f">
       <form:hidden path="num" />
       <form:hidden path="boardid" />
       <form:hidden path="grp" />
       <form:hidden path="grplevel" />
       <form:hidden path="grpstep" />
-      <h2>${boardName}답글 등록</h2>
-      <table class="w3-table">
+      <table class="w3-table" style="width:1000px; margin-top: 10%;">
          <tr>
-            <td>글쓴이</td>
-            <td><input type="text" name="writer" value="관리자"> <font
-               color="red"><form:errors path="writer" /></font></td>
+            <th style = "vertical-align: middle; font-size:20px;">
+               <div>
+                  글쓴이
+               </div>
+               <div>
+                  <font color="red">
+                     <form:errors path="writer" />
+                  </font>
+               </div>
+            <td>
+               <input type="text" name="writer" class="w3-input" value="관리자">
+            </td>
          </tr>
          <tr>
-            <td>비밀번호</td>
-            <td><form:password path="pass" /> <font color="red"><form:errors
-                     path="pass" /></font></td>
+            <th style = "vertical-align: middle; font-size:20px;">
+               <div>
+                  비밀번호
+               </div>
+               <div>
+                  <font color="red">
+                     <form:errors path="pass" />
+                  </font>
+               </div>
+            </th>
+            <td>
+               <form:password path="pass" class="w3-input" value="" placeholder="게시글의 비밀번호를 입력 하세요."/>
+            </td>
          </tr>
          <tr>
-            <td>제목</td>
-            <td><form:input path="title" value="RE:${board.title}" /> <font
-               color="red"><form:errors path="title" /></font></td>
+            <th style = "vertical-align: middle; font-size:20px;">
+               <div>
+                  제목
+               </div>
+               <div>
+                        <font color="red">
+                           <form:errors path="title" />
+                        </font>
+                     </div>
+            </th>
+            <td>
+               <form:input path="title" class="w3-input" value="RE:${board.title}" />
+            </td>
          </tr>
          <tr>
-            <td>내용</td>
-            <td><textarea name="content" rows="15" cols="80"></textarea> <font
-               color="red"><form:errors path="content" /></font></td>
+            <th style = "font-size:20px;">
+               <div>
+                  내용
+               </div>
+               <div>
+                  <font color="red">
+                     <form:errors path="content" />
+                  </font>
+               </div>
+            </th>
+            <td>
+               <form:textarea path="content" rows="15" cols="80"/>
+            </td>
          </tr>
          <script>
             CKEDITOR.replace("content", {
-               filebrowserImageUploadUrl : "imgupload"
-            });
+               filebrowserImageUploadUrl : "imgupload",
+               height : '300'
+               
+            })
          </script>
          <tr>
-            <td colspan="2"><a href="javascript:document.f.submit()">[답변글등록]</a></td>
+            <td colspan="2" class="w3-center">
+               <a href="javascript:document.f.submit()"><div style="display: inline; color:#F15F5F; font-size:20px;">[답변글 등록]</div></a>
+            </td>
          </tr>
       </table>
    </form:form>
+</div>
 </body>
 </html>

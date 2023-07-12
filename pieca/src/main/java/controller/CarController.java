@@ -67,8 +67,12 @@ public class CarController {
 	   return mav;
    }
    @PostMapping("insert") // get,post 방식에 상관없이 호출
-   public ModelAndView postinsert(@Valid Car car, HttpSession session) {
+   public ModelAndView postinsert(@Valid Car car,BindingResult bresult, HttpSession session) {
 	   ModelAndView mav = new ModelAndView();
+	   if(bresult.hasErrors()) {
+	         mav.getModel().putAll(bresult.getModel());
+	         return mav;
+	   }
 	   Car carlist = new Car();
 	   List<Car> cars = service.carList(carlist);
 	   int max_no = cars.get(cars.size()-1).getNo()+1;

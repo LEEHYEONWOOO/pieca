@@ -15,7 +15,7 @@
 		</tr>
 		<tr>
 			<td>
-				<form action="nu_picture" method="post"
+				<form action="car_picture" method="post"
 					enctype="multipart/form-data">
 					<input type="file" name="picture" id="imageFile" accept="img/*">
 					<input type="submit" value="사진등록">

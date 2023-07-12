@@ -163,8 +163,7 @@
          <c:forEach items="${carList1}" var="item">
          <div id="car_list_in_container${item.no}" onload="test(${item.no})" onmouseover="zoom('${item.no}')"style="float:left; width:90%; cursor:pointer; border: 0px solid #747474; border-radius:6px; margin: 0% 0% 10% 10%; box-shadow: -2px 2px 5px 2px #747474;">
             <div id="car_list_title_box" >
-               
-            <c:if test="${loginUser.userid != 'admin'}">
+               <c:if test="${loginUser.userid != 'admin'}">
                <div id="car_list_mycar_add_box" onclick="mycar('${item.no}','${loginUser.userid}')" style="text-align:right; float:left; width:100%; font-size:20px; margin:0% 0% 1% 0%; padding-right:2%;">
                   <span id ="car_list_mycar_add${item.no}">내 차량 추가 <i class="fa-regular fa-square-plus"></i></span>
                   <span id ="car_list_mycar${item.no}" style="color: #F15F5F;">내 차량 <i class="fa-solid fa-car"></i></span>
@@ -178,7 +177,6 @@
                   </form>
                </div>
             </c:if>
-               
                <c:if test="${item.imgcnt == 4}">
                   <div id="car_list_left_btn" onclick="imgLeft('${item.no}')" style=" float:left; width:6%; height:247px;; padding: 16.5% 0% 0% 2%;">
                      <span class="fa-solid fa-chevron-left" style="font-size:35px;"></span>
@@ -188,43 +186,58 @@
                      <span class="fa-solid fa-chevron-right" style="font-size:35px;"></span>
                   </div>
                </c:if>
-               <c:if test="${item.imgcnt != 4}">
+               <c:if test="${item.imgcnt == 1}">
                   <div id="car_list_left_btn" style="float:left; width:6%; height:187px; padding: 16.5% 0% 0% 1%;">
                   </div>
                   <img src="../img/${item.img}" id="car_list_title${item.no}" onclick="show('${item.no}')" style="width:505px; height:236px; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
                   <div id="car_list_right_btn" style="float:right; width:6%; height:187px;padding: 16.5% 0% 0% 0%;">
                   </div>
                </c:if>
+               <c:if test="${item.img == null}">
+                  <div id="car_list_left_btn" style="float:left; width:6%; height:187px; padding: 16.5% 0% 0% 1%;">
+                  </div>
+                  <div id="car_list_right_btn" style="float:right; width:6%; height:187px;padding: 16.5% 0% 0% 0%;">
+                  </div>
+               </c:if>
             </div>
+            
+            
             <c:if test="${item.imgcnt == 4}">
                <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 9%;">
                      ${item.maker}&nbsp;&nbsp;${item.name}
                </div>
             </c:if>
-            <c:if test="${item.imgcnt != 4}">
+            <c:if test="${item.imgcnt == 1}">
                <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 15%;">
                      ${item.maker}&nbsp;&nbsp;${item.name}
                </div>
             </c:if>
+            <c:if test="${item.img == null}">
+               <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 9%;">
+                     ${item.maker}&nbsp;&nbsp;${item.name}
+               </div>
+            </c:if>
+            
+            
             <div id ="car_list_like_box" onclick="like('${item.no}','${loginUser.userid}')" style="float:left; font-size:30px;">
-         <c:if test="${loginUser.userid != null }">
-               <c:forEach items="${liked_Car}" var="liked_Car2">
-               <c:if test="${loop_flag == false}">   <!-- 기본 flag값=false일때 forEach돈다 -->
-                     <c:if test="${item.no == liked_Car2.carno}">   <!-- 현재 카개게츠이 번호와 과 지금 도는 liked의 차 번호가 같으면  -->
-                           <span id="car_list_like_no${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
-                           <c:set var="loop_flag" value="true" />   <!-- 빨간하트 출력 시 flag값 true로 줘서 forEach 종료 -->
-                     </c:if>
+               <c:if test="${loginUser.userid != null }">
+                     <c:set var="loop_flag" value="false" />
+                     <c:forEach items="${liked_Car}" var="liked_Car2">
+                        <c:if test="${loop_flag == false}">
+                           <c:if test="${item.no == liked_Car2.carno}"><!-- 차객체들과 지금 도는 like차 번호가 같으면  -->
+                              <span id="car_list_like_no${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
+                                 <c:set var="loop_flag" value="true" />
+                           </c:if>
                      
-                     <c:if test="${liked_Car2 == liked_Car.get(liked_Car.size()-1) && item.no != liked_Car2.carno}">
-                        <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
-                     </c:if>
-               </c:if>
-               
-               </c:forEach>
-           </c:if>
-           <c:if test="${empty liked_Car || loginUser.userid == null}">
-                 <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
-           </c:if>
+                           <c:if test="${liked_Car2 == liked_Car.get(liked_Car.size()-1) && item.no != liked_Car2.carno}">
+                              <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
+                           </c:if>
+                        </c:if>
+                     </c:forEach>
+                 </c:if>
+                 <c:if test="${empty liked_Car || loginUser.userid == null}">
+                   <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
+                 </c:if>
             </div>
             
             <div id="car_list_like_total_box" style="float:left; font-size:30px; margin-left:2%;">
@@ -243,6 +256,7 @@
             </div>
             
             <div id ="car_list_description" onclick="show('${item.no}')" style="width:100%; height:230px;">
+               <c:if test="${item.img != null}">
                <div id="car_list_size_type" style="float:left; width:50%; font-size:20px; margin: 0.5% 0% 2% 15%; color:#747474">
                   ${item.car_size}&nbsp;&nbsp;${item.car_type}
                </div>
@@ -319,7 +333,86 @@
                      <p>고속 : 미제공</p>
                   </c:if>
                </div>
-            
+               </c:if>
+               
+               <c:if test="${item.img == null}">
+               <div id="car_list_size_type" style="float:left; width:50%; font-size:20px; margin: 0.5% 0% 2% 9%; color:#747474">
+                  ${item.car_size}&nbsp;&nbsp;${item.car_type}
+               </div>
+               
+               <div id="car_list_output_sub" style="float:left; font-size:15px; height:45px; padding: 1% 0% 0% 0%;  color:#747474">
+                  <c:if test="${item.min_price != 0 && item.max_price != 0}">
+                     가격 : <fmt:formatNumber value="${item.min_price}"/> ~ <fmt:formatNumber value="${item.max_price}"/>만원
+                  </c:if>
+                  <c:if test="${item.min_price != 0 && item.max_price == 0}">
+                     가격 : <fmt:formatNumber value="${item.min_price}"/>만원
+                  </c:if>
+                  <c:if test="${item.min_price == 0 && item.max_price == 0}">
+                     가격 : 미제공
+                  </c:if>
+               </div>
+               <div id="car_list_capacity_main" style="float:left; width:50%; height:45px; font-size:18px; margin: 0% 0% 0% 9%">
+                  <c:if test="${item.min_capacity != 0 && item.max_capacity != 0}">
+                     용량 : ${item.min_capacity / 10} ~ ${item.max_capacity/ 10}kWh
+                  </c:if>
+                  <c:if test="${item.min_capacity != 0 && item.max_capacity == 0}">
+                     용량 : ${item.min_capacity/ 10}kWh
+                  </c:if>
+                  <c:if test="${item.min_capacity == 0 && item.max_capacity == 0}">
+                     용량 : 미제공
+                  </c:if>
+               </div>
+               <div id="car_list_capacity_sub" style="float:left; font-size:15px; height:45px; margin: 0% 0% 0% 0%;  color:#747474">
+                  배터리
+               </div>
+               
+               <div id="car_list_range_main" style="float:left; width:50%; height:45px; font-size:18px; margin: 0% 0% 0% 9%">
+                  <c:if test="${item.min_range != 0 && item.max_range != 0}">
+                     주행거리 : ${item.min_range} ~ ${item.max_range}km
+                  </c:if>
+                  <c:if test="${item.min_range != 0 && item.max_range == 0}">
+                     주행거리 : ${item.min_range}km
+                  </c:if>
+                  <c:if test="${item.min_range == 0 && item.max_range == 0}">
+                     주행거리 : 미제공
+                  </c:if>
+               </div>
+               <div id="car_list_range_sub" style="float:left; font-size:15px; height:45px; margin: 0% 0% 0% 0%;  color:#747474">
+                  1회 충전시
+               </div>
+               
+               <div id="car_list_fuel_main" style="float:left; width:50%; height: 45px; font-size:18px; margin: 0% 0% 0% 9%">
+                  <c:if test="${item.avg_min_fuel != 0 && item.avg_max_fuel != 0}">
+                     연비 : ${item.avg_min_fuel / 10} ~ ${item.avg_max_fuel / 10}km/kWh
+                  </c:if>
+                  <c:if test="${item.avg_min_fuel != 0 && item.avg_max_fuel == 0}">
+                     연비 : ${item.avg_min_fuel / 10}km/kWh
+                  </c:if>
+                  <c:if test="${item.avg_min_fuel == 0 && item.avg_max_fuel == 0}">
+                     연비 : 미제공
+                  </c:if>
+               </div>
+               <div id="car_list_fuel_sub" style="float:left; font-size:15px; height:45px; margin: 0% 0% 3% 0%;  color:#747474">
+                  <c:if test="${item.dt_min_fuel != 0 && item.dt_max_fuel != 0}">
+                     <p>도심 : ${item.dt_min_fuel / 10} ~ ${item.dt_max_fuel / 10}km/kWh</p>
+                  </c:if>
+                  <c:if test="${item.dt_min_fuel != 0 && item.dt_max_fuel == 0}">
+                     <p>도심 : ${item.dt_min_fuel / 10}km/kWh</p>
+                  </c:if>
+                  <c:if test="${item.dt_min_fuel == 0 && item.dt_max_fuel == 0}">
+                     <p>도심 : 미제공</p>
+                  </c:if>
+                  <c:if test="${item.high_min_fuel != 0 && item.high_max_fuel != 0}">
+                     <p>고속 : ${item.high_min_fuel / 10} ~ ${item.high_max_fuel / 10}km/kWh</p>
+                  </c:if>
+                  <c:if test="${item.high_min_fuel != 0 && item.high_max_fuel == 0}">
+                     <p>고속 : ${item.high_min_fuel / 10}km/kWh</p>
+                  </c:if>
+                  <c:if test="${item.high_min_fuel == 0 && item.high_max_fuel == 0}">
+                     <p>고속 : 미제공</p>
+                  </c:if>
+               </div>
+               </c:if>
             <div id="car_list_etc${item.no}" style="display: none;">
                <div id="car_list_output_main" style="float:left; width:50%; height: 45px; font-size:18px; margin: 0% 0% 0% 15%">
                   <c:if test="${item.min_output != 0 && item.max_output != 0}">
@@ -397,7 +490,6 @@
       <c:forEach items="${carList2}" var="item">
          <div id="car_list_in_container${item.no}" onload="test(${item.no})" onmouseover="zoom('${item.no}')"style="float:left; width:90%; cursor:pointer; border: 0px solid #747474; border-radius:6px; margin: 0% 0% 10% 10%; box-shadow: -2px 2px 5px 2px #747474;">
             <div id="car_list_title_box" >
-               
                <c:if test="${loginUser.userid != 'admin'}">
                <div id="car_list_mycar_add_box" onclick="mycar('${item.no}','${loginUser.userid}')" style="text-align:right; float:left; width:100%; font-size:20px; margin:0% 0% 1% 0%; padding-right:2%;">
                   <span id ="car_list_mycar_add${item.no}">내 차량 추가 <i class="fa-regular fa-square-plus"></i></span>
@@ -412,7 +504,6 @@
                   </form>
                </div>
             </c:if>
-               
                <c:if test="${item.imgcnt == 4}">
                   <div id="car_list_left_btn" onclick="imgLeft('${item.no}')" style=" float:left; width:6%; height:247px;; padding: 16.5% 0% 0% 2%;">
                      <span class="fa-solid fa-chevron-left" style="font-size:35px;"></span>
@@ -422,47 +513,58 @@
                      <span class="fa-solid fa-chevron-right" style="font-size:35px;"></span>
                   </div>
                </c:if>
-               <c:if test="${item.imgcnt != 4}">
+               <c:if test="${item.imgcnt == 1}">
                   <div id="car_list_left_btn" style="float:left; width:6%; height:187px; padding: 16.5% 0% 0% 1%;">
                   </div>
                   <img src="../img/${item.img}" id="car_list_title${item.no}" onclick="show('${item.no}')" style="width:505px; height:236px; transition-duration: 0.5s; margin:0% 0% 0% 1.5%;">
                   <div id="car_list_right_btn" style="float:right; width:6%; height:187px;padding: 16.5% 0% 0% 0%;">
                   </div>
                </c:if>
+               <c:if test="${item.img == null}">
+                  <div id="car_list_left_btn" style="float:left; width:6%; height:187px; padding: 16.5% 0% 0% 1%;">
+                  </div>
+                  <div id="car_list_right_btn" style="float:right; width:6%; height:187px;padding: 16.5% 0% 0% 0%;">
+                  </div>
+               </c:if>
             </div>
+            
+            
             <c:if test="${item.imgcnt == 4}">
                <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 9%;">
                      ${item.maker}&nbsp;&nbsp;${item.name}
                </div>
             </c:if>
-            <c:if test="${item.imgcnt != 4}">
+            <c:if test="${item.imgcnt == 1}">
                <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 15%;">
                      ${item.maker}&nbsp;&nbsp;${item.name}
                </div>
             </c:if>
+            <c:if test="${item.img == null}">
+               <div id="car_list_maker_name" onclick="show('${item.no}')" style="float:left; width:50%; font-size:30px; margin: 0% 0% 0% 9%;">
+                     ${item.maker}&nbsp;&nbsp;${item.name}
+               </div>
+            </c:if>
+            
+            
             <div id ="car_list_like_box" onclick="like('${item.no}','${loginUser.userid}')" style="float:left; font-size:30px;">
-
-         <c:if test="${loginUser.userid != null }">
-               <c:set var="loop_flag" value="false" />
-               <c:forEach items="${liked_Car}" var="liked_Car2">
-               <c:if test="${loop_flag == false}">
-                     <c:if test="${item.no == liked_Car2.carno}"><!-- 차객체들과 지금 도는 like차 번호가 같으면  -->
-                           <span id="car_list_like_no${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
-                           <c:set var="loop_flag" value="true" />
-                     </c:if>
+               <c:if test="${loginUser.userid != null }">
+                     <c:set var="loop_flag" value="false" />
+                     <c:forEach items="${liked_Car}" var="liked_Car2">
+                        <c:if test="${loop_flag == false}">
+                           <c:if test="${item.no == liked_Car2.carno}"><!-- 차객체들과 지금 도는 like차 번호가 같으면  -->
+                              <span id="car_list_like_no${item.no}" class="fa-solid fa-heart" style="color: #F15F5F;"></span>
+                                 <c:set var="loop_flag" value="true" />
+                           </c:if>
                      
-                     <c:if test="${liked_Car2 == liked_Car.get(liked_Car.size()-1) && item.no != liked_Car2.carno}">
-                        <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
-                     </c:if>
-               </c:if>
-               </c:forEach>
-           </c:if>
-           <c:if test="${empty liked_Car || loginUser.userid == null}">
-                 <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
-           </c:if>
-           
-               
-               
+                           <c:if test="${liked_Car2 == liked_Car.get(liked_Car.size()-1) && item.no != liked_Car2.carno}">
+                              <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
+                           </c:if>
+                        </c:if>
+                     </c:forEach>
+                 </c:if>
+                 <c:if test="${empty liked_Car || loginUser.userid == null}">
+                   <span id="car_list_like_no${item.no}" class="fa-regular fa-heart"></span>
+                 </c:if>
             </div>
             
             <div id="car_list_like_total_box" style="float:left; font-size:30px; margin-left:2%;">
@@ -481,6 +583,7 @@
             </div>
             
             <div id ="car_list_description" onclick="show('${item.no}')" style="width:100%; height:230px;">
+               <c:if test="${item.img != null}">
                <div id="car_list_size_type" style="float:left; width:50%; font-size:20px; margin: 0.5% 0% 2% 15%; color:#747474">
                   ${item.car_size}&nbsp;&nbsp;${item.car_type}
                </div>
@@ -557,7 +660,86 @@
                      <p>고속 : 미제공</p>
                   </c:if>
                </div>
-            
+               </c:if>
+               
+               <c:if test="${item.img == null}">
+               <div id="car_list_size_type" style="float:left; width:50%; font-size:20px; margin: 0.5% 0% 2% 9%; color:#747474">
+                  ${item.car_size}&nbsp;&nbsp;${item.car_type}
+               </div>
+               
+               <div id="car_list_output_sub" style="float:left; font-size:15px; height:45px; padding: 1% 0% 0% 0%;  color:#747474">
+                  <c:if test="${item.min_price != 0 && item.max_price != 0}">
+                     가격 : <fmt:formatNumber value="${item.min_price}"/> ~ <fmt:formatNumber value="${item.max_price}"/>만원
+                  </c:if>
+                  <c:if test="${item.min_price != 0 && item.max_price == 0}">
+                     가격 : <fmt:formatNumber value="${item.min_price}"/>만원
+                  </c:if>
+                  <c:if test="${item.min_price == 0 && item.max_price == 0}">
+                     가격 : 미제공
+                  </c:if>
+               </div>
+               <div id="car_list_capacity_main" style="float:left; width:50%; height:45px; font-size:18px; margin: 0% 0% 0% 9%">
+                  <c:if test="${item.min_capacity != 0 && item.max_capacity != 0}">
+                     용량 : ${item.min_capacity / 10} ~ ${item.max_capacity/ 10}kWh
+                  </c:if>
+                  <c:if test="${item.min_capacity != 0 && item.max_capacity == 0}">
+                     용량 : ${item.min_capacity/ 10}kWh
+                  </c:if>
+                  <c:if test="${item.min_capacity == 0 && item.max_capacity == 0}">
+                     용량 : 미제공
+                  </c:if>
+               </div>
+               <div id="car_list_capacity_sub" style="float:left; font-size:15px; height:45px; margin: 0% 0% 0% 0%;  color:#747474">
+                  배터리
+               </div>
+               
+               <div id="car_list_range_main" style="float:left; width:50%; height:45px; font-size:18px; margin: 0% 0% 0% 9%">
+                  <c:if test="${item.min_range != 0 && item.max_range != 0}">
+                     주행거리 : ${item.min_range} ~ ${item.max_range}km
+                  </c:if>
+                  <c:if test="${item.min_range != 0 && item.max_range == 0}">
+                     주행거리 : ${item.min_range}km
+                  </c:if>
+                  <c:if test="${item.min_range == 0 && item.max_range == 0}">
+                     주행거리 : 미제공
+                  </c:if>
+               </div>
+               <div id="car_list_range_sub" style="float:left; font-size:15px; height:45px; margin: 0% 0% 0% 0%;  color:#747474">
+                  1회 충전시
+               </div>
+               
+               <div id="car_list_fuel_main" style="float:left; width:50%; height: 45px; font-size:18px; margin: 0% 0% 0% 9%">
+                  <c:if test="${item.avg_min_fuel != 0 && item.avg_max_fuel != 0}">
+                     연비 : ${item.avg_min_fuel / 10} ~ ${item.avg_max_fuel / 10}km/kWh
+                  </c:if>
+                  <c:if test="${item.avg_min_fuel != 0 && item.avg_max_fuel == 0}">
+                     연비 : ${item.avg_min_fuel / 10}km/kWh
+                  </c:if>
+                  <c:if test="${item.avg_min_fuel == 0 && item.avg_max_fuel == 0}">
+                     연비 : 미제공
+                  </c:if>
+               </div>
+               <div id="car_list_fuel_sub" style="float:left; font-size:15px; height:45px; margin: 0% 0% 3% 0%;  color:#747474">
+                  <c:if test="${item.dt_min_fuel != 0 && item.dt_max_fuel != 0}">
+                     <p>도심 : ${item.dt_min_fuel / 10} ~ ${item.dt_max_fuel / 10}km/kWh</p>
+                  </c:if>
+                  <c:if test="${item.dt_min_fuel != 0 && item.dt_max_fuel == 0}">
+                     <p>도심 : ${item.dt_min_fuel / 10}km/kWh</p>
+                  </c:if>
+                  <c:if test="${item.dt_min_fuel == 0 && item.dt_max_fuel == 0}">
+                     <p>도심 : 미제공</p>
+                  </c:if>
+                  <c:if test="${item.high_min_fuel != 0 && item.high_max_fuel != 0}">
+                     <p>고속 : ${item.high_min_fuel / 10} ~ ${item.high_max_fuel / 10}km/kWh</p>
+                  </c:if>
+                  <c:if test="${item.high_min_fuel != 0 && item.high_max_fuel == 0}">
+                     <p>고속 : ${item.high_min_fuel / 10}km/kWh</p>
+                  </c:if>
+                  <c:if test="${item.high_min_fuel == 0 && item.high_max_fuel == 0}">
+                     <p>고속 : 미제공</p>
+                  </c:if>
+               </div>
+               </c:if>
             <div id="car_list_etc${item.no}" style="display: none;">
                <div id="car_list_output_main" style="float:left; width:50%; height: 45px; font-size:18px; margin: 0% 0% 0% 15%">
                   <c:if test="${item.min_output != 0 && item.max_output != 0}">

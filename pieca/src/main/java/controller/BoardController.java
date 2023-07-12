@@ -1,11 +1,14 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import dao.BoardDao;
@@ -71,6 +75,11 @@ public class BoardController {
       mav.setViewName("redirect:list?boardid="+boardid);
       return mav;
    }
+   
+   
+   
+   
+   
    /*
     * @RequestParam : 파라미터값을 객체를 매핑하여 저장하는 기능 
     *   파라미터값 저장

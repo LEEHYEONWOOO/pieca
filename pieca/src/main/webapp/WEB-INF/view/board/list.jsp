@@ -16,7 +16,7 @@
 </head>
 <body>
 <div style="width:1920px; height:750px; display: flex; justify-content: center; align-items: center;">
-   <table class="w3-table-all w3-border" id="main_table" style="width:1350px; font-size:16px; margin-top: 10%;">
+   <table class="w3-table-all w3-border" id="main_table" style="width:1350px; font-size:16px; margin-top: 192px;">
       <tr>
       <form action="list" method="post" name="searchform">
          <td style="text-align: left; vertical-align: middle; color: #F15F5F; padding-left:15px; font-size:23px;">
@@ -166,7 +166,7 @@
 $(document).ready(function(){
    const count = $("#pagecount").val();
    if(count < 10) {
-      $("#main_table").css("margin-top","-5.2%")
+      $("#main_table").css("margin-top","-130px")
    }
          
 })
