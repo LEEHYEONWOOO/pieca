@@ -1315,7 +1315,7 @@ function preventCopy(e) {
 
 $("input").on("copy", preventCopy);
    
-
+//유효성검증
 function passValid(){
    var password = $("#chg_password").val();
    var chgpass = $("#chgpass").val();
