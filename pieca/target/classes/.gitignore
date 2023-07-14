@@ -1,3 +1,5 @@
 /controller/
 /logic/
 /dao/
+/interceptor/
+/sitemesh/
